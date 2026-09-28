@@ -68,8 +68,7 @@ jobs:
           git init -q -b deploy
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # -f: the theme's own .gitignore lists build/, which must be published here.
-          git add -A -f
+          git add -A
           git commit -q -m "Build ${GITHUB_SHA::7}"
           git push --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" deploy:deploy
           echo "Published $(git rev-parse --short HEAD) to deploy"

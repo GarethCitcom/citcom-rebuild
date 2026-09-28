@@ -17,9 +17,12 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   anything from the reference theme.
 - Hybrid theme: PHP templates for header/footer/archives/singles,
   `theme.json` for tokens, one ACF Block per old flexible layout.
-- Requirements on the target site: ACF Pro 6.8+, ACF Extended Pro (field types
-  focuspoint, swatch, image selector, code editor, column are used; keep
-  ACFE only for those until each is replaced). PHP 8.5, WP 7.1+.
+- Requirements on the target site: ACF Pro 6.8+, ACF Extended Pro (image
+  selector, code editor, column, post types field types), plus two mu-plugins
+  that Pressable provides at account level and the field JSON relies on:
+  acf-focuspoint (ooksanen/acf-focuspoint, field type `focuspoint`) and
+  acf-swatch (nickforddev/acf-swatch, field type `swatch`). A local site needs
+  the same two in wp-content/mu-plugins. PHP 8.5, WP 7.1+.
 - UK English in all copy and comments. No em dashes in prose.
 
 ## Block conventions
@@ -58,9 +61,10 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   global stylesheet (`src/theme.scss`, the old `assets/_dev/scss` ported), and
   per-block styles via `block.json` `style`/`editorStyle`/`viewScript` so a
   page only loads what it uses.
-- Compiled output goes to `build/` (git-ignored) and is produced by the
-  deploy step on Pressable, or committed on a release tag if git deploy cannot
-  run npm. Decide in Phase 1 and record it in docs.
+- Compiled output goes to `build/` (git-ignored on main). GitHub Actions
+  (`.github/workflows/deploy.yml`) builds on every push to main and publishes
+  source plus `build/` as one force-pushed commit on the `deploy` branch under
+  `wp-content/themes/citcom-rebuild/`; Pressable deploys that branch.
 
 ## Verification
 

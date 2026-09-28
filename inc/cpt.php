@@ -6,7 +6,8 @@
  * Differences from the JSON: `editor` support is on (and show_in_rest stays true)
  * so the block editor is available. Registered at init priority 5 so ACF
  * (priority 6) sees the keys as taken and skips its own copies; the ACF UI
- * entries in the database are deactivated at cutover (see docs/00-discovery.md).
+ * entries in the database are deactivated as the first step of the Phase 3 staging
+ * run, when this theme is activated there (see docs/00-discovery.md).
  *
  * @package citcom
  */

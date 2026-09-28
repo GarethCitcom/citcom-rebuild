@@ -202,9 +202,9 @@ when diffing against it:
   with a small loader, outside this repo).
 - The ACF UI post types, taxonomy and options page live in the database as
   `acf-post-type`, `acf-taxonomy` and `acf-ui-options-page` posts. The theme
-  registers the same keys in PHP at init priority 5; at cutover those ACF UI
-  entries must be deactivated (or deleted) so ACF does not report the keys as
-  already in use.
+  registers the same keys in PHP at init priority 5. Deactivating (or deleting)
+  those ACF UI entries is the FIRST step of the Phase 3 staging run, in the same
+  session the new theme is activated on staging, or the slugs collide.
 - ACF Extended performance mode ("ultra", single `acf` meta row) is kept on in
   `inc/acf.php` so existing option and post-meta values stay readable; Phase 3
   decides whether to turn it off and convert.
