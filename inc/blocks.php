@@ -55,7 +55,36 @@ add_filter(
 );
 
 /**
- * The editor offers citcom/* blocks plus a small core allow-list.
+ * Core blocks allowed inside citcom/editor and citcom/media-text: the set the
+ * old acfe_block_editor field allowed (plus list-item, column and separator).
+ *
+ * @return string[]
+ */
+function citcom_editor_allowed_blocks(): array {
+	return array(
+		'core/paragraph',
+		'core/heading',
+		'core/list',
+		'core/list-item',
+		'core/quote',
+		'core/image',
+		'core/buttons',
+		'core/button',
+		'core/table',
+		'core/separator',
+		'core/spacer',
+		'core/group',
+		'core/columns',
+		'core/column',
+		'core/media-text',
+		'core/video',
+		'core/embed',
+		'core/shortcode',
+	);
+}
+
+/**
+ * The editor offers citcom/* blocks plus the core allow-list above.
  * Blog posts keep the full core library.
  */
 add_filter(
@@ -64,24 +93,7 @@ add_filter(
 		if ( ! empty( $context->post ) && 'post' === $context->post->post_type ) {
 			return $allowed;
 		}
-
-		$core = array(
-			'core/paragraph',
-			'core/heading',
-			'core/list',
-			'core/list-item',
-			'core/image',
-			'core/buttons',
-			'core/button',
-			'core/table',
-			'core/separator',
-			'core/spacer',
-			'core/group',
-			'core/columns',
-			'core/column',
-		);
-
-		return array_merge( citcom_block_names(), $core );
+		return array_merge( citcom_block_names(), citcom_editor_allowed_blocks() );
 	},
 	10,
 	2

@@ -1,0 +1,37 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/editor",
+	"title": "Editor",
+	"description": "A section of editor content: headings, paragraphs, lists, images, buttons, tables and columns inside the standard container.",
+	"category": "citcom",
+	"icon": "editor-paragraph",
+	"keywords": [ "text", "content", "wysiwyg", "section" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": false,
+		"jsx": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [ "page", "service", "case-study", "landing-page", "template" ],
+		"usePostMeta": false
+	},
+	"style": "file:../../build/blocks/editor/style.css",
+	"example": {
+		"attributes": {
+			"mode": "preview",
+			"data": {}
+		},
+		"innerBlocks": [
+			{ "name": "core/heading", "attributes": { "level": 2, "content": "Heading" } },
+			{ "name": "core/paragraph", "attributes": { "content": "Editor content sits inside the standard container." } }
+		]
+	}
+}
