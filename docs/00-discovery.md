@@ -218,10 +218,13 @@ when diffing against it:
 - The old bundle shipped bootstrap-select, jquery.mousewheel, anchorScroll,
   findOverflows and clusterMap without calling them; they are not ported (see
   `docs/jquery-usage.md`).
-- Compiled assets: `build/` is git-ignored and produced by `npm run build`.
-  Whether Pressable git deploy runs the build or a release commit carries
-  `build/` is still to be decided with the user (see docs/01-phase1-brief.md
-  deliverable 2); nothing deploy-related has been wired.
+- Compiled assets: `build/` is git-ignored and never committed to main. GitHub
+  Actions (`.github/workflows/deploy.yml`) builds on every push to main and
+  force-pushes a single "Build <sha>" commit to the `deploy` branch, laid out as
+  `themes/citcom-rebuild/` (source plus `build/`, without node_modules,
+  .baseline, docs, tools, .github, package files, webpack config, .editorconfig
+  and logs) for Pressable's wp-content git integration. Point the staging site's
+  git deploy at the `deploy` branch; decided 2026-09-28.
 
 ## Still to capture
 
