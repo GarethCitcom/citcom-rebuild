@@ -1,0 +1,40 @@
+{
+  "name": "citcom-rebuild",
+  "version": "2.0.0",
+  "description": "Citcom Rebuild WordPress theme (ACF Blocks)",
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start",
+    "baseline:capture": "node tools/visual-baseline.mjs capture",
+    "baseline:diff": "node tools/visual-baseline.mjs diff",
+    "lint:js": "wp-scripts lint-js src",
+    "lint:css": "wp-scripts lint-style \"src/**/*.scss\" \"blocks/**/*.scss\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GarethCitcom/citcom-rebuild.git"
+  },
+  "author": "Citcom",
+  "license": "GPL-2.0-or-later",
+  "bugs": {
+    "url": "https://github.com/GarethCitcom/citcom-rebuild/issues"
+  },
+  "homepage": "https://github.com/GarethCitcom/citcom-rebuild#readme",
+  "devDependencies": {
+    "@wordpress/scripts": "^36.0.0",
+    "pixelmatch": "^7.2.0",
+    "playwright": "^1.63.0",
+    "pngjs": "^7.0.0",
+    "sass": "^1.105.0",
+    "webpack-remove-empty-scripts": "^1.1.1"
+  },
+  "private": true,
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "aos": "^2.3.4",
+    "bootstrap": "^5.3.3",
+    "lozad": "^1.16.0",
+    "swiper": "^11.2.10",
+    "vlitejs": "^6.0.5"
+  }
+}

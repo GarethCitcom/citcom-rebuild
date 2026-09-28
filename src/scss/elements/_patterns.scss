@@ -1,0 +1,39 @@
+// Pattern SVGs live in assets/img/patterns/ (the grey ones keep their en dash file names).
+.pattern{
+    background-image: url('../../assets/img/patterns/Pattern-grey–opacity.svg');
+    background-size: 11rem;
+    &.pattern-primary{
+        background-image: url('../../assets/img/patterns/Pattern-aubergine.svg');
+    }
+    &.pattern-secondary{
+        background-image: url('../../assets/img/patterns/Pattern-starfruit.svg');
+    }
+    &.pattern-default{
+        background-image: url('../../assets/img/patterns/Pattern-grey.svg');
+    }
+    &.pattern-slate{
+        background-image: url('../../assets/img/patterns/Pattern-slate.svg');
+    }
+    &.pattern-persian{
+        background-image: url('../../assets/img/patterns/Pattern-persian.svg');
+    }
+    &.pattern-carrot{
+        background-image: url('../../assets/img/patterns/Pattern-carrot.svg');
+    }
+    &.pattern-white{
+        background-image: url('../../assets/img/patterns/Pattern-white.svg');
+    }
+    &.pattern-opac{
+        background-image: url('../../assets/img/patterns/Pattern-grey–opacity-3.svg');
+    }
+}
+
+.grad-aubergine{
+    background-image: url('../../assets/img/patterns/Pattern-grey–opacity-3.svg'), linear-gradient(90deg, var(--brand-primary) 0%, var(--brand-slate) 100%);
+}
+.grad-slate{
+    background-image: url('../../assets/img/patterns/Pattern-grey–opacity-3.svg'), linear-gradient(90deg, var(--brand-slate) 0%, var(--brand-persian) 100%);
+}
+.grad-persian{
+    background-image: url('../../assets/img/patterns/Pattern-grey–opacity-9.svg'), linear-gradient(90deg, var(--brand-persian) 0%, var(--brand-secondary) 100%);
+}

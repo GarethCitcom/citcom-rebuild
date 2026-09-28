@@ -1,0 +1,168 @@
+.card{
+    border: none;
+    overflow: hidden;
+    flex-basis: 100%;
+    .card-body{
+        border-radius: var(--bs-border-radius);
+        @include transition(all,0.3s);
+        .btn-tag{
+            position: relative;
+            z-index: 10;
+        }
+        .card-img{
+            &:before{
+                background-color: var(--brand-default);
+            }
+            img{
+                object-fit: cover;
+                transform: scale(1);
+                @include transition(all,0.6s);
+            }
+        }
+        &.stretch-hover,
+        &.card-hover{
+            .card-img img{
+                transform: scale(1.1);
+            }
+            &:active{
+                .card-img img{
+                    transform: scale(1);
+                }
+            }
+        }
+        &.card-default,
+        &.card-light{
+            background-color: var(--brand-default-lighter);
+            &.stretch-hover,
+            &.card-hover{
+                background-color: var(--brand-primary);
+                color: var(--brand-white);
+                .corner-link{
+                    background: var(--brand-primary);
+                    .btn-secondary{
+                        background-color: var(--brand-secondary-lighter);
+                        border-color: var(--brand-secondary-lighter);
+                    }
+                }
+                .default-link{
+                    background: var(--brand-primary-lighter);
+                }
+                .card-title a{
+                    color: var(--brand-white);
+                }
+            }
+            .btn-tag{
+                color: var(--brand-primary)!important;
+            }
+        }
+        &.card-light{
+            background-color: white;
+            .corner-link{
+                background: white;
+            }
+        }
+        &.card-dark{
+            background-color: var(--brand-primary);
+            color: var(--brand-white);
+            .card-title a{
+                color: var(--brand-white);
+            }
+            .corner-link{
+                background: var(--brand-primary);
+            }
+            &.stretch-hover,
+            &.card-hover{
+                background-color: var(--brand-default-lighter);
+                color: var(--brand-primary);
+                .corner-link{
+                    background: var(--brand-default-lighter);
+                    .btn-secondary{
+                        background-color: var(--brand-secondary-lighter);
+                        border-color: var(--brand-secondary-lighter);
+                    }
+                }
+                .card-title a{
+                    color: var(--brand-primary);
+                }
+            }
+        }
+    }
+    .card-body{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: var(--bs-card-spacer-y);
+        .card-img{
+            overflow: hidden;
+        }
+    }
+    &.blog-horizontal-card{
+        .card-body{
+            flex-direction: row-reverse;
+            flex-wrap: nowrap;
+            .card-img{
+                width: 165%;
+            }
+            .card-text{
+                align-self: stretch;
+            }
+        }
+    }
+    .card-text{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .card-title{
+        margin-bottom: 0;
+        a{
+            text-decoration: none;
+            &:before{
+                display: none;
+            }
+        }
+    }
+    .card-excerpt{
+        font-size: 0.8rem;
+        line-height: 1rem;
+        margin-bottom: 0;
+    }
+    .corner-link{
+        position: absolute;
+        z-index: 2;
+        top: -0.03rem;
+        right: -0.1rem;
+        padding: 0.56rem 0.65rem 1.15rem 3.6rem;
+        clip-path: url(#corner-invert);
+        background: var(--brand-default-lighter);
+        @include transition(all,0.3s);
+    }
+}
+
+.citdot-card{
+    height: 100%;
+    &.staff{
+        min-height: 25rem;
+        background: rgb(128,118,138);
+        background: linear-gradient(180deg, rgba(128,118,138,1) 0%, rgba(239,241,243,1) 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        .profile-info{
+            position: relative;
+            z-index: 1;
+            background: var(--brand-persian);
+            color: $white;
+            padding: 1rem 2rem 1.75rem;
+            .description{
+                display: none;
+            }
+        }
+    }
+    &.value{
+        h2,h3,h4{
+            color: var(--brand-secondary);
+        }
+    }
+}

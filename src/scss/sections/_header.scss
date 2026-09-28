@@ -1,0 +1,342 @@
+html {
+    --header-height: 100px;
+}
+
+$hh: 74px;
+$hh_shrink: 58px;
+$hh_sm: 88px;
+$hh_sm_shrink: 58px;
+$hh_lg: 104px;
+$hh_lg_shrink: 62px;
+$hh_xl: 118px;
+$hh_xl_shrink: 70px;
+$hh_sl: 146px;
+$hh_sl_shrink: 84px;
+
+.header-fixer,
+header.citcom-header{
+    height: $hh;
+    &.shrink{
+        height: $hh_shrink;
+    }
+    @include media-breakpoint-up(sm) {
+        height: $hh_sm;
+        &.shrink{
+            height: $hh_sm_shrink;
+        }
+    }
+    @include media-breakpoint-up(lg) {
+        height: $hh_lg;
+        &.shrink{
+            height: $hh_lg_shrink;
+        }
+    }
+    @include media-breakpoint-up(xl) {
+        height: $hh_xl;
+        &.shrink{
+            height: $hh_xl_shrink;
+        }
+    }
+    @include media-breakpoint-up(sl) {
+        height: $hh_sl;
+        &.shrink{
+            height: $hh_sl_shrink;
+        }
+    }
+}
+
+.header-fixer{
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: var(--brand-default-lighter);
+    width: 100%;
+}
+
+header.citcom-header{
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem 2rem;
+    @include transition(all,0.6s);
+    @include media-breakpoint-down(lg) {
+        padding: 1.5rem 1rem;
+    }
+    @include media-breakpoint-down(sm) {
+        padding: 1rem 0rem;
+    }
+
+    &.shrink{
+        padding: 0.5rem 2rem;
+        @include media-breakpoint-down(lg) {
+            padding: 0.5rem 1rem;
+        }
+        @include media-breakpoint-down(sm) {
+            padding: 0.5rem 0rem;
+        }
+    }
+
+    .container-fluid{
+        max-width: 1840px;
+    }
+
+    .header-logo{
+        padding: .5757rem 1rem;
+        @include transition(all,0.3s);
+        @include media-breakpoint-down(sm) {
+            padding-left: 0;
+        }
+        svg{
+            width: 100%;
+            height: 100%;
+            max-width: 12rem;
+        }
+    }
+
+    .citcom-nav{
+        position: relative;
+        max-width: 690px;
+        #primary-menu{
+            #header-nav{
+                position: relative;
+                z-index: 2;
+                .nav-item{
+                    position: relative;
+                    .nav-link-lg{
+                        padding-top: calc(0.75rem + 2px);
+                        padding-bottom: 0.75rem;
+                    }
+                    .nav-link{
+                        @include forma(regular);
+                        &.temp-active{
+                            background: var(--brand-secondary);
+                        }
+                        border: 1px dashed transparent;
+                        &:focus{
+                            box-shadow: none;
+                            border: 1px dashed var(--brand-secondary-darker);
+                        }
+                        &:active{
+                            background: var(--brand-secondary-darker);
+                            color: var(--brand-white);
+                        }
+                    }
+                    &.citcom-dropdown{
+                        .citcom-dropdown-menu-container{
+                            height: 0;
+                            opacity: 0;
+                            display: none;
+
+                            position: absolute;
+                            z-index: 100;
+                            min-width: 100%;
+                            left: 50%;
+                            transform: translateX(-50%);
+
+                            .citcom-dropdown-menu.d0{
+                                .citcom-dropdown-item{
+                                    background: var(--brand-default);
+                                    border-color: var(--brand-default);
+                                    width: 100%;
+                                    min-width: max-content;
+                                    font-size: 0.875rem;
+                                    @include forma(regular);
+                                    &:hover{
+                                        background: var(--brand-secondary);
+                                        border-color: var(--brand-secondary);
+                                    }
+                                    &:focus{
+                                        box-shadow: none;
+                                        border: 1px dashed var(--brand-secondary-darker);
+                                    }
+                                    &:active{
+                                        background: var(--brand-secondary-darker);
+                                        border-color: var(--brand-secondary-darker);
+                                    }
+                                    &.current_page_item{
+                                        background: var(--brand-slate);
+                                        border-color: var(--brand-slate);
+                                        color: $light;
+                                        &:focus{
+                                            box-shadow: none;
+                                            border: 1px dashed var(--brand-white);
+                                        }
+                                    }
+                                }
+                            }
+
+                            &.show{
+                                height: auto;
+                                opacity: 1;
+                                display: block;
+                                .citcom-dropdown-menu.d0{
+                                    .citcom-dropdown-item{
+                                        animation: navGrowItem .3s cubic-bezier(0.25, 1, 0.5, 1);
+                                        animation-fill-mode: both;
+                                        @for $i from 1 through 10 {
+                                            &:nth-child(#{$i}n) {
+                                                animation-delay: #{$i * 0.1}s;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .mob-slide,
+                .mob-slide-return{
+                    display: none;
+                }
+            }
+        }
+        .citcom-nav-pill{
+            position: absolute;
+            top: 0;
+            left: -50px;
+            z-index: 1;
+            background: var(--brand-secondary);
+            height: 100%;
+            width: 0px;
+            opacity: 0;
+            @extend .rounded-pill;
+            &.animate{
+                @include transition(all,0.3s);
+            }
+        }
+    }
+
+}
+
+@keyframes navGrowItem {
+    0% {
+        opacity: 0;
+        margin-top: -2rem;
+        transform: scale(.1);
+    }
+
+    85% {
+        opacity: 1;
+        margin-top: 0;
+        transform: scale(1.05);
+    }
+    100% {
+        margin-top: 0;
+        transform: scale(1);
+    }
+}
+
+.offcanvas{
+    .offcanvas-header{
+        .offcanvas-title{
+            width: 9rem;
+            height: auto;
+        }
+    }
+    #primary-mobile-menu{
+        .nav-item{
+            padding: 0.5rem 0rem;
+            .nav-link{
+                font-size: 1.4rem;
+                background: var(--brand-default);
+                border: 1px solid var(--brand-default);
+                @include forma(regular);
+                @include transition(all,0.3s);
+                &:hover{
+                    background-color: var(--brand-secondary);
+                    border-color: var(--brand-secondary);
+                }
+                &:active{
+                    color: var(--brand-white);
+                    background-color: var(--brand-secondary-darker);
+                    border-color: var(--brand-secondary-darker);
+                }
+            }
+            &.active{
+                > .nav-link{
+                    color: var(--brand-white);
+                    background-color: var(--brand-primary);
+                    border-color: var(--brand-primary);
+                }
+            }
+            .mob-slide{
+                aspect-ratio: 1;
+                font-size: 1.4rem;
+                border: 1px solid var(--brand-default);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                @include transition(all,0.3s);
+                &:hover{
+                    background-color: var(--brand-default);
+                    border-color: var(--brand-default);
+                }
+                &:active{
+                    color: var(--brand-white);
+                    background-color: var(--brand-default-darker);
+                    border-color: var(--brand-default-darker);
+                }
+            }
+            &.citcom-dropdown{
+                display: flex;
+                gap: 0.5rem;
+                .citcom-nav-link{
+                    flex-grow: 1;
+                }
+                .citcom-dropdown-menu-container{
+                    display: none;
+                    position: absolute;
+                    width: 100%;
+                    top: -0.4rem;
+                    left: calc(100% + var(--bs-offcanvas-padding-x));
+                    .nav-link{
+                        text-align: left;
+                        box-shadow: none!important;
+                        @include forma(regular);
+                        &:focus{
+                            box-shadow: none;
+                            border: 1px dashed var(--brand-primary);
+                        }
+                        &.current_page_item{
+                            background: var(--brand-slate);
+                            border-color: var(--brand-slate);
+                            color: $light;
+                            &:focus{
+                                border: 1px dashed var(--brand-white);
+                            }
+                        }
+                    }
+                }
+            }
+            &.current_page_parent{
+                .mob-slide{
+                    border: 1px solid var(--brand-primary);
+                }
+            }
+        }
+        #mobile-nav{
+            position: relative;
+            left: 0;
+            @include transition(left,0.6s);
+            &.slide-open{
+                left: calc(-100% - var(--bs-offcanvas-padding-x));
+            }
+            .mob-slide-return{
+                &.nav-link{
+                    background: var(--brand-white);
+                    aspect-ratio: 1;
+                    font-size: 1.4rem;
+                    border: 1px solid var(--brand-default);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 3.25rem;
+                    width: 3.25rem;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,110 @@
+// vlite player skin (was elements/videoJS.scss).
+.citdot .v-controlBar{
+    padding-left: 10rem;
+    padding-right: 10rem;
+    @include media-breakpoint-down(lg) {
+        padding-left: 7rem;
+        padding-right: 7rem;
+    }
+    @include media-breakpoint-down(md) {
+        padding-left: 5rem;
+        padding-right: 5rem;
+    }
+    @include media-breakpoint-down(sm) {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+}
+
+.v-vlite{
+    --vlite-colorPrimary: var(--brand-secondary);
+}
+
+.v-vlite-container{
+    aspect-ratio: 16 / 9;
+}
+
+.v-bigPlay{
+    width: 8rem;
+    height: 8rem;
+    background: var(--brand-secondary);
+    border-radius: 50%;
+    padding: 0.5rem;
+    opacity: 1;
+    @include transition(all,0.3s);
+    @extend .shadow-lg;
+    @include media-breakpoint-down(lg) {
+        width: 8rem;
+        height: 8rem;
+        padding: 0.5rem;
+    }
+    @include media-breakpoint-down(sm) {
+        width: 5.5rem;
+        height: 5.5rem;
+        padding: 0.35rem;
+    }
+}
+.v-video{
+    &:hover{
+        .v-bigPlay{
+            background: var(--brand-slate);
+        }
+    }
+}
+
+.v-vlite-lazy{
+    position: relative;
+    &:before{
+        content: url(../../assets/img/loading-citcom.svg);
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--brand-default);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+        @include transition(opacity,0.3s);
+    }
+    video,iframe{
+        display: none;
+    }
+    &.v-vlite-lazy-loaded{
+        &:before{
+            content: "";
+            opacity: 0;
+        }
+    }
+}
+
+.btn-volume{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    color: $dark_grey!important;
+    opacity: 0;
+    @include transition(all,0.3s);
+    &.active{
+        opacity: 1;
+    }
+    &.unmute{
+        .fa-volume{
+            display: none;
+        }
+    }
+    &.mute{
+        .fa-volume-slash{
+            display: none;
+        }
+    }
+    &:hover{
+        color: $secondary!important;
+    }
+    &:active{
+        color: $primary!important;
+    }
+}
