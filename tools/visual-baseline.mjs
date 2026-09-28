@@ -7,6 +7,9 @@
  *   node tools/visual-baseline.mjs capture --base http://citcom-rebuild.test --out .baseline/new
  *   node tools/visual-baseline.mjs diff --a .baseline/old --b .baseline/new --out .baseline/diff [--threshold 0.001]
  *
+ * Options for capture: --insecure (accept the Laragon self-signed certificate),
+ * --only slug1,slug2 (capture only URLs whose path contains one of these).
+ *
  * Reads docs/urls.csv (type,path). Captures full-page PNGs at desktop (1440)
  * and mobile (390) with animations, AOS, lozad lazy-load and carousels
  * neutralised so screenshots are deterministic. Requires: npm i -D playwright pixelmatch pngjs
@@ -39,11 +42,12 @@ async function capture() {
   const out = args.out || '.baseline/capture';
   if (!base) throw new Error('--base is required');
   fs.mkdirSync(out, { recursive: true });
-  const urls = readUrls();
+  const only = args.only ? String(args.only).split(',').filter(Boolean) : [];
+  const urls = readUrls().filter(u => !only.length || only.some(o => u.path.includes(o)));
   const browser = await chromium.launch();
   const manifest = [];
   for (const [vpName, vp] of Object.entries(VIEWPORTS)) {
-    const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: !!vp.isMobile, deviceScaleFactor: vp.deviceScaleFactor || 1, reducedMotion: 'reduce' });
+    const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: !!vp.isMobile, deviceScaleFactor: vp.deviceScaleFactor || 1, reducedMotion: 'reduce', ignoreHTTPSErrors: !!args.insecure });
     await ctx.addInitScript(() => { window.__frozen = true; });
     const page = await ctx.newPage();
     for (const u of urls) {

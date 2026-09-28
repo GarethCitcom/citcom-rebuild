@@ -171,9 +171,68 @@ header is duplicated or guarded before assuming that markup as the baseline.
 - Note: the current home page is the Diner landing page (post 219996,
   "Home — Diner"); the regular home is `/home/`.
 
-## Still to capture in Phase 0
+## Baseline capture result (2026-09-28)
 
-- Lighthouse / Query Monitor baseline on 5 representative pages.
+Captured from staging before any theme change: 246 shots (123 URLs at desktop
+and mobile), no failures, only the deliberate 404 page returned 404. Stored in
+`.baseline/old/` (562 MB, git-ignored) with `manifest.json`. Two things to know
+when diffing against it:
+
+- Font Awesome icons did not render in the staging shots (footer contact and
+  social icons appear as list bullets and empty boxes). The kit at
+  kit.fontawesome.com/4a7ba1b0a5.js is either domain-restricted to citcom.co.uk
+  or too slow for the capture. Icon areas will always differ until the kit
+  allows the staging host, or the diff ignores them. Check the kit's allowed
+  domains before Phase 3 comparisons.
+- The tool now takes `--insecure` (Laragon's self-signed certificate) and
+  `--only slug,slug` (subset of urls.csv) for local captures.
+
+## Findings added in Phase 1
+
+- The templates nested `<main>` twice (page.php and flexible-acf.php both open
+  one; get_header/get_footer are require_once so the header is not duplicated).
+  The new theme outputs one `<main>`; the only selector that depended on the
+  nesting (`body > main > main` for the modal blur) is now `body > main`.
+- `focuspoint` and `swatch` are NOT ACF Extended field types. They are
+  mu-plugins on the Pressable sites: `acf-focuspoint-master`
+  (ooksanen/acf-focuspoint 1.2.0) and `acf-swatch-master`
+  (nickforddev/acf-swatch 1.0.7). They stay in `wp-content/mu-plugins` on
+  staging and live, so the new field JSON keeps those types; local installs
+  need the same two plugins (installed locally under `wp-content/mu-plugins/`
+  with a small loader, outside this repo).
+- The ACF UI post types, taxonomy and options page live in the database as
+  `acf-post-type`, `acf-taxonomy` and `acf-ui-options-page` posts. The theme
+  registers the same keys in PHP at init priority 5; at cutover those ACF UI
+  entries must be deactivated (or deleted) so ACF does not report the keys as
+  already in use.
+- ACF Extended performance mode ("ultra", single `acf` meta row) is kept on in
+  `inc/acf.php` so existing option and post-meta values stay readable; Phase 3
+  decides whether to turn it off and convert.
+- `page_header` tested `$data['type'] == 'service'` but the field stores
+  `services`, so the `service-{name}` class never rendered. The block keeps
+  that behaviour (with a comment) because the baseline was captured with it.
+- Blog posts link to `/blog/{category}/{slug}` via a `post_link` filter and
+  custom rewrite rules, while the permalink structure is
+  `/%category%/%postname%/` with category base `blog-category`; both URL forms
+  resolve on staging. Ported as is in `inc/setup.php`.
+- The old bundle shipped bootstrap-select, jquery.mousewheel, anchorScroll,
+  findOverflows and clusterMap without calling them; they are not ported (see
+  `docs/jquery-usage.md`).
+- Compiled assets: `build/` is git-ignored and produced by `npm run build`.
+  Whether Pressable git deploy runs the build or a release commit carries
+  `build/` is still to be decided with the user (see docs/01-phase1-brief.md
+  deliverable 2); nothing deploy-related has been wired.
+
+## Still to capture
+
+- Lighthouse / Query Monitor baseline on 5 representative pages (not done).
 - List of shortcodes used by the `shortcode` layout (17 rows) and which
-  plugins provide them.
-- Decision on the `template` post type (6 items).
+  plugins provide them (not done; the theme's own `google_reviews`,
+  `youtube_gallery` and `chatcom` shortcodes are already ported in
+  `inc/shortcodes.php`). Read them from the `acfAllObjects_{id}` option rows on
+  staging when the Phase 3 migration script first parses that data.
+- Decision on the `template` post type (6 items): it must stay for now, because
+  archive.php and single.php render the template posts chosen in Site Settings
+  > Templates (case study archive, services archive, tag archives, blog post
+  footer). Revisit once those templates are blocks.
+- Font Awesome kit allowed domains (see the baseline note above).
