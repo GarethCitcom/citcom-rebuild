@@ -218,7 +218,11 @@ function citcom_fixture_page_header( array $fields ): string {
 		'_bg-color'             => 'field_66f9b53ba42ae',
 		'pattern'               => 'persian',
 		'_pattern'              => 'field_66f9a9d0a42ad',
-		'header_image'          => '',
+		'header_image'          => array(
+			'id'   => '',
+			'top'  => '',
+			'left' => '',
+		),
 		'_header_image'         => 'field_66f9a98fa42ab',
 		'breadcrumb'            => '0',
 		'_breadcrumb'           => 'field_6707d4f898015',
@@ -365,7 +369,12 @@ function citcom_fixture_about_sections(): array {
 					'_image'         => 'field_66fabf2e203c6',
 					'image_1_scale'  => (string) ( (int) ( $section['image']['scale'] ?? 100 ) ),
 					'_image_1_scale' => 'field_66fae40b102da',
-					'image_2'        => '',
+					// FocusPoint expects an array even when empty; a string makes its validate_value() fatal in the editor.
+					'image_2'        => array(
+						'id'   => '',
+						'top'  => '',
+						'left' => '',
+					),
 					'_image_2'       => 'field_66fac4a83b6df',
 					'image_2_scale'  => '100',
 					'_image_2_scale' => 'field_66fae451102db',
