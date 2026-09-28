@@ -1,0 +1,55 @@
+[
+  {
+    "index": 0,
+    "layout": "page_header",
+    "classes": "section-padding flex-page_header type-image d-flex align-items-center position-relative"
+  },
+  {
+    "index": 1,
+    "layout": "editor",
+    "classes": "section-padding flex-editor pb-0",
+    "content": "<h2 class=\"wp-block-heading\">History</h2>\r\n\r\n\r\n\r\n<p class=\"wp-block-paragraph\">Established in 1987 by three Kidderminster College tutors with a passion for innovation, Citizen Communication quickly made its mark. Two of the founders had even designed the first HND course at the college, and they were eager to put their teaching into practice. </p>\r\n\r\n\r\n\r\n<p class=\"wp-block-paragraph\">From their first office on Greatfield Road, they secured a pivotal contract creating training videos for the Dixons group, which propelled them forward. Over the years, Citizen Communication built a strong reputation for excellence, working with major clients like EE/BT through their various iterations, and expanding its services to include design and digital solutions. </p>\r\n\r\n\r\n\r\n<p class=\"wp-block-paragraph\">A key milestone was bringing Martin Leonard on board as a designer 26 years ago, establishing the company&#8217;s in-house design studio and shaping its creative direction. </p>\r\n\r\n\r\n\r\n<p class=\"wp-block-paragraph\">Martin, now CEO of CitCom, has played an integral role in the company&#8217;s growth and evolution. This continued with the formation of a dedicated digital team in 2004, and a strategic focus on marketing in recent years. </p>\r\n\r\n\r\n\r\n<p class=\"wp-block-paragraph\">Now, with its rebrand to CitCom, the company is embracing the future of digital communication, including AI-powered solutions, to better serve its clients.</p>"
+  },
+  {
+    "index": 2,
+    "layout": "editor",
+    "classes": "section-padding flex-editor bg-white pt-0",
+    "content": "<figure class=\"wp-block-image aligncenter size-full d-none d-md-block\"><img loading=\"lazy\" decoding=\"async\" width=\"1475\" height=\"340\" src=\"https://spcdn.shortpixel.ai/spio/ret_img+q_cdnize+to_auto+s_webp:avif/citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/citizen-timeline-horizontal.png\" alt=\"Citizen Timeline Horizontal\" class=\"wp-image-217951\" srcset=\"https://spcdn.shortpixel.ai/spio/ret_img+q_cdnize+to_auto+s_webp:avif/citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/citizen-timeline-horizontal.png 1475w, https://spcdn.shortpixel.ai/spio/ret_img+q_cdnize+to_auto+s_webp:avif/citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/citizen-timeline-horizontal-300x69.png 300w, https://spcdn.shortpixel.ai/spio/ret_img+q_cdnize+to_auto+s_webp:avif/citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/citizen-timeline-horizontal-1024x236.png 1024w, https://spcdn.shortpixel.ai/spio/ret_img+q_cdnize+to_auto+s_webp:avif/citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/citizen-timeline-horizontal-768x177.png 768w, https://spcdn.shortpixel.ai/spio/ret_img+q_cdnize+to_auto+s_webp:avif/citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/citizen-timeline-horizontal-100x23.png 100w, https://spcdn.shortpixel.ai/spio/ret_img+q_cdnize+to_auto+s_webp:avif/citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/citizen-timeline-horizontal-1400x323.png 1400w\" sizes=\"auto, (max-width: 1475px) 100vw, 1475px\" /></figure>\r\n\r\n\r\n\r\n<figure class=\"wp-block-image aligncenter size-full d-md-none\"><img loading=\"lazy\" decoding=\"async\" width=\"574\" height=\"975\" src=\"https://spcdn.shortpixel.ai/spio/ret_img+q_cdnize+to_auto+s_webp:avif/citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/citizen-timeline-vertical.png\" alt=\"Citizen Timeline Vertical\" class=\"wp-image-217950\" srcset=\"https://spcdn.shortpixel.ai/spio/ret_img+q_cdnize+to_auto+s_webp:avif/citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/citizen-timeline-vertical.png 574w, https://spcdn.shortpixel.ai/spio/ret_img+q_cdnize+to_auto+s_webp:avif/citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/citizen-timeline-vertical-177x300.png 177w, https://spcdn.shortpixel.ai/spio/ret_img+q_cdnize+to_auto+s_webp:avif/citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/citizen-timeline-vertical-59x100.png 59w\" sizes=\"auto, (max-width: 574px) 100vw, 574px\" /></figure>"
+  },
+  {
+    "index": 3,
+    "layout": "editor",
+    "classes": "section-padding flex-editor pb-0",
+    "content": "<h2 class=\"wp-block-heading\">Who We Are</h2>\r\n\r\n\r\n\r\n<p class=\"wp-block-paragraph\">CitCom is a full-service marketing and creative agency based in the heart of Kidderminster, Worcestershire. Established in 1987 as Citizen Communication Media Ltd, we&#8217;ve been helping businesses of all sizes achieve their marketing goals for over three decades. In 2024, we rebranded as CitCom, marking a new chapter in our journey while staying true to our core values of speed, agility, customer focus, and delivering exceptional results.</p>"
+  },
+  {
+    "index": 4,
+    "layout": "media_text",
+    "classes": "section-padding flex-media_text position-relative d-flex align-items-center media_right",
+    "content": "<p class=\"wp-block-paragraph\"><strong>What We Do</strong></p>\r\n\r\n\r\n\r\n<p class=\"wp-block-paragraph\">We offer a comprehensive range of services designed to elevate your brand and drive business growth. Our expertise spans digital marketing (<a href=\"/services/marketing/seo/\">SEO</a>, <a href=\"/services/marketing/ppc/\">PPC</a>, <a href=\"/services/marketing/social-media/\">social media</a>), creative campaigns, web development, video production, print solutions, traditional marketing tactics, and much more. Whether you&#8217;re looking to enhance your online presence, launch a new product, or revitalise your brand, our team of experts will collaborate with you to deliver impactful solutions that achieve your objectives.</p>",
+    "image": {
+      "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/01/Image_20251211_152817_568-scaled.jpeg",
+      "position": "47.79% 56.15%",
+      "scale": "100%",
+      "alt": "Image 20251211 152817 568"
+    },
+    "align": "media_right",
+    "extra_padding": false,
+    "citdot": true
+  },
+  {
+    "index": 5,
+    "layout": "media_text",
+    "classes": "section-padding flex-media_text position-relative d-flex align-items-center section-extra-padding media_left",
+    "content": "<p class=\"wp-block-paragraph\"><strong>Our Location</strong></p>\r\n\r\n\r\n\r\n<p class=\"wp-block-paragraph\">We&#8217;re proud to be based in Kidderminster, Worcestershire, serving businesses both locally and across the globe. Our central location provides easy access to a diverse range of clients, and we&#8217;re committed to supporting the growth and prosperity of our local community.</p>\r\n\r\n\r\n\r\n<p class=\"wp-block-paragraph\"><strong>Our Promise</strong></p>\r\n\r\n\r\n\r\n<p class=\"wp-block-paragraph\">At CitCom, we&#8217;re more than just an agency – we&#8217;re your trusted partner in achieving your marketing goals. We&#8217;re committed to delivering exceptional service, innovative solutions, and measurable results that help you elevate your brand and drive business success.</p>",
+    "image": {
+      "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/05/IMG_3959-scaled.jpg",
+      "position": "50% 50%",
+      "scale": "100%",
+      "alt": "Img 3959"
+    },
+    "align": "media_left",
+    "extra_padding": true,
+    "citdot": true
+  }
+]

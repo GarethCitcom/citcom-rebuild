@@ -247,6 +247,151 @@ function citcom_fixture_page_header( array $fields ): string {
 	return '<!-- wp:citcom/page-header ' . wp_json_encode( $block, JSON_UNESCAPED_SLASHES ) . ' /-->';
 }
 
+/**
+ * Section settings block data from the old section's class list.
+ *
+ * @param string $classes The <section> class attribute from staging.
+ * @return array<string,string>
+ */
+function citcom_fixture_section_settings( string $classes ): array {
+	$hex = array(
+		'primary'         => '#1C0221',
+		'secondary'       => '#9AD14D',
+		'default_darker'  => '#a2a4aa',
+		'default'         => '#D8DBE2',
+		'default_lighter' => '#eff1f3',
+		'slate'           => '#2A4747',
+		'persian'         => '#17A398',
+		'carrot'          => '#F9A03F',
+		'white'           => '#FFFFFF',
+	);
+	$data = array(
+		'section_padding'       => 'default',
+		'_section_padding'      => 'field_6604094e9b92e',
+		'background_colour'     => 'default',
+		'_background_colour'    => 'field_66f9ca9dd01a6',
+		'background_color'      => '#FFFFFF',
+		'_background_color'     => 'field_65f89df411402',
+		'shape_pattern'         => '0',
+		'_shape_pattern'        => 'field_670ac988ea441',
+		'gradient_with_pattern' => 'none',
+		'_gradient_with_pattern' => 'field_670aca45ea442',
+		'text_colour'           => 'default',
+		'_text_colour'          => 'field_66f9cb01b4db8',
+		'text_color'            => '#1C0221',
+		'_text_color'           => 'field_65f89f5b11403',
+		'anchor_name'           => '',
+		'_anchor_name'          => 'field_6616e84d4614e',
+	);
+	foreach ( preg_split( '/\s+/', $classes ) as $class ) {
+		if ( in_array( $class, array( 'pt-0', 'pb-0', 'py-0' ), true ) ) {
+			$data['section_padding'] = $class;
+		} elseif ( preg_match( '/^bg-(\w+)$/', $class, $m ) && isset( $hex[ $m[1] ] ) ) {
+			$data['background_colour'] = 'choose';
+			$data['background_color']  = $hex[ $m[1] ];
+		} elseif ( preg_match( '/^text-(\w+)$/', $class, $m ) && isset( $hex[ $m[1] ] ) ) {
+			$data['text_colour'] = 'choose';
+			$data['text_color']  = $hex[ $m[1] ];
+		} elseif ( 'pattern-opac' === $class ) {
+			$data['background_colour'] = 'choose';
+			$data['shape_pattern']     = '1';
+		} elseif ( preg_match( '/^grad-\w+$/', $class ) ) {
+			$data['background_colour']     = 'choose';
+			$data['gradient_with_pattern'] = $class;
+		}
+	}
+	return $data;
+}
+
+/**
+ * Raw editor HTML from staging as a core/html inner block, with the old
+ * citdotLists() transforms reversed (the block applies them again on render).
+ */
+function citcom_fixture_inner_html( string $html ): string {
+	$html = str_replace( '<li><span class="fa-li"><i class="fa-kit fa-citdot"></i></span>', '<li>', $html );
+	$html = str_replace( '<ul class="fa-ul" style="--fa-li-width: 3rem;">', '<ul class="wp-block-list">', $html );
+	$html = str_replace( 'wp-block-video v-vlite-container', 'wp-block-video', $html );
+	$html = str_replace( 'wp-block-quote is-style-plain grad-persian text-light', 'wp-block-quote is-style-plain', $html );
+	return '<!-- wp:html -->' . trim( $html ) . '<!-- /wp:html -->';
+}
+
+/**
+ * Serialised citcom/editor and citcom/media-text blocks for the staging About
+ * sections in tools/fixtures/about-sections.json (index 1 onwards).
+ *
+ * @return string[]
+ */
+function citcom_fixture_about_sections(): array {
+	$file = __DIR__ . '/fixtures/about-sections.json';
+	if ( ! file_exists( $file ) ) {
+		return array();
+	}
+	$sections = json_decode( (string) file_get_contents( $file ), true ) ?: array();
+	$blocks   = array();
+
+	foreach ( $sections as $section ) {
+		$settings = citcom_fixture_section_settings( $section['classes'] ?? '' );
+		$inner    = citcom_fixture_inner_html( (string) ( $section['content'] ?? '' ) );
+
+		if ( 'editor' === $section['layout'] ) {
+			$attrs    = array(
+				'name' => 'citcom/editor',
+				'data' => $settings,
+				'mode' => 'preview',
+			);
+			$blocks[] = '<!-- wp:citcom/editor ' . wp_json_encode( $attrs, JSON_UNESCAPED_SLASHES ) . ' -->' . $inner . '<!-- /wp:citcom/editor -->';
+		}
+
+		if ( 'media_text' === $section['layout'] ) {
+			$image_id = 0;
+			$left     = '50';
+			$top      = '50';
+			if ( ! empty( $section['image']['url'] ) ) {
+				$image_id = citcom_fixture_sideload( $section['image']['url'], $section['image']['alt'] ?: basename( $section['image']['url'] ) );
+				if ( preg_match( '/([\d.]+)% ([\d.]+)%/', $section['image']['position'] ?? '', $m ) ) {
+					$left = $m[1];
+					$top  = $m[2];
+				}
+			}
+			$data  = array_merge(
+				array(
+					'media_type'     => 'image',
+					'_media_type'    => 'field_66fabf8c203c8',
+					'image'          => array(
+						'id'   => $image_id,
+						'top'  => $top,
+						'left' => $left,
+					),
+					'_image'         => 'field_66fabf2e203c6',
+					'image_1_scale'  => (string) ( (int) ( $section['image']['scale'] ?? 100 ) ),
+					'_image_1_scale' => 'field_66fae40b102da',
+					'image_2'        => '',
+					'_image_2'       => 'field_66fac4a83b6df',
+					'image_2_scale'  => '100',
+					'_image_2_scale' => 'field_66fae451102db',
+					'video'          => '',
+					'_video'         => 'field_66fabf67203c7',
+					'align'          => $section['align'] ?? 'media_left',
+					'_align'         => 'field_66fac1aa255fd',
+					'citdot_style'   => ! empty( $section['citdot'] ) ? '1' : '0',
+					'_citdot_style'  => 'field_66fac5f268ac6',
+					'extra_padding'  => ! empty( $section['extra_padding'] ) ? '1' : '0',
+					'_extra_padding' => 'field_66faf3eedd6a2',
+				),
+				$settings
+			);
+			$attrs = array(
+				'name' => 'citcom/media-text',
+				'data' => $data,
+				'mode' => 'preview',
+			);
+			$blocks[] = '<!-- wp:citcom/media-text ' . wp_json_encode( $attrs, JSON_UNESCAPED_SLASHES ) . ' -->' . $inner . '<!-- /wp:citcom/media-text -->';
+		}
+	}
+
+	return $blocks;
+}
+
 /*
  * 1. Site Settings.
  */
@@ -343,21 +488,29 @@ $contact_id = citcom_fixture_page(
 	) . "\n\n" . $paragraph
 );
 
-$about_id = citcom_fixture_page(
-	'About Us',
-	'about-us',
-	citcom_fixture_page_header(
-		array(
-			'title'        => 'About Us',
-			'type'         => 'image',
-			'header_image' => array(
-				'id'   => $header_image,
-				'top'  => '54.49',
-				'left' => '39.19',
-			),
-		)
-	) . "\n\n" . $paragraph
+/*
+ * About Us reproduces staging sections 0 to 5 (page header, three editor sections,
+ * two media_text sections) from tools/fixtures/about-sections.json, extracted from
+ * the staging HTML. Editor content is kept as raw HTML in a core/html inner block
+ * so the comparison tests the section blocks, not a content conversion.
+ */
+$about_content = citcom_fixture_page_header(
+	array(
+		'title'        => 'About Us',
+		'type'         => 'image',
+		'header_image' => array(
+			'id'   => $header_image,
+			'top'  => '54.49',
+			'left' => '39.19',
+		),
+	)
 );
+
+foreach ( citcom_fixture_about_sections() as $section ) {
+	$about_content .= "\n\n" . $section;
+}
+
+$about_id = citcom_fixture_page( 'About Us', 'about-us', $about_content );
 
 /*
  * 3. Menus (custom links mirror the staging structure).
