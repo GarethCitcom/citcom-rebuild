@@ -221,7 +221,7 @@ when diffing against it:
 - Compiled assets: `build/` is git-ignored and never committed to main. GitHub
   Actions (`.github/workflows/deploy.yml`) builds on every push to main and
   force-pushes a single "Build <sha>" commit to the `deploy` branch, laid out as
-  `themes/citcom-rebuild/` (source plus `build/`, without node_modules,
+  `wp-content/themes/citcom-rebuild/` (source plus `build/`, without node_modules,
   .baseline, docs, tools, .github, package files, webpack config, .editorconfig
   and logs) for Pressable's wp-content git integration. Point the staging site's
   git deploy at the `deploy` branch; decided 2026-09-28.
