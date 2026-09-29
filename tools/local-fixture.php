@@ -308,8 +308,8 @@ function citcom_fixture_section_settings( string $classes ): array {
 			$data['text_colour'] = 'choose';
 			$data['text_color']  = $hex[ $m[1] ];
 		} elseif ( 'pattern-opac' === $class ) {
-			$data['background_colour'] = 'choose';
-			$data['shape_pattern']     = '1';
+			// The pattern prints whatever the background choice is.
+			$data['shape_pattern'] = '1';
 		} elseif ( preg_match( '/^grad-\w+$/', $class ) ) {
 			$data['background_colour']     = 'choose';
 			$data['gradient_with_pattern'] = $class;
@@ -553,6 +553,11 @@ function citcom_fixture_extra_sections(): string {
 	return $blocks ? "\n\n" . implode( "\n\n", $blocks ) : '';
 }
 
+// tools/local-fixture-phase2.php loads this file for its helpers only.
+if ( defined( 'CITCOM_FIXTURE_HELPERS_ONLY' ) ) {
+	return;
+}
+
 /*
  * 1. Site Settings.
  */
@@ -621,7 +626,7 @@ update_field(
 			'icon' => 'fa-classic fa-brands fa-google',
 			'link' => array(
 				'title'  => 'Google Reviews',
-				'url'    => 'https://www.google.com/search?q=Citizen+Communication+Media+Ltd',
+				'url'    => 'https://www.google.com/search?hl=en-GB&gl=uk&q=Unit+7,+Citizen+Communication+Media+Ltd,+The+Towers,+Foley+Ave,+Kidderminster+DY11+7PG&ludocid=9143535994607492498&lsig=AB86z5Upx0kA50h1eZ_aums-f9fQ#lrd=0x4870927e780c8ed7:0x7ee45d8ae593dd92,1,,,,',
 				'target' => '_blank',
 			),
 		),

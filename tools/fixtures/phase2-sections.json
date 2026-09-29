@@ -1,0 +1,580 @@
+{
+    "citdot_cards": {
+        "classes": "section-padding flex-citdot_cards bg-white",
+        "cards": [
+            {
+                "style": "staff",
+                "name": "Martin Leonard",
+                "job_title": "CEO",
+                "linkedin": "https://www.linkedin.com/in/martin-leonard-0641b3189/",
+                "description": "Dobermanns have been my passion for over 40 years, Aston Villa for over 50 Years!!! Perfect night out is a curry and a pint.",
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/11/Martin_website-25.jpg",
+                    "alt": "Martin Website 25",
+                    "left": "50",
+                    "top": "50"
+                }
+            },
+            {
+                "style": "staff",
+                "name": "Kate Leonard",
+                "job_title": "Managing Director",
+                "linkedin": "https://www.linkedin.com/in/kate-leonard-588a7894/",
+                "description": "Passionate about the theatre and an aficionado of décor, I like to think of my life as a stage - where every room tells a story and every visit to the theatre inspires a new scene!",
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/11/Kate_website-25.jpg",
+                    "alt": "Kate Website 25",
+                    "left": "50",
+                    "top": "50"
+                }
+            },
+            {
+                "style": "staff",
+                "name": "Gareth Hale",
+                "job_title": "Director of Development",
+                "linkedin": "https://www.linkedin.com/in/gareth-hale-38826293/",
+                "description": "Loves anything sci-fi, knows all the Marvel characters and enjoys exploring the outdoors with his children.",
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/11/Gaz_website-25.jpg",
+                    "alt": "Gaz Website 25",
+                    "left": "50",
+                    "top": "50"
+                }
+            },
+            {
+                "style": "staff",
+                "name": "Emily Hyde",
+                "job_title": "Head of Marketing",
+                "linkedin": "https://www.linkedin.com/in/emilyclairehyde/",
+                "description": "Currently on maternity leave enjoying the magic of motherhood. Fuelled by tea and biscuits. If she's not with the baby, she's more than likely golfing.",
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/11/Emily_website-25.jpg",
+                    "alt": "Emily Website 25",
+                    "left": "50",
+                    "top": "50"
+                }
+            },
+            {
+                "style": "staff",
+                "name": "Sophie Hughes",
+                "job_title": "Senior Client Relationship Manager",
+                "linkedin": "https://www.linkedin.com/in/sophie-hughes-2030b9133/",
+                "description": "Loves a good true-crime documentary binge, has a talent for online shopping, and never misses the latest Kardashian drama.",
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/11/Soph_website-25.jpg",
+                    "alt": "Soph Website 25",
+                    "left": "50",
+                    "top": "50"
+                }
+            },
+            {
+                "style": "staff",
+                "name": "Hope Whitehouse",
+                "job_title": "Senior Creative Designer",
+                "linkedin": "https://www.linkedin.com/in/hope-whitehouse-133334231/",
+                "description": "Passionate about movies, she spends her time cooking, painting and watching the F1, with Mia the cat.",
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/11/Hope_website-25.jpg",
+                    "alt": "Hope Website 25",
+                    "left": "50",
+                    "top": "50"
+                }
+            },
+            {
+                "style": "staff",
+                "name": "Daisy Nardella",
+                "job_title": "Junior Web Developer",
+                "linkedin": "https://www.linkedin.com/in/daisy-nardella-4697b3128/",
+                "description": "Travel and food lover collecting books, festival tickets and snapshots of cute animals she befriends. Always up for LOTR marathons, craft beer and archery.",
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/11/Daisy_website-25.jpg",
+                    "alt": "Daisy Website 25",
+                    "left": "50",
+                    "top": "50"
+                }
+            },
+            {
+                "style": "staff",
+                "name": "Jenna Wells",
+                "job_title": "Client Relationship Executive",
+                "linkedin": "https://www.linkedin.com/in/jenna-m-wells/",
+                "description": "Whether she’s holding her baby niece/nephew or the occasional passion fruit martini, she dances through life (literally); balancing family time, dance classes, and gym sessions.",
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/11/Jenna_website-25.jpg",
+                    "alt": "Jenna Website 25",
+                    "left": "50",
+                    "top": "50"
+                }
+            },
+            {
+                "style": "staff",
+                "name": "Stef Graham & Minya",
+                "job_title": "Print Managers",
+                "linkedin": "https://www.linkedin.com/in/stefan-graham-39841451/",
+                "description": "Over 20 years experience in print and production. Even longer in watching films and talking nonsense.",
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/11/Stef_website-25.jpg",
+                    "alt": "Stef Website 25",
+                    "left": "50",
+                    "top": "50"
+                }
+            }
+        ]
+    },
+    "swiper_about-1": {
+        "classes": "section-padding fluid flex-swiper bg-default_lighter",
+        "attrs": "data-center=\"false\" data-loop=\"true\" data-autoplay=\"true\" data-delay=\"0\" data-speed=\"10000\" data-reversedirection=\"true\"",
+        "cols": "col-6 col-md-6 col-lg-3 col-xl-2",
+        "images": [
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/ee-1.png",
+                "alt": "Ee"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/europcar-1.png",
+                "alt": "Europcar"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/ccs-insights-1.png",
+                "alt": "Ccs Insights"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/ebbon-group-1.png",
+                "alt": "Ebbon Group"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/bt-1.png",
+                "alt": "Bt"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/europcar-mobility-group.png",
+                "alt": "Europcar Mobility Group"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/serco-1.png",
+                "alt": "Serco"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/10/bt.png",
+                "alt": "Bt"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/10/ccs-insights.png",
+                "alt": "Ccs Insights"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/10/serco.png",
+                "alt": "Serco"
+            }
+        ]
+    },
+    "swiper_about-2": {
+        "classes": "section-padding fluid flex-swiper bg-default_lighter",
+        "attrs": "data-center=\"false\" data-loop=\"true\" data-autoplay=\"true\" data-delay=\"0\" data-speed=\"10000\" data-reversedirection=\"false\"",
+        "cols": "col-6 col-md-6 col-lg-3 col-xl-2",
+        "images": [
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Wyre-forest-district-council-1.png",
+                "alt": "Wyre Forest District Council"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Worcestershire-county-council-1.png",
+                "alt": "Worcestershire County Council"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/mark-solomos-1.png",
+                "alt": "Mark Solomos"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/davis-1.png",
+                "alt": "Davis"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/10/Screen-print-world-grey.png",
+                "alt": "Screen Print World Grey"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Wyre-forest-district-council-1-1.png",
+                "alt": "Wyre Forest District Council 1"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Worcestershire-county-council-1-1.png",
+                "alt": "Worcestershire County Council 1"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/mark-solomos-1-1.png",
+                "alt": "Mark Solomos 1"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/davis-1-1.png",
+                "alt": "Davis 1"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/10/K9-Leisure-club-grey.png",
+                "alt": "K9 Leisure Club Grey"
+            }
+        ]
+    },
+    "swiper_home-1": {
+        "classes": "section-padding fluid flex-swiper",
+        "attrs": "data-center=\"true\" data-loop=\"true\" data-autoplay=\"true\" data-delay=\"0\" data-speed=\"10000\" data-reversedirection=\"false\"",
+        "cols": "col-6 col-md-6 col-lg-3 col-xl-2",
+        "images": [
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/bt-1.png",
+                "alt": "Bt"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Worcestershire-county-council-1.png",
+                "alt": "Worcestershire County Council"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/europcar-1.png",
+                "alt": "Europcar"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/ee.png",
+                "alt": "Ee"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/mark-solomos-1.png",
+                "alt": "Mark Solomos"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/12/Innovo.png",
+                "alt": "Innovo"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/nasdaq.png",
+                "alt": "Nasdaq"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/serco-1.png",
+                "alt": "Serco"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/europcar-mobility-group.png",
+                "alt": "Europcar Mobility Group"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/12/PayPoint.png",
+                "alt": "Paypoint"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/ebbon-group-1.png",
+                "alt": "Ebbon Group"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/davis-1.png",
+                "alt": "Davis"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/10/Screen-print-world-grey.png",
+                "alt": "Screen Print World Grey"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/12/Collect.png",
+                "alt": "Collect+"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Wyre-forest-district-council-1.png",
+                "alt": "Wyre Forest District Council"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/10/Weddings-at-Bewdley-Museum-grey.png",
+                "alt": "Weddings At Bewdley Museum Grey"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/10/The-Supercar-Rooms-grey.png",
+                "alt": "The Supercar Rooms Grey"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/12/Lebara.png",
+                "alt": "Lebara"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/ccs-insights-1.png",
+                "alt": "Ccs Insights"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/10/K9-Leisure-club-grey.png",
+                "alt": "K9 Leisure Club Grey"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/10/Dacro-grey.png",
+                "alt": "Dacro Grey"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/12/AllenHeath.png",
+                "alt": "Allen&amp;heath"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/12/Forest-dog-rescue.png",
+                "alt": "Forest Dog Rescue"
+            },
+            {
+                "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/12/Lextox.png",
+                "alt": "Lextox"
+            }
+        ]
+    },
+    "services_showcase": {
+        "classes": "section-padding flex-services_showcase bg-default_lighter pt-0",
+        "services": {
+            "creative": {
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/IMG_3431-1.jpeg",
+                    "alt": "Img 3431",
+                    "left": "50",
+                    "top": "50"
+                },
+                "text": "Learn more about CitCom's Creative Services",
+                "link": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/services/creative/",
+                    "target": "",
+                    "title": ""
+                }
+            },
+            "development": {
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/woodman-pub-website-laptop-phone-mockup-v2.jpg",
+                    "alt": "Woodman Pub Website Laptop Phone Mockup V2",
+                    "left": "50",
+                    "top": "50"
+                },
+                "text": "Learn more about CitCom's Development Services",
+                "link": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/services/development/",
+                    "target": "",
+                    "title": ""
+                }
+            },
+            "marketing": {
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Copy-of-1E5A6426-1.jpg",
+                    "alt": "Copy Of 1e5a6426",
+                    "left": "51.39",
+                    "top": "60.55"
+                },
+                "text": "Learn more about CitCom's Marketing Services",
+                "link": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/services/marketing/",
+                    "target": "",
+                    "title": ""
+                }
+            },
+            "events": {
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/IMG_7236.jpg",
+                    "alt": "Img 7236",
+                    "left": "50",
+                    "top": "50"
+                },
+                "text": "Learn more about CitCom's Events Services",
+                "link": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/services/events/",
+                    "target": "",
+                    "title": ""
+                }
+            },
+            "print": {
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/IMG_1554.jpeg",
+                    "alt": "Img 1554",
+                    "left": "50",
+                    "top": "50"
+                },
+                "text": "Learn more about CitCom's Print Production Services",
+                "link": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/services/print/",
+                    "target": "",
+                    "title": ""
+                }
+            },
+            "video": {
+                "image": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Europcar-leading-the-charge-mockup.jpg",
+                    "alt": "Europcar Leading The Charge Mockup",
+                    "left": "52.54",
+                    "top": "53.44"
+                },
+                "text": "Learn more about CitCom's Video Production Services",
+                "link": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/services/video/",
+                    "target": "",
+                    "title": ""
+                }
+            }
+        }
+    },
+    "stats": {
+        "classes": "section-padding flex-stats bg-primary pattern pattern-opac text-white",
+        "title": "The results speak for themselves",
+        "opening_text": "<p>Due to James’ hard work with the SEO we saw a massive increase in traffic to the site consisting of</p>",
+        "stats": [
+            {
+                "append": "+",
+                "stat": "90",
+                "prepend": "%",
+                "supporting_text": "spike in traffic on the websites servicing pages",
+                "stat_color": "secondary"
+            },
+            {
+                "append": "+",
+                "stat": "20",
+                "prepend": "",
+                "supporting_text": "brand new servicing customers as a result of the PPC campaign",
+                "stat_color": "secondary"
+            },
+            {
+                "append": "+",
+                "stat": "400",
+                "prepend": "%",
+                "supporting_text": "increase return on their investment.",
+                "stat_color": "secondary"
+            }
+        ]
+    },
+    "google_reviews": {
+        "classes": "section-padding flex-google_reviews"
+    },
+    "video": {
+        "classes": "section-padding flex-video",
+        "src": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/12/Citcom-show-reel-Dec-2025-v3.mp4",
+        "poster": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/CitCom-showreel-poster.png",
+        "options": [
+            "autoplay",
+            "loop",
+            "muted"
+        ],
+        "citdot": true
+    },
+    "contact_map": {
+        "classes": "section-padding flex-contact_map pattern pattern-opac pt-0",
+        "title": "Get in Touch",
+        "message": "Have a question or want to learn more about our services? \r\n\r\nGet in touch!",
+        "show_socials": true,
+        "form": 623
+    },
+    "sub_services": {
+        "classes": "section-padding flex-sub_services bg-default_lighter",
+        "nav": [
+            "branding",
+            "creative-campaigns",
+            "fx-3d-visualisation",
+            "pos-packaging",
+            "web-design"
+        ],
+        "rows": [
+            {
+                "slug": "branding",
+                "title": "Branding",
+                "excerpt": "CitCom builds brands that stand out. We craft compelling visual identities, messaging, and strategies that elevate your brand and drive results.",
+                "cs_tags": [
+                    "branding"
+                ],
+                "gallery": [
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/07/Birchen-Coppice-PiP-logo-fabric-scaled.jpg",
+                        "alt": "Birchen Coppice Pip Logo Fabric"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/APT-Logo-card-mockup-scaled.jpg",
+                        "alt": "Apt Logo Card Mockup"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Ebbon-fest-con2-wristbands-scaled.jpg",
+                        "alt": "Ebbon Fest Con2 Wristbands"
+                    }
+                ]
+            },
+            {
+                "slug": "creative-campaigns",
+                "title": "Creative Campaigns",
+                "excerpt": "Launch impactful campaigns that captivate your audience. CitCom blends creative ideas and strategic planning to deliver exceptional results across all channels.",
+                "cs_tags": [
+                    "creative-campaigns"
+                ],
+                "gallery": [
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/IMG_3431-1-scaled.jpeg",
+                        "alt": "Img 3431"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/IMG_2717-scaled.jpg",
+                        "alt": "Img 2717"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Weddings-at-bewdley-museum-brochure-flat-mockup-scaled.jpg",
+                        "alt": "Weddings At Bewdley Museum Brochure Flat Mockup"
+                    }
+                ]
+            },
+            {
+                "slug": "fx-3d-visualisation",
+                "title": "FX and 3D Visualisation",
+                "excerpt": "Bring your imagination to life with CitCom's FX and 3D visualisation services. We create stunning visuals for campaigns, product design, and more.",
+                "cs_tags": [],
+                "gallery": [
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/ee-phone-3d.jpg",
+                        "alt": "Ee Phone 3d"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Davis-fleet-3D.jpg",
+                        "alt": "Davis Fleet 3d"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/10/Collect-cash-grabber-graphics.png",
+                        "alt": "Collect+ Cash Grabber Graphics"
+                    }
+                ]
+            },
+            {
+                "slug": "pos-packaging",
+                "title": "POS and Packaging",
+                "excerpt": "Launch impactful campaigns that captivate your audience. CitCom blends creative ideas and strategic planning to deliver exceptional results across all channels.",
+                "cs_tags": [
+                    "pos-packaging"
+                ],
+                "gallery": [
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/IMG_1312-scaled.jpg",
+                        "alt": "Img 1312"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/BT-Box-.jpg",
+                        "alt": "Bt Box"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/PayPoint-Eurochange-pavement-sign-scaled.jpg",
+                        "alt": "Paypoint Eurochange Pavement Sign"
+                    }
+                ]
+            },
+            {
+                "slug": "web-design",
+                "title": "Web Design",
+                "excerpt": "CitCom designs and builds engaging websites that elevate your online presence. We blend creativity and functionality to deliver exceptional user experiences.",
+                "cs_tags": [
+                    "web-design",
+                    "website-design"
+                ],
+                "gallery": [
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Innovo-website-mockup-scaled.jpg",
+                        "alt": "Innovo Website Mockup"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/01/K9-Leisure-Club-desktop-2-mockup-scaled.jpg",
+                        "alt": "K9 Leisure Club Desktop 2 Mockup"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Kolorkraft-desktop-2-mockup-scaled.jpg",
+                        "alt": "Kolorkraft Desktop 2 Mockup"
+                    }
+                ]
+            }
+        ]
+    }
+}
