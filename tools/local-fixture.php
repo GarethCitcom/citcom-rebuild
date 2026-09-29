@@ -484,6 +484,31 @@ $header_image = citcom_fixture_sideload( $citcom_staging . '/wp-content/uploads/
 
 $paragraph = '<!-- wp:paragraph --><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nibh nulla, gravida at dolor ac, pharetra vulputate justo. Sed neque lectus, mattis id erat sed, lobortis fermentum diam.</p><!-- /wp:paragraph -->';
 
+// The cta block below copies staging /services/creative/ section 2 (Text & Button).
+$cta_block = array(
+	'name' => 'citcom/cta',
+	'data' => array_merge(
+		array(
+			'type_of_cta'  => 'button',
+			'_type_of_cta' => 'field_66fe71bd5bb02',
+			'content'      => '<h2>Got a brief? Contact us today!</h2>',
+			'_content'     => 'field_66fd5dae3ef00',
+			'button'       => array(
+				'title'  => 'Contact Us',
+				'url'    => home_url( '/contact-us/' ),
+				'target' => '_blank',
+			),
+			'_button'      => 'field_66fe73e75bb03',
+			'button_2'     => '',
+			'_button_2'    => 'field_66fe74175bb04',
+			'form'         => '',
+			'_form'        => 'field_66fe797df659f',
+		),
+		citcom_fixture_section_settings( '' )
+	),
+	'mode' => 'preview',
+);
+
 $contact_id = citcom_fixture_page(
 	'Contact Us',
 	'contact-us',
@@ -494,7 +519,7 @@ $contact_id = citcom_fixture_page(
 			'bg-color' => '#eff1f3',
 			'pattern'  => 'persian',
 		)
-	) . "\n\n" . $paragraph
+	) . "\n\n" . $paragraph . "\n\n" . '<!-- wp:citcom/cta ' . wp_json_encode( $cta_block, JSON_UNESCAPED_SLASHES ) . ' /-->'
 );
 
 /*
