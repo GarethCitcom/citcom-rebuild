@@ -256,6 +256,27 @@ example):
   migration has to drop the hidden ones per layout.
 - The old editor and media_text HTML strings become inner blocks; core/html
   is a valid interim container for HTML that has no clean block equivalent.
+- Groups are flattened the same way as repeaters: `group_sub` for each
+  sub-field (`player_options_options`, `creative_showcase_image`,
+  `citdot_card_0_staff_name`), each with its `_group_sub` field key twin, and
+  `group` itself stored as an empty string. Conditional groups that are hidden
+  (`value` on a staff card) are omitted like any hidden field.
+- Inside a block render, `get_field( 'name' )` with no post id resolves to the
+  block's own data (ACF local meta), not to the global `$post`. Template parts
+  rendered from a block for another post (template-parts/service-card.php)
+  must pass the post id explicitly.
+- Texturize: the old layouts were rendered outside `the_content`, so text and
+  textarea values were printed untouched and only WYSIWYG fields were
+  texturized (`acf_the_content`). Blocks now render inside `the_content`, so
+  inc/blocks.php removes `wptexturize` from it and applies it to `core/*`
+  blocks only (the InnerBlocks that replaced the WYSIWYG fields); classic
+  content without blocks keeps the default. Compared against staging, this
+  keeps straight quotes and `...` in ACF fields as they are.
+- Staging's rendered sections differ from the reference theme code in two
+  places that are not the theme's doing: the Elfsight `<script>` of the
+  google_reviews layout is not inside the section on staging (moved by a
+  plugin), and `&` in social URLs prints as `&amp;` rather than `esc_url()`'s
+  `&#038;`. Both are equivalent in the browser.
 
 ## Still to capture
 

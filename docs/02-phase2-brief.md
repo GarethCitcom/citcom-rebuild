@@ -66,6 +66,22 @@ Rows are from docs/00-discovery.md. "Ref" is the staging page used to compare.
 | 16 | `citcom/citdot-cards` | 1 | Repeater of staff/value cards; `.citdot-card` styles are in `src/scss/elements/_card.scss`. | /about-us/ |
 | 17 to 24 | `citcom/diner-hero`, `diner-intro`, `diner-menu`, `diner-story`, `diner-story-light`, `diner-wall`, `diner-reviews`, `diner-guestcheck` | 14 | Fields are defined in PHP (`functions/acf/diner-layouts.php`), so write fields.json by hand from that file. Shared helpers in `functions/lib/diner-components.php` (`diner_button`, `diner_stamp`, `diner_rating_stars`) become `inc/diner.php`. Assets in `assets/img/diner/` are copied into `assets/img/diner/`. | / (Home, the Diner page) and /info/citcom-creative-diner/ |
 
+### Progress
+
+- 2026-09-28/29: blocks 1 to 8 built and compared (see docs/00-discovery.md,
+  "Findings added in Phase 1" and the Phase 2 notes there).
+- 2026-09-29: blocks 9 to 16 built. Each was compared with its staging section
+  after normalising ids, image URLs and srcset: sub-services, swiper (three
+  sections), stats, services-showcase, citdot-cards and contact-map are
+  byte-identical; video differs only in the JSON slash escaping the old
+  `json_encode()` produced (kept unescaped as staging prints it); google-reviews
+  differs only by the Elfsight `<script>` staging moves out of the section.
+  Local test content: `tools/local-fixture-phase2.php` (pages /home-classic/,
+  /results/, /services/creative/, plus sections appended to /about-us/ and
+  /contact-us/). Notes: `citcom/stats` does not use `thousandsCurrencyFormat()`
+  (the old layout never did); the `audio_video_player` field type is not
+  installed locally, so the video block also accepts a bare attachment id.
+
 ## Also in Phase 2
 
 - `template-parts/card-post.php`, `template-parts/service-card.php` and `inc/ajax.php`
