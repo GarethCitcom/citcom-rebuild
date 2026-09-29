@@ -1,0 +1,207 @@
+// citcom/services-showcase: port of assets/_dev/scss/flexContent/service-showcase.scss.
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+
+$service_showcase_height: 29rem;
+.flex-services_showcase{
+    .showcase{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        @media only screen and (max-width: 990px) {
+            flex-direction: column;
+        }
+        .service{
+            height: $service_showcase_height;
+            width: 5.75rem;
+            @media only screen and (max-width: 990px) {
+                height: 5.75rem;
+                width: 100%;
+            }
+            transform: scale(0.95);
+            flex-grow: 1;
+            border-radius: 60px;
+            @include transition(all,0.6s);
+            //transition: all .5s cubic-bezier(0.05, 0.61, 0.41, 0.95);
+            .shape{
+                width: 4.75rem;
+                height: 4.75rem;
+                padding: 0.25rem;
+                background-color: var(--brand-default-lighter);
+                border-radius: 50%;
+                position: absolute;
+                z-index: 2;
+                left: 0.5rem;
+                bottom: 0.5rem;
+                transform: rotate(0deg);
+                @include transition(transform,0.9s);
+                @include media-breakpoint-down(sm) {
+                    bottom: unset;
+                    top: 0.5rem;
+                }
+            }
+            .bg-image{
+                opacity: 0;
+                filter: blur(10px);
+                @include transition(all,0.3s);
+            }
+            .footer,
+            .link{
+                display: flex;
+                opacity: 0;
+                @include transition(opacity,0.9s);
+            }
+            .link{
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                top: 0;
+                align-items: start;
+                justify-content: end;
+                z-index: 2;
+                padding: 1.125rem;
+                &:hover{
+                    .btn-icon{
+                        background-color: var(--brand-secondary);
+                        &:hover{
+                            background-color: var(--brand-secondary-darker);
+                        }
+                    }
+                }
+            }
+            .footer{
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 2;
+                padding-left: 7rem;
+                padding-right: 1.125rem;
+                padding-bottom: 1.375rem;
+                padding-top: 5rem;
+                color: var(--brand-white);
+                background: rgb(28,2,33);
+                background: linear-gradient(0deg, rgba(28,2,33,0.9) 0%, rgba(28,2,33,0) 100%);
+                flex-direction:column;
+                @include transition(all,0.4s);
+                @include media-breakpoint-down(sm) {
+                    padding-left: 2.525rem;
+                    padding-right: 2.525rem;
+                    padding-bottom: 2.525rem;
+                }
+                .showcase-service-text{
+                    margin-left: 4rem;
+                    opacity: 0;
+                    @include transition(all,0.8s);
+                    @include media-breakpoint-down(sm) {
+                        margin-left: 0;
+                        margin-bottom: 4rem;
+                    }
+                    p{
+                        line-height: 1.2;
+                        &.fs-4{
+                            @include forma(400);
+                        }
+                    }
+                }
+            }
+            .closed-pill{
+                position: relative;
+                z-index: 2;
+                background-color: var(--brand-white);
+                &:active{
+                    background-color: var(--brand-default);
+                }
+                height: 100%;
+                width: 100%;
+                display: flex;
+                justify-content: end;
+                padding-bottom: 6.5rem;
+                writing-mode: vertical-rl;
+                opacity: 1;
+                @include transition(opacity,0.6s);
+                .name{
+                    @include forma(400);
+                    transform: rotate(180deg);
+                    opacity: 1;
+                    margin-bottom: 0;
+                    @media only screen and (max-width: 990px) {
+                        transform: none;
+                    }
+                    @include transition(all,0.4s);
+                    p{
+                        line-height: 3rem;
+                    }
+                }
+                @media only screen and (max-width: 990px) {
+                    width: 100%;
+                    padding-bottom: 0;
+                    padding-left: 6.5rem;
+                    writing-mode: horizontal-tb;
+                    justify-content: flex-start;
+                    align-items: center;
+                }
+            }
+            &.open{
+                flex-grow: 1000;
+                transform: scale(1);
+                border-radius: 46px;
+                @media only screen and (max-width: 990px) {
+                    height: 20rem;
+                    width: 100%;
+                }
+                @include media-breakpoint-up(lg) {
+                    border-radius: 60px;
+                }
+                @include media-breakpoint-down(sm) {
+
+                }
+                .shape{
+                    left: 1.125rem;
+                    bottom: 1.125rem;
+                    transform: rotate(360deg);
+                    @include media-breakpoint-down(sm) {
+                        bottom: 0;
+                        top: 1.125rem;
+                    }
+                }
+                .bg-image{
+                    opacity: 1;
+                }
+                .link{
+                    opacity: 1;
+                }
+                .footer{
+                    opacity: 1;
+                    .showcase-service-text{
+                        margin-left: 0;
+                        opacity: 1;
+                        @include media-breakpoint-down(sm) {
+                            margin-bottom: 0;
+                        }
+                    }
+
+                }
+                .closed-pill{
+                    opacity: 0;
+                    .name{
+                        opacity: 0;
+                        margin-bottom: -100px;
+                    }
+                }
+            }
+            &.active{
+                // .shape{
+                //     transform: rotate(360deg);
+                // }
+                .bg-image{
+                    filter: blur(0px);
+                }
+                .closed-pill{
+                    visibility: hidden;
+                }
+            }
+        }
+    }
+}

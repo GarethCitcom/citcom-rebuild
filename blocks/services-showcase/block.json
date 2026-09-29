@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/services-showcase",
+	"title": "Services Showcase",
+	"description": "The six core services as an expanding pill showcase, each with image, text, link and shape.",
+	"category": "citcom",
+	"icon": "columns",
+	"keywords": [ "services", "showcase", "creative", "development", "marketing" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [ "page", "service", "case-study", "landing-page", "template" ],
+		"usePostMeta": false
+	},
+	"style": "file:../../build/blocks/services-showcase/style.css"
+}
