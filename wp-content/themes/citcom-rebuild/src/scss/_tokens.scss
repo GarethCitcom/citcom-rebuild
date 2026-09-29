@@ -1,0 +1,15 @@
+// Variables, Bootstrap functions/mixins and theme mixins only: no CSS output.
+// Imported by theme.scss and by every block's style.scss.
+@use "sass:math";
+
+@import "variables";
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+
+// Section spacing (was in theme/_scaffolding.scss).
+$page_padding_sm: math.div($grid-gutter-width, 2);
+$page_padding_lg: $grid-gutter-width * 2;
+$page_padding_xl: $grid-gutter-width * 3;

@@ -1,0 +1,41 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/media-text",
+	"title": "Media Text",
+	"description": "Full-height image (or two) beside a column of text, with the CitDot mask, alignment and extra padding options.",
+	"category": "citcom",
+	"icon": "align-pull-left",
+	"keywords": [ "image", "text", "media", "split" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": false,
+		"jsx": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [ "page", "service", "case-study", "landing-page", "template" ],
+		"usePostMeta": false
+	},
+	"style": "file:../../build/blocks/media-text/style.css",
+	"example": {
+		"attributes": {
+			"mode": "preview",
+			"data": {
+				"media_type": "image",
+				"align": "media_right",
+				"citdot_style": 1,
+				"extra_padding": 0
+			}
+		},
+		"innerBlocks": [
+			{ "name": "core/paragraph", "attributes": { "content": "Text beside the media." } }
+		]
+	}
+}
