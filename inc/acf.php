@@ -84,6 +84,14 @@ add_filter(
 	3
 );
 
+// The theme's own field types.
+add_action(
+	'acf/include_field_types',
+	function () {
+		require_once CITCOM_THEME_DIR . '/inc/class-citcom-field-focuspoint.php';
+	}
+);
+
 // Site Settings options page (was ui_options_page_65eafdab6ac5b.json).
 add_action(
 	'acf/init',

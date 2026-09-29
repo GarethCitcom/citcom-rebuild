@@ -18,11 +18,13 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
 - Hybrid theme: PHP templates for header/footer/archives/singles,
   `theme.json` for tokens, one ACF Block per old flexible layout.
 - Requirements on the target site: ACF Pro 6.8+, ACF Extended Pro (image
-  selector, code editor, column, post types field types), plus two mu-plugins
+  selector, code editor, column, post types field types), plus one mu-plugin
   that Pressable provides at account level and the field JSON relies on:
-  acf-focuspoint (ooksanen/acf-focuspoint, field type `focuspoint`) and
   acf-swatch (nickforddev/acf-swatch, field type `swatch`). A local site needs
-  the same two in wp-content/mu-plugins. PHP 8.5, WP 7.1+.
+  it in wp-content/mu-plugins. The focal point image field is the theme's own
+  `citcom_focuspoint` type (inc/class-citcom-field-focuspoint.php), which
+  replaced the acf-focuspoint mu-plugin with the same {id, top, left} value.
+  PHP 8.5, WP 7.1+.
 - UK English in all copy and comments. No em dashes in prose.
 
 ## Block conventions

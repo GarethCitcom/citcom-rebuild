@@ -14,10 +14,11 @@ For every layout, in this order, one commit per block:
    `functions/acf/diner-layouts.php`).
 2. `blocks/<name>/fields.json`: the layout's sub-fields with their original keys and
    names, location `block == citcom/<name>`, group key `group_citcom_<name>`. Keep
-   third-party types (`focuspoint`, `swatch`, `acfe_image_selector`, `acfe_column`,
+   third-party types (`swatch`, `acfe_image_selector`, `acfe_column`,
    `acfe_code_editor`, `acfe_post_types`, `audio_video_player`, `font-awesome`,
    `range`) as they are; the field type plugins exist on staging and live
-   (focuspoint and swatch are mu-plugins, see docs/00-discovery.md).
+   (swatch is a mu-plugin, see docs/00-discovery.md). The old `focuspoint` type
+   becomes the theme's `citcom_focuspoint` (same value shape).
 3. `blocks/<name>/block.json`: `apiVersion` 3, category `citcom`, `acf.blockVersion`
    3, `acf.postTypes` limited to the five content types, `style` pointing at
    `file:../../build/blocks/<name>/style.css`, `supports.anchor` true,
@@ -48,7 +49,7 @@ Rows are from docs/00-discovery.md. "Ref" is the staging page used to compare.
 | # | Block | Rows | Notes | Ref |
 |---|---|---|---|---|
 | 1 | `citcom/editor` | 210 | InnerBlocks (`supports.jsx`) wrapped in `<section class="section-padding flex-editor"><div class="container-xl"><div class="editor">`. Allowed inner blocks: the core allow-list in inc/blocks.php (the old `acfe_block_editor` field allowed paragraph, image, quote, heading, list, shortcode, table, buttons, columns, media-text, spacer, group, video, embed). Content passes through `citdotLists()`; check whether the old layout wrapped output in `text-block`. Migration turns the stored Gutenberg HTML into real inner blocks. | /contact-us/ |
-| 2 | `citcom/media-text` | 134 | Two focuspoint images with `range` scale, or a video (`audio_video_player`); `text` is a clone of the block editor field, so this block also uses InnerBlocks for the text column. `align`, `citdot_style`, `extra_padding` flags map to the `media_left/media_right` and `section-extra-padding` classes seen on staging. | /about-us/ |
+| 2 | `citcom/media-text` | 134 | Two focal point images with `range` scale, or a video (`audio_video_player`); `text` is a clone of the block editor field, so this block also uses InnerBlocks for the text column. `align`, `citdot_style`, `extra_padding` flags map to the `media_left/media_right` and `section-extra-padding` classes seen on staging. | /about-us/ |
 | 3 | `citcom/cta` | 83 | `type_of_cta`, wysiwyg content, two link fields, optional Forminator form (`post_object` to a form post). Forminator renders via `do_shortcode`. | /services/creative/ |
 | 4 | `citcom/display-posts` | 68 | Ports `flexPosts()` plus `templates/card-post.php` (becomes `template-parts/card-post.php`) and the two admin-ajax handlers in `functions/ajax.php` (`loadmore`, `postsearch`) into `inc/ajax.php`. Prints the `displayPostsQuery` object the JS expects. Used by the archive template posts, so `/case-studies/` and `/services/` only look right once this and the template posts are migrated. | /case-studies/ |
 | 5 | `citcom/icons` | 48 | `number_of_columns` radio and `icon_columns` repeater with Font Awesome icons. | /services/marketing/ |
@@ -77,9 +78,8 @@ Rows are from docs/00-discovery.md. "Ref" is the staging page used to compare.
 - The "Section settings (simple)" group (`group_6790f33456b40`, anchor only): find
   which layouts used it instead of the full group before deciding whether it is
   needed as a separate group or just the anchor field on those blocks.
-- Decide with the user whether `swatch`, `focuspoint` and the ACF Extended field
-  types stay (they exist on staging and live) or move to core types; any change
-  affects the Phase 3 migration mapping.
+- Decided 2026-09-29: swatch and the ACF Extended field types stay; focuspoint
+  is the theme's `citcom_focuspoint` type.
 
 ## Not in Phase 2
 

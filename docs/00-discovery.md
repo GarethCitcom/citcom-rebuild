@@ -193,13 +193,15 @@ when diffing against it:
   one; get_header/get_footer are require_once so the header is not duplicated).
   The new theme outputs one `<main>`; the only selector that depended on the
   nesting (`body > main > main` for the modal blur) is now `body > main`.
-- `focuspoint` and `swatch` are NOT ACF Extended field types. They are
-  mu-plugins on the Pressable sites: `acf-focuspoint-master`
-  (ooksanen/acf-focuspoint 1.2.0) and `acf-swatch-master`
-  (nickforddev/acf-swatch 1.0.7). They stay in `wp-content/mu-plugins` on
-  staging and live, so the new field JSON keeps those types; local installs
-  need the same two plugins (installed locally under `wp-content/mu-plugins/`
-  with a small loader, outside this repo).
+- `focuspoint` and `swatch` were NOT ACF Extended field types but mu-plugins
+  on the Pressable sites (ooksanen/acf-focuspoint 1.2.0, nickforddev/acf-swatch
+  1.0.7). Decided 2026-09-29: swatch stays (local installs need it in
+  wp-content/mu-plugins); focuspoint is replaced by the theme's own
+  `citcom_focuspoint` field type, which stores the same `{id, top, left}`
+  array, so field names and stored values are unchanged and the mu-plugin can
+  be removed from Pressable once the new theme is live. Empty values must be
+  arrays, never strings (the migration must write `["id" => "", "top" => "",
+  "left" => ""]` or omit the key).
 - The ACF UI post types, taxonomy and options page live in the database as
   `acf-post-type`, `acf-taxonomy` and `acf-ui-options-page` posts. The theme
   registers the same keys in PHP at init priority 5. Deactivating (or deleting)

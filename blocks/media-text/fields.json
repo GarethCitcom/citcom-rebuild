@@ -67,7 +67,7 @@
             "label": "Image 1",
             "name": "image",
             "aria-label": "",
-            "type": "focuspoint",
+            "type": "citcom_focuspoint",
             "instructions": "",
             "required": 1,
             "conditional_logic": [
@@ -138,7 +138,7 @@
             "label": "Image 2 (optional)",
             "name": "image_2",
             "aria-label": "",
-            "type": "focuspoint",
+            "type": "citcom_focuspoint",
             "instructions": "",
             "required": 0,
             "conditional_logic": [
