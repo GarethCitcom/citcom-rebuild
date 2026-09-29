@@ -316,7 +316,23 @@ function citcom_fixture_inner_html( string $html ): string {
 	$html = str_replace( '<ul class="fa-ul" style="--fa-li-width: 3rem;">', '<ul class="wp-block-list">', $html );
 	$html = str_replace( 'wp-block-video v-vlite-container', 'wp-block-video', $html );
 	$html = str_replace( 'wp-block-quote is-style-plain grad-persian text-light', 'wp-block-quote is-style-plain', $html );
+	if ( function_exists( 'citcom_html_to_blocks' ) ) {
+		return citcom_html_to_blocks( $html );
+	}
 	return '<!-- wp:html -->' . trim( $html ) . '<!-- /wp:html -->';
+}
+
+/**
+ * A citcom/editor block wrapping block markup, with optional section classes.
+ */
+function citcom_fixture_editor_block( string $inner_blocks, string $section_classes = '' ): string {
+	return '<!-- wp:citcom/editor ' . serialize_block_attributes(
+		array(
+			'name' => 'citcom/editor',
+			'data' => citcom_fixture_section_settings( $section_classes ),
+			'mode' => 'preview',
+		)
+	) . ' -->' . $inner_blocks . '<!-- /wp:citcom/editor -->';
 }
 
 /**
@@ -459,6 +475,8 @@ function citcom_fixture_extra_sections(): string {
 			);
 		}
 		$data = array_merge( $data, citcom_fixture_repeater( 'icon_columns', 'field_670eb386ee148', $rows ) );
+		// On staging the icons follow a heading section on the same dark background.
+		$blocks[] = citcom_fixture_editor_block( '<!-- wp:heading --><h2 class="wp-block-heading">Our Values</h2><!-- /wp:heading -->', 'bg-primary text-white py-0' );
 		$blocks[] = $serialise( 'citcom/icons', array_merge( $data, citcom_fixture_section_settings( $extra['icons']['classes'] ?? '' ) ) );
 	}
 
@@ -644,7 +662,7 @@ $contact_id = citcom_fixture_page(
 			'bg-color' => '#eff1f3',
 			'pattern'  => 'persian',
 		)
-	) . "\n\n" . $paragraph . "\n\n" . '<!-- wp:citcom/cta ' . serialize_block_attributes( $cta_block ) . ' /-->' . citcom_fixture_extra_sections()
+	) . "\n\n" . citcom_fixture_editor_block( $paragraph ) . "\n\n" . '<!-- wp:citcom/cta ' . serialize_block_attributes( $cta_block ) . ' /-->' . citcom_fixture_extra_sections()
 );
 
 /*

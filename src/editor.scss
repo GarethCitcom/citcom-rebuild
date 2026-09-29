@@ -4,3 +4,22 @@ body {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
 }
+
+// InnerBlocks areas inside citcom blocks: keep them reachable and visible while
+// editing. The media in media-text is absolutely positioned and would otherwise
+// sit over the text column's click target.
+.flex-editor .block-editor-inner-blocks,
+.flex-media_text .block-editor-inner-blocks {
+  position: relative;
+  z-index: 3;
+  min-height: 3rem;
+}
+.flex-media_text .container-xl {
+  position: relative;
+  z-index: 3;
+}
+.flex-editor .block-editor-inner-blocks:empty,
+.flex-media_text .block-editor-inner-blocks:empty {
+  outline: 1px dashed rgba(28, 2, 33, 0.35);
+  outline-offset: 4px;
+}

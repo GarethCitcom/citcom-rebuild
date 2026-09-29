@@ -142,17 +142,7 @@ if ( is_singular( 'landing-page' ) && ! get_field( 'show_footer' ) ) {
 
 <div id="outdated"></div>
 
-<svg class="clipped-svg">
-	<clipPath id="citdot" clipPathUnits="objectBoundingBox">
-		<path d="M0.908,0.015 c0.052,0.011,0.081,0.041,0.085,0.115 c0.007,0.122,0.007,0.27,0.007,0.37 s0,0.248,-0.007,0.37 c-0.004,0.074,-0.033,0.104,-0.085,0.115 c-0.048,0.011,-0.254,0.015,-0.408,0.015 s-0.36,-0.004,-0.408,-0.015 C0.04,0.974,0.011,0.944,0.007,0.87 C0,0.748,0,0.6,0,0.5 S0,0.252,0.007,0.13 C0.011,0.056,0.04,0.026,0.092,0.015 C0.14,0.004,0.346,0,0.5,0 S0.86,0.004,0.908,0.015"></path>
-	</clipPath>
-</svg>
-
-<svg class="clipped-svg">
-	<clipPath id="corner-invert" clipPathUnits="objectBoundingBox">
-		<path d="M1,0.08 V0.932 a0.051,0.074,0,0,1,-0.051,0.074 h-0.059 c-0.028,0,-0.051,-0.008,-0.051,-0.049 V0.938 a0.051,0.074,0,0,0,-0.051,-0.074 h-0.288 c-0.028,0,-0.051,-0.058,-0.051,-0.099 V0.314 a0.051,0.074,0,0,0,-0.051,-0.074 H0.055 a0.051,0.074,0,0,1,-0.051,-0.074 v-0.086 a0.051,0.074,0,0,1,0.051,-0.074 H0.953 A0.051,0.074,0,0,1,1,0.08"></path>
-	</clipPath>
-</svg>
+<?php echo citcom_svg_clip_paths(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 <div class="clipped"></div>
 

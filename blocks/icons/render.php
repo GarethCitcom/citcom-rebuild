@@ -36,6 +36,7 @@ switch ( $number_of_columns ) {
 
 $icon_columns = is_array( $fields['icon_columns'] ?? null ) ? $fields['icon_columns'] : array();
 
+citcom_preview_clip_paths( (bool) $is_preview );
 ?>
 
 <section <?php echo $attrs['anchor_attr']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> class="section-padding flex-icons <?php echo esc_attr( $attrs['classes'] ); ?>" data-index="<?php echo (int) $index; ?>">

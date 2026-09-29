@@ -91,6 +91,7 @@ $card_data = array(
 	'type_of_display' => $type,
 );
 
+citcom_preview_clip_paths( (bool) $is_preview );
 ?>
 
 <section <?php echo $attrs['anchor_attr']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> class="section-padding flex-display_posts <?php echo esc_attr( $attrs['classes'] ); ?>" data-index="<?php echo (int) $index; ?>">

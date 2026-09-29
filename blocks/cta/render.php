@@ -49,6 +49,7 @@ $citcom_social_link = static function ( array $social, string $icon_class ): voi
 	<?php
 };
 
+citcom_preview_clip_paths( (bool) $is_preview );
 ?>
 
 <section <?php echo $attrs['anchor_attr']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> class="section-padding flex-cta <?php echo esc_attr( $grad_pattern ); ?> text-white" data-index="<?php echo (int) $index; ?>">

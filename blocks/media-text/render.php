@@ -73,6 +73,7 @@ if ( $is_preview ) {
 	$inner = wp_kses_post( citdotLists( $content ) );
 }
 
+citcom_preview_clip_paths( (bool) $is_preview );
 ?>
 
 <section <?php echo $attrs['anchor_attr']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> class="section-padding flex-media_text <?php echo esc_attr( $attrs['classes'] ); ?> position-relative d-flex align-items-center <?php echo esc_attr( $extra_padding_section ); ?> <?php echo esc_attr( $setting_align ); ?>" data-index="<?php echo (int) $index; ?>">

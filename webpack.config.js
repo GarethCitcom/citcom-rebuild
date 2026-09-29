@@ -33,14 +33,24 @@ if ( fs.existsSync( blocksDir ) ) {
 	}
 }
 
+// css-loader must leave same-document fragment URLs alone (clip-path: url(#citdot)).
 // Bootstrap 5.3 still uses @import and the old division syntax; keep the build log readable.
 const rules = defaultConfig.module.rules.map( ( rule ) => {
-	if ( ! rule.test || ! String( rule.test ).includes( 'sc|sa' ) || ! Array.isArray( rule.use ) ) {
+	if ( ! rule.test || ! Array.isArray( rule.use ) || ! /css|sc|sa/.test( String( rule.test ) ) ) {
 		return rule;
 	}
 	return {
 		...rule,
 		use: rule.use.map( ( use ) => {
+			if ( typeof use === 'object' && /[\/]css-loader[\/]/.test( String( use.loader ) ) ) {
+				return {
+					...use,
+					options: {
+						...use.options,
+						url: { filter: ( url ) => ! url.startsWith( '#' ) },
+					},
+				};
+			}
 			if ( typeof use !== 'object' || ! String( use.loader ).includes( 'sass-loader' ) ) {
 				return use;
 			}

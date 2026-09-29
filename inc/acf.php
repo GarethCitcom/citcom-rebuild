@@ -92,6 +92,14 @@ add_action(
 	}
 );
 
+// Block editor fixes for the swatch mu-plugin field (see assets/admin/editor-fields.js).
+add_action(
+	'acf/input/admin_enqueue_scripts',
+	function () {
+		wp_enqueue_script( 'citcom-editor-fields', CITCOM_THEME_URI . '/assets/admin/editor-fields.js', array( 'acf-input', 'jquery' ), CITCOM_THEME_VERSION, true );
+	}
+);
+
 // Site Settings options page (was ui_options_page_65eafdab6ac5b.json).
 add_action(
 	'acf/init',
