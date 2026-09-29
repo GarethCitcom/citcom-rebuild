@@ -116,6 +116,18 @@ add_action(
 	0
 );
 
+// Editor canvas stylesheet: AOS neutralised, clip paths, InnerBlocks areas.
+// Linked into the iframe by enqueue_block_assets, so url(#citdot) stays local.
+add_action(
+	'enqueue_block_assets',
+	function () {
+		if ( ! is_admin() ) {
+			return;
+		}
+		wp_enqueue_style( 'citcom-editor-canvas', CITCOM_THEME_URI . '/assets/admin/editor-canvas.css', array(), CITCOM_THEME_VERSION );
+	}
+);
+
 // Font Awesome kit, async in the footer.
 add_action(
 	'wp_footer',
