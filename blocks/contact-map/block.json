@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/contact-map",
+	"title": "Contact Map",
+	"description": "Snazzy Maps embed behind a gradient contact card with title, message, socials and a Forminator form.",
+	"category": "citcom",
+	"icon": "location",
+	"keywords": [ "contact", "map", "form", "address" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [ "page", "service", "case-study", "landing-page", "template" ],
+		"usePostMeta": false
+	},
+	"style": "file:../../build/blocks/contact-map/style.css"
+}
