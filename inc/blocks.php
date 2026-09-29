@@ -183,3 +183,35 @@ function citcom_section_attrs( array $block, array $fields ): array {
 		'anchor_attr' => '' !== $anchor ? 'id="' . esc_attr( $anchor ) . '"' : '',
 	);
 }
+
+/**
+ * Texturize as the old theme did.
+ *
+ * The old layouts were rendered from templates, outside the_content, so text
+ * and textarea field values were printed untouched; only WYSIWYG fields were
+ * texturized (acf_the_content). Blocks render inside the_content, where
+ * wptexturize would now curl every quote in every ACF field. So: texturize
+ * core blocks (the InnerBlocks that replaced the WYSIWYG fields), leave ACF
+ * block output alone, and keep the default for classic content.
+ */
+add_action(
+	'init',
+	function () {
+		remove_filter( 'the_content', 'wptexturize' );
+	}
+);
+add_filter(
+	'the_content',
+	function ( $content ) {
+		return has_blocks( $content ) ? $content : wptexturize( $content );
+	},
+	8 // Before do_blocks (9), so has_blocks() still sees the block comments.
+);
+add_filter(
+	'render_block',
+	function ( $html, $block ) {
+		return str_starts_with( (string) ( $block['blockName'] ?? '' ), 'core/' ) ? wptexturize( $html ) : $html;
+	},
+	10,
+	2
+);
