@@ -1,0 +1,79 @@
+{
+  "gallery": {
+    "classes": "section-padding flex-gallery",
+    "style": "style6",
+    "images": [
+      {
+        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/09/IMG_0789-scaled.jpeg",
+        "alt": "Img 0789",
+        "top": "41.7",
+        "left": "49.22"
+      },
+      {
+        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/05/Image_20260430_133703_574-scaled.jpeg",
+        "alt": "Image 20260430 133703 574",
+        "top": "50",
+        "left": "50"
+      },
+      {
+        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/09/IMG_7977-scaled.jpg",
+        "alt": "Img 7977",
+        "top": "50",
+        "left": "50"
+      },
+      {
+        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/05/IMG_6263-scaled.jpg",
+        "alt": "Img 6263",
+        "top": "50",
+        "left": "50"
+      },
+      {
+        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/05/IMG_3895-scaled.jpg",
+        "alt": "Img 3895",
+        "top": "56.54",
+        "left": "49.74"
+      }
+    ]
+  },
+  "quote": {
+    "quote": "<p><i><span style=\"font-weight: 400\">Citcom are always great to work with on sales engagement activities. </span></i></p>\n<p><i><span style=\"font-weight: 400\">From ideation to design and fulfilment, they make things creative and fun but also simple for us. This activity hit the mark for its two objectives: helping to boost sales of newly launched products in their first 2 weeks, whilst also increasing engagement from our front line sales teams with training materials</span></i></p>",
+    "source": "Eloise West, SMB Marketing Manager"
+  },
+  "icons": {
+    "source": "about",
+    "classes": "section-padding flex-icons  bg-primary text-white pt-0",
+    "number_of_columns": "5",
+    "columns": [
+      {
+        "icon": "fa-classic fa-light fa-hand-holding-heart",
+        "icon_style": "secondary-outline",
+        "align": "center",
+        "supporting_text": "<h3>Honest</h3>"
+      },
+      {
+        "icon": "fa-classic fa-light fa-puzzle",
+        "icon_style": "secondary-outline",
+        "align": "center",
+        "supporting_text": "<h3>Collaborative</h3>"
+      },
+      {
+        "icon": "fa-classic fa-light fa-lightbulb-on",
+        "icon_style": "secondary-outline",
+        "align": "center",
+        "supporting_text": "<h3>Innovative</h3>"
+      },
+      {
+        "icon": "fa-classic fa-light fa-gears",
+        "icon_style": "secondary-outline",
+        "align": "center",
+        "supporting_text": "<h3>Efficient</h3>"
+      },
+      {
+        "icon": "fa-classic fa-light fa-handshake",
+        "icon_style": "secondary-outline",
+        "align": "center",
+        "supporting_text": "<h3>Committed</h3>"
+      }
+    ]
+  }
+}

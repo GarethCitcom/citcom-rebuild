@@ -194,7 +194,7 @@ function citcom_fixture_page( string $title, string $slug, string $content ): in
 		'post_title'   => $title,
 		'post_name'    => $slug,
 		'post_status'  => 'publish',
-		'post_content' => $content,
+		'post_content' => wp_slash( $content ),
 	);
 	if ( $existing ) {
 		$args['ID'] = $existing->ID;
@@ -248,7 +248,7 @@ function citcom_fixture_page_header( array $fields ): string {
 		'data' => array_merge( $defaults, $fields ),
 		'mode' => 'preview',
 	);
-	return '<!-- wp:citcom/page-header ' . wp_json_encode( $block, JSON_UNESCAPED_SLASHES ) . ' /-->';
+	return '<!-- wp:citcom/page-header ' . serialize_block_attributes( $block ) . ' /-->';
 }
 
 /**
@@ -343,7 +343,7 @@ function citcom_fixture_about_sections(): array {
 				'data' => $settings,
 				'mode' => 'preview',
 			);
-			$blocks[] = '<!-- wp:citcom/editor ' . wp_json_encode( $attrs, JSON_UNESCAPED_SLASHES ) . ' -->' . $inner . '<!-- /wp:citcom/editor -->';
+			$blocks[] = '<!-- wp:citcom/editor ' . serialize_block_attributes( $attrs ) . ' -->' . $inner . '<!-- /wp:citcom/editor -->';
 		}
 
 		if ( 'media_text' === $section['layout'] ) {
@@ -394,11 +394,136 @@ function citcom_fixture_about_sections(): array {
 				'data' => $data,
 				'mode' => 'preview',
 			);
-			$blocks[] = '<!-- wp:citcom/media-text ' . wp_json_encode( $attrs, JSON_UNESCAPED_SLASHES ) . ' -->' . $inner . '<!-- /wp:citcom/media-text -->';
+			$blocks[] = '<!-- wp:citcom/media-text ' . serialize_block_attributes( $attrs ) . ' -->' . $inner . '<!-- /wp:citcom/media-text -->';
 		}
 	}
 
 	return $blocks;
+}
+
+/**
+ * Repeater rows in the flattened form ACF blocks store: name => row count,
+ * name_{i}_{sub} => value, each with its _key reference.
+ *
+ * @param string $name Repeater field name.
+ * @param string $key  Repeater field key.
+ * @param array  $rows Each row: sub_name => [ field_key, value ].
+ * @return array<string,mixed>
+ */
+function citcom_fixture_repeater( string $name, string $key, array $rows ): array {
+	$data = array(
+		$name       => count( $rows ),
+		'_' . $name => $key,
+	);
+	foreach ( $rows as $i => $row ) {
+		foreach ( $row as $sub => $pair ) {
+			$data[ $name . '_' . $i . '_' . $sub ]       = $pair[1];
+			$data[ '_' . $name . '_' . $i . '_' . $sub ] = $pair[0];
+		}
+	}
+	return $data;
+}
+
+/**
+ * Serialised icons, gallery, quote and shortcode blocks copied from staging
+ * sections (tools/fixtures/extra-sections.json), appended to the Contact page.
+ */
+function citcom_fixture_extra_sections(): string {
+	$file = __DIR__ . '/fixtures/extra-sections.json';
+	if ( ! file_exists( $file ) ) {
+		return '';
+	}
+	$extra  = json_decode( (string) file_get_contents( $file ), true ) ?: array();
+	$blocks = array();
+
+	$serialise = static function ( string $name, array $data ): string {
+		return '<!-- wp:' . $name . ' ' . serialize_block_attributes( array(
+				'name' => $name,
+				'data' => $data,
+				'mode' => 'preview',
+			) ) . ' /-->';
+	};
+
+	if ( ! empty( $extra['icons']['columns'] ) ) {
+		$data = array(
+			'number_of_columns'  => (string) $extra['icons']['number_of_columns'],
+			'_number_of_columns' => 'field_670eb2d7ee146',
+		);
+		$rows = array();
+		foreach ( $extra['icons']['columns'] as $col ) {
+			$rows[] = array(
+				'icon'            => array( 'field_670eb31eee147', $col['icon'] ),
+				'icon_style'      => array( 'field_670eb3eaee14a', $col['icon_style'] ),
+				'align'           => array( 'field_670eb498ee14b', $col['align'] ),
+				'supporting_text' => array( 'field_670eb3b3ee149', $col['supporting_text'] ),
+			);
+		}
+		$data = array_merge( $data, citcom_fixture_repeater( 'icon_columns', 'field_670eb386ee148', $rows ) );
+		$blocks[] = $serialise( 'citcom/icons', array_merge( $data, citcom_fixture_section_settings( $extra['icons']['classes'] ?? '' ) ) );
+	}
+
+	if ( ! empty( $extra['gallery']['images'] ) ) {
+		$rows = array();
+		foreach ( $extra['gallery']['images'] as $img ) {
+			$id = citcom_fixture_sideload( $img['url'], $img['alt'] ?: basename( $img['url'] ) );
+			if ( ! $id ) {
+				continue;
+			}
+			$rows[] = array(
+				'image' => array(
+					'field_670e369d38bcf',
+					array(
+						'id'   => $id,
+						'top'  => $img['top'],
+						'left' => $img['left'],
+					),
+				),
+			);
+		}
+		$blocks[] = $serialise(
+			'citcom/gallery',
+			array_merge(
+				array(
+					'style'  => $extra['gallery']['style'],
+					'_style' => 'field_670e35ab38bcd',
+				),
+				citcom_fixture_repeater( 'gallery', 'field_670e367538bce', $rows ),
+				citcom_fixture_section_settings( $extra['gallery']['classes'] ?? '' )
+			)
+		);
+	}
+
+	if ( ! empty( $extra['quote'] ) ) {
+		$blocks[] = $serialise(
+			'citcom/quote',
+			array_merge(
+				array(
+					'quote'   => $extra['quote']['quote'],
+					'_quote'  => 'field_67042af619212',
+					'source'  => $extra['quote']['source'],
+					'_source' => 'field_67042bf819213',
+				),
+				citcom_fixture_section_settings( '' )
+			)
+		);
+	}
+
+	$blocks[] = $serialise(
+		'citcom/shortcode',
+		array_merge(
+			array(
+				'before'     => '<p>Before the shortcode.</p>',
+				'_before'    => 'field_671a53d144e6e',
+				'shortcode'  => '[chatcom]',
+				'_shortcode' => 'field_671a540044e70',
+				'after'      => '<p>After the shortcode.</p>',
+				'_after'     => 'field_671a53ef44e6f',
+			),
+			citcom_fixture_section_settings( 'bg-default_lighter' )
+		)
+	);
+
+	return $blocks ? "\n\n" . implode( "\n\n", $blocks ) : '';
 }
 
 /*
@@ -519,7 +644,7 @@ $contact_id = citcom_fixture_page(
 			'bg-color' => '#eff1f3',
 			'pattern'  => 'persian',
 		)
-	) . "\n\n" . $paragraph . "\n\n" . '<!-- wp:citcom/cta ' . wp_json_encode( $cta_block, JSON_UNESCAPED_SLASHES ) . ' /-->'
+	) . "\n\n" . $paragraph . "\n\n" . '<!-- wp:citcom/cta ' . serialize_block_attributes( $cta_block ) . ' /-->' . citcom_fixture_extra_sections()
 );
 
 /*
@@ -613,8 +738,7 @@ $cs_template_content = citcom_fixture_page_header(
 		'pattern'  => 'persian',
 		'breadcrumb' => '1',
 	)
-) . "\n\n" . '<!-- wp:citcom/display-posts ' . wp_json_encode(
-	array(
+) . "\n\n" . '<!-- wp:citcom/display-posts ' . serialize_block_attributes( array(
 		'name' => 'citcom/display-posts',
 		'data' => array_merge(
 			array(
@@ -632,15 +756,13 @@ $cs_template_content = citcom_fixture_page_header(
 			citcom_fixture_section_settings( '' )
 		),
 		'mode' => 'preview',
-	),
-	JSON_UNESCAPED_SLASHES
-) . ' /-->';
+	) ) . ' /-->';
 $cs_template_args = array(
 	'post_type'    => 'template',
 	'post_title'   => 'Case Studies archive',
 	'post_name'    => 'case-studies-archive',
 	'post_status'  => 'publish',
-	'post_content' => $cs_template_content,
+	'post_content' => wp_slash( $cs_template_content ),
 );
 if ( $cs_template ) {
 	$cs_template_args['ID'] = $cs_template->ID;

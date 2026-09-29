@@ -228,6 +228,25 @@ when diffing against it:
   and logs) for Pressable's wp-content git integration. Point the staging site's
   git deploy at the `deploy` branch; decided 2026-09-28.
 
+## Block data format (for the Phase 3 migration)
+
+Learned while building the local fixture (tools/local-fixture.php is a working
+example):
+
+- Block attributes go through `serialize_block_attributes()`, not plain
+  `wp_json_encode()`, so quotes, `<`, `>` and `--` inside field HTML cannot
+  break the block comment.
+- Content written with `wp_insert_post()` / `wp_update_post()` must be
+  `wp_slash()`ed, or the JSON escapes in the block comment are stripped and
+  the block loses its attributes.
+- Repeaters are stored flattened, as in postmeta: `name` holds the row count,
+  each sub-value is `name_{i}_{sub}`, and every key has a `_name...` twin with
+  the field key. Nested arrays are ignored by ACF.
+- Focal point fields (`citcom_focuspoint`) are always arrays `{id, top, left}`,
+  also when empty.
+- The old editor and media_text HTML strings become inner blocks; core/html
+  is a valid interim container for HTML that has no clean block equivalent.
+
 ## Still to capture
 
 - Lighthouse / Query Monitor baseline on 5 representative pages (not done).
