@@ -1,0 +1,109 @@
+{
+    "key": "group_citcom_gallery",
+    "title": "Block: Gallery",
+    "fields": [
+        {
+            "key": "field_670e35ab38bcd",
+            "label": "Style (layout)",
+            "name": "style",
+            "aria-label": "",
+            "type": "acfe_image_selector",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "style1": "/wp-content/themes/citcom-rebuild/assets/img/gallery/style-1.png",
+                "style2": "/wp-content/themes/citcom-rebuild/assets/img/gallery/style-2.png",
+                "style3": "/wp-content/themes/citcom-rebuild/assets/img/gallery/style-3.png",
+                "style4": "/wp-content/themes/citcom-rebuild/assets/img/gallery/style-4.png",
+                "style5": "/wp-content/themes/citcom-rebuild/assets/img/gallery/style-5.png",
+                "style6": "/wp-content/themes/citcom-rebuild/assets/img/gallery/style-6.png",
+                "style7": "/wp-content/themes/citcom-rebuild/assets/img/gallery/style-7.png"
+            },
+            "default_value": "style1",
+            "image_size": "thumbnail",
+            "width": "",
+            "height": "",
+            "border": 4,
+            "return_format": "value",
+            "allow_null": 0,
+            "multiple": 0,
+            "max": "",
+            "layout": "horizontal",
+            "min": ""
+        },
+        {
+            "key": "field_670e367538bce",
+            "label": "Gallery",
+            "name": "gallery",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 3,
+            "max": 6,
+            "collapsed": "",
+            "button_label": "Add Image",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_670e369d38bcf",
+                    "label": "Image",
+                    "name": "image",
+                    "aria-label": "",
+                    "type": "citcom_focuspoint",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "preview_size": "large",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "parent_repeater": "field_670e367538bce"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "citcom/gallery"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Fields of the old gallery layout (same names and keys). Style thumbnails come from the theme instead of attachments 637 to 643.",
+    "show_in_rest": 0,
+    "modified": 1790620000
+}

@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/gallery",
+	"title": "Gallery",
+	"description": "Three to six images in one of seven masonry layouts.",
+	"category": "citcom",
+	"icon": "format-gallery",
+	"keywords": [ "gallery", "images", "masonry", "photos" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [ "page", "service", "case-study", "landing-page", "template" ],
+		"usePostMeta": false
+	},
+	"style": "file:../../build/blocks/gallery/style.css"
+}
