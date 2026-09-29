@@ -8,7 +8,7 @@
  *   node tools/visual-baseline.mjs diff --a .baseline/old --b .baseline/new --out .baseline/diff [--threshold 0.001]
  *
  * Options for capture: --insecure (accept the Laragon self-signed certificate),
- * --only slug1,slug2 (capture only URLs whose path contains one of these).
+  * --only slug1,slug2 (capture only URLs whose path contains one of these; prefix an entry with = for an exact path).
  *
  * Reads docs/urls.csv (type,path). Captures full-page PNGs at desktop (1440)
  * and mobile (390) with animations, AOS, lozad lazy-load and carousels
@@ -43,7 +43,7 @@ async function capture() {
   if (!base) throw new Error('--base is required');
   fs.mkdirSync(out, { recursive: true });
   const only = args.only ? String(args.only).split(',').filter(Boolean) : [];
-  const urls = readUrls().filter(u => !only.length || only.some(o => u.path.includes(o)));
+  const urls = readUrls().filter(u => !only.length || only.some(o => o.startsWith('=') ? u.path === o.slice(1) : u.path.includes(o)));
   const browser = await chromium.launch();
   const manifest = [];
   for (const [vpName, vp] of Object.entries(VIEWPORTS)) {

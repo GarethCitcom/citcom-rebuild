@@ -547,6 +547,111 @@ foreach ( citcom_fixture_about_sections() as $section ) {
 $about_id = citcom_fixture_page( 'About Us', 'about-us', $about_content );
 
 /*
+ * 2b. Case studies and the "Case Studies" template post, so /case-studies/ can be
+ * compared with staging: the six cards on staging page 1 (tools/fixtures/
+ * case-studies.json) plus one older filler so "Load more" appears, six per page.
+ */
+update_option( 'posts_per_page', 6 );
+
+$cs_file = __DIR__ . '/fixtures/case-studies.json';
+$cs_ids  = array();
+if ( file_exists( $cs_file ) ) {
+	$cs_items = json_decode( (string) file_get_contents( $cs_file ), true ) ?: array();
+	$when     = strtotime( '2026-09-01 12:00:00' );
+	foreach ( $cs_items as $i => $item ) {
+		$existing = get_page_by_path( $item['slug'], OBJECT, 'case-study' );
+		$cs_id    = $existing ? (int) $existing->ID : (int) wp_insert_post(
+			array(
+				'post_type'   => 'case-study',
+				'post_title'  => html_entity_decode( $item['title'], ENT_QUOTES | ENT_HTML5 ),
+				'post_name'   => $item['slug'],
+				'post_status' => 'publish',
+				'post_date'   => gmdate( 'Y-m-d H:i:s', $when - $i * DAY_IN_SECONDS ),
+			)
+		);
+		if ( ! $cs_id ) {
+			continue;
+		}
+		$cs_ids[] = $cs_id;
+		$term_ids = array();
+		foreach ( $item['tags'] as $tag ) {
+			$term = term_exists( $tag['slug'], 'cs-tag' );
+			if ( ! $term ) {
+				$term = wp_insert_term( $tag['name'], 'cs-tag', array( 'slug' => $tag['slug'] ) );
+			}
+			if ( ! is_wp_error( $term ) ) {
+				$term_ids[] = (int) $term['term_id'];
+			}
+		}
+		wp_set_object_terms( $cs_id, $term_ids, 'cs-tag' );
+		if ( ! empty( $item['image'] ) && ! get_post_thumbnail_id( $cs_id ) ) {
+			$thumb = citcom_fixture_sideload( $item['image'], $item['alt'] ?: $item['title'] );
+			if ( $thumb ) {
+				set_post_thumbnail( $cs_id, $thumb );
+			}
+		}
+	}
+	if ( ! get_page_by_path( 'fixture-filler-case-study', OBJECT, 'case-study' ) ) {
+		wp_insert_post(
+			array(
+				'post_type'   => 'case-study',
+				'post_title'  => 'Fixture filler case study',
+				'post_name'   => 'fixture-filler-case-study',
+				'post_status' => 'publish',
+				'post_date'   => '2025-01-01 12:00:00',
+			)
+		);
+	}
+}
+
+$cs_template = get_page_by_path( 'case-studies-archive', OBJECT, 'template' );
+$cs_template_content = citcom_fixture_page_header(
+	array(
+		'title'    => 'Case Studies',
+		'type'     => 'pattern',
+		'bg-color' => '#eff1f3',
+		'pattern'  => 'persian',
+		'breadcrumb' => '1',
+	)
+) . "\n\n" . '<!-- wp:citcom/display-posts ' . wp_json_encode(
+	array(
+		'name' => 'citcom/display-posts',
+		'data' => array_merge(
+			array(
+				'type_of_display'          => 'archive',
+				'_type_of_display'         => 'field_670444d07937b',
+				'number_of_posts_to_show'  => '3',
+				'_number_of_posts_to_show' => 'field_670442b079378',
+				'post_type'                => 'case-study',
+				'_post_type'               => 'field_670444347937a',
+				'posts'                    => '',
+				'_posts'                   => 'field_6704432279379',
+				'posts_cs'                 => '',
+				'_posts_cs'                => 'field_670973db20a89',
+			),
+			citcom_fixture_section_settings( '' )
+		),
+		'mode' => 'preview',
+	),
+	JSON_UNESCAPED_SLASHES
+) . ' /-->';
+$cs_template_args = array(
+	'post_type'    => 'template',
+	'post_title'   => 'Case Studies archive',
+	'post_name'    => 'case-studies-archive',
+	'post_status'  => 'publish',
+	'post_content' => $cs_template_content,
+);
+if ( $cs_template ) {
+	$cs_template_args['ID'] = $cs_template->ID;
+	$cs_template_id         = (int) wp_update_post( $cs_template_args );
+} else {
+	$cs_template_id = (int) wp_insert_post( $cs_template_args );
+}
+update_field( 'case_study_archive', $cs_template_id, 'option' );
+update_field( 'case_studies_tag_archive', $cs_template_id, 'option' );
+
+/*
  * 3. Menus (custom links mirror the staging structure).
  */
 $home = untrailingslashit( home_url() );
