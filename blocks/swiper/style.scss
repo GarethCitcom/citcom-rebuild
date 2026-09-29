@@ -1,0 +1,6 @@
+// citcom/swiper: Swiper bundle CSS plus the theme's pagination tweaks (see
+// src/scss/blocks/_swiper.scss). The old flexContent/swiper.scss had nothing
+// block-specific beyond that.
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+@import "../../src/scss/blocks/swiper";

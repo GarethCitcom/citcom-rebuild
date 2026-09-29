@@ -1,0 +1,451 @@
+{
+    "key": "group_citcom_swiper",
+    "title": "Block: Swiper",
+    "fields": [
+        {
+            "key": "field_66fb0234508af",
+            "label": "Slides",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_66fb0251508b0",
+            "label": "Swiper type",
+            "name": "swiper_type",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "Only image slides render; content and card types were never built.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "images": "Images (gallery)",
+                "content": "Content Blocks",
+                "cards": "Cards (coming soon)"
+            },
+            "default_value": "images",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
+        },
+        {
+            "key": "field_66fb02e5508b1",
+            "label": "Image Slides",
+            "name": "image_slides",
+            "aria-label": "",
+            "type": "gallery",
+            "instructions": "!!! Needs to be an even number",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66fb0251508b0",
+                        "operator": "==",
+                        "value": "images"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min": 1,
+            "max": "",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "insert": "append",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_66fb038b508b4",
+            "label": "Settings",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_66fb21f2422a1",
+            "label": "Slides per view",
+            "name": "slides_per_view",
+            "aria-label": "",
+            "type": "group",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_66fb222e422a3",
+                    "label": "Large desktop: number of slides",
+                    "name": "number_of_slides_xl",
+                    "aria-label": "",
+                    "type": "radio",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "1": "12",
+                        "2": "6",
+                        "3": "4",
+                        "4": "3",
+                        "6": "2",
+                        "12": "1"
+                    },
+                    "default_value": 2,
+                    "return_format": "value",
+                    "allow_null": 0,
+                    "other_choice": 0,
+                    "layout": "horizontal",
+                    "save_other_choice": 0
+                },
+                {
+                    "key": "field_66fb23f941682",
+                    "label": "Desktop: number of slides",
+                    "name": "number_of_slides_lg",
+                    "aria-label": "",
+                    "type": "radio",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "1": "12",
+                        "2": "6",
+                        "3": "4",
+                        "4": "3",
+                        "6": "2",
+                        "12": "1"
+                    },
+                    "default_value": 3,
+                    "return_format": "value",
+                    "allow_null": 0,
+                    "other_choice": 0,
+                    "layout": "horizontal",
+                    "save_other_choice": 0
+                },
+                {
+                    "key": "field_66fb242c41683",
+                    "label": "Tablet: number of slides",
+                    "name": "number_of_slides_md",
+                    "aria-label": "",
+                    "type": "radio",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "1": "12",
+                        "2": "6",
+                        "3": "4",
+                        "4": "3",
+                        "6": "2",
+                        "12": "1"
+                    },
+                    "default_value": 6,
+                    "return_format": "value",
+                    "allow_null": 0,
+                    "other_choice": 0,
+                    "layout": "horizontal",
+                    "save_other_choice": 0
+                },
+                {
+                    "key": "field_66fb243e41684",
+                    "label": "Mobile: number of slides",
+                    "name": "number_of_slides_sm",
+                    "aria-label": "",
+                    "type": "radio",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "1": "12",
+                        "2": "6",
+                        "3": "4",
+                        "4": "3",
+                        "6": "2",
+                        "12": "1"
+                    },
+                    "default_value": 12,
+                    "return_format": "value",
+                    "allow_null": 0,
+                    "other_choice": 0,
+                    "layout": "horizontal",
+                    "save_other_choice": 0
+                }
+            ]
+        },
+        {
+            "key": "field_66fb24d741687",
+            "label": "Center align slides",
+            "name": "center_align_slides",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Slides appear offscreen and active slide is center",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_66fb255941689",
+            "label": "Loop slides",
+            "name": "loop_slides",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Enable continuous loop mode",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_66fb25aa4168a",
+            "label": "Auto play",
+            "name": "auto_play",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Enable auto play mode",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_66fb26e04168b",
+            "label": "Delay (seconds between slide autoplay)",
+            "name": "delay",
+            "aria-label": "",
+            "type": "range",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66fb25aa4168a",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 3,
+            "min": 0,
+            "max": 100,
+            "step": "",
+            "prepend": "",
+            "append": "seconds"
+        },
+        {
+            "key": "field_66fb33ce799c5",
+            "label": "Speed (autoplay speed)",
+            "name": "speed",
+            "aria-label": "",
+            "type": "range",
+            "instructions": "Lower the percentage is faster",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66fb25aa4168a",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 3,
+            "min": 1,
+            "max": 100,
+            "step": "",
+            "prepend": "",
+            "append": "%"
+        },
+        {
+            "key": "field_66fb27a74168c",
+            "label": "Navigation arrows",
+            "name": "navigation_arrows",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Show navigation arrows",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_66fb27c74168d",
+            "label": "Pagination dots",
+            "name": "pagination_dots",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Show pagination dots",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_66fb27db4168e",
+            "label": "Scrollbar",
+            "name": "scrollbar",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Show swiper scrollbar",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_670c342615102",
+            "label": "Reverse Direction",
+            "name": "reverse_direction",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Reverse direction of autoplay",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "citcom/swiper"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Fields of the old swiper layout (same names and keys). The unused content_slides repeater is dropped; the four tabs inside slides_per_view became labels.",
+    "show_in_rest": 0,
+    "modified": 1790630000
+}
