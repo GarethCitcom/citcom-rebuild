@@ -243,9 +243,20 @@ function citcom_fixture_page_header( array $fields ): string {
 		'anchor_name'           => '',
 		'_anchor_name'          => 'field_6616e84d4614e',
 	);
+	$data = array_merge( $defaults, $fields );
+	// Fields hidden by conditional logic are not stored, as the editor would not store them.
+	$type = $data['type'] ?? 'pattern';
+	foreach ( array( 'image' => array( 'header_image' ), 'pattern' => array( 'bg-color', 'pattern' ), 'services' => array( 'service' ) ) as $for_type => $names ) {
+		if ( $for_type === $type ) {
+			continue;
+		}
+		foreach ( $names as $name ) {
+			unset( $data[ $name ], $data[ '_' . $name ] );
+		}
+	}
 	$block = array(
 		'name' => 'citcom/page-header',
-		'data' => array_merge( $defaults, $fields ),
+		'data' => $data,
 		'mode' => 'preview',
 	);
 	return '<!-- wp:citcom/page-header ' . serialize_block_attributes( $block ) . ' /-->';
@@ -394,8 +405,6 @@ function citcom_fixture_about_sections(): array {
 					'_image_2'       => 'field_66fac4a83b6df',
 					'image_2_scale'  => '100',
 					'_image_2_scale' => 'field_66fae451102db',
-					'video'          => '',
-					'_video'         => 'field_66fabf67203c7',
 					'align'          => $section['align'] ?? 'media_left',
 					'_align'         => 'field_66fac1aa255fd',
 					'citdot_style'   => ! empty( $section['citdot'] ) ? '1' : '0',
@@ -642,10 +651,6 @@ $cta_block = array(
 				'target' => '_blank',
 			),
 			'_button'      => 'field_66fe73e75bb03',
-			'button_2'     => '',
-			'_button_2'    => 'field_66fe74175bb04',
-			'form'         => '',
-			'_form'        => 'field_66fe797df659f',
 		),
 		citcom_fixture_section_settings( '' )
 	),
@@ -766,10 +771,6 @@ $cs_template_content = citcom_fixture_page_header(
 				'_number_of_posts_to_show' => 'field_670442b079378',
 				'post_type'                => 'case-study',
 				'_post_type'               => 'field_670444347937a',
-				'posts'                    => '',
-				'_posts'                   => 'field_6704432279379',
-				'posts_cs'                 => '',
-				'_posts_cs'                => 'field_670973db20a89',
 			),
 			citcom_fixture_section_settings( '' )
 		),

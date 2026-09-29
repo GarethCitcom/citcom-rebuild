@@ -174,18 +174,21 @@ header is duplicated or guarded before assuming that markup as the baseline.
 ## Baseline capture result (2026-09-28)
 
 Captured from staging before any theme change: 246 shots (123 URLs at desktop
-and mobile), no failures, only the deliberate 404 page returned 404. Stored in
-`.baseline/old/` (562 MB, git-ignored) with `manifest.json`. Two things to know
-when diffing against it:
+and mobile), only the deliberate 404 page returned 404. Stored in
+`.baseline/old/` (585 MB, git-ignored) with `manifest.json`.
 
-- Font Awesome icons did not render in the staging shots (footer contact and
-  social icons appear as list bullets and empty boxes). The kit at
-  kit.fontawesome.com/4a7ba1b0a5.js is either domain-restricted to citcom.co.uk
-  or too slow for the capture. Icon areas will always differ until the kit
-  allows the staging host, or the diff ignores them. Check the kit's allowed
-  domains before Phase 3 comparisons.
-- The tool now takes `--insecure` (Laragon's self-signed certificate) and
-  `--only slug,slug` (subset of urls.csv) for local captures.
+Re-captured on 2026-09-29 after two staging changes: the Font Awesome kit now
+allows the staging host (the first capture had no icons, so footer and card
+icons showed as bullets and empty boxes) and the cookie banner was removed.
+One URL timed out on the first pass and was re-captured separately.
+
+Notes on the tool:
+
+- `--insecure` accepts Laragon's self-signed certificate; `--only slug,slug`
+  captures a subset of urls.csv, and an entry prefixed with `=` matches the
+  exact path (run that form from PowerShell, Git Bash rewrites `=/path`).
+- `/` is saved as `root.*.png`; `/home/` as `home.*.png` (the first capture
+  wrote both to the same file, so the Diner home page had no shot).
 
 ## Findings added in Phase 1
 
@@ -244,6 +247,13 @@ example):
   the field key. Nested arrays are ignored by ACF.
 - Focal point fields (`citcom_focuspoint`) are always arrays `{id, top, left}`,
   also when empty.
+- Fields hidden by conditional logic must be OMITTED from the block data (for
+  example `header_image` on a pattern page header, `form` on a button CTA,
+  `posts` on an archive listing). The editor never stores them, and ACF's
+  block validation checks every key present, hidden or not, so a stored empty
+  required field blocks saving with "An ACF Block on this page requires
+  attention". The old flexible content rows contain all sub-fields, so the
+  migration has to drop the hidden ones per layout.
 - The old editor and media_text HTML strings become inner blocks; core/html
   is a valid interim container for HTML that has no clean block equivalent.
 

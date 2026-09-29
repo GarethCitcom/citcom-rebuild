@@ -30,7 +30,7 @@ const FREEZE_CSS = `
   html { scroll-behavior: auto !important; }
 `;
 
-function slug(p) { return p.replace(/^\/|\/$/g, '').replace(/[^a-z0-9]+/gi, '_') || 'home'; }
+function slug(p) { if (p === '/') return 'root'; return p.replace(/^\/|\/$/g, '').replace(/[^a-z0-9]+/gi, '_') || 'home'; }
 
 function readUrls() {
   const rows = fs.readFileSync(path.resolve('docs/urls.csv'), 'utf8').trim().split('\n').slice(1);

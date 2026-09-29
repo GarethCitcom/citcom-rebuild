@@ -322,7 +322,10 @@ class Citcom_Field_Focuspoint extends acf_field {
 		$clean = self::normalise( $value );
 
 		if ( '' === $clean['id'] ) {
-			if ( ! empty( $field['required'] ) ) {
+			// Block validation checks every key in the block data, hidden or not,
+			// and ACF's own rule is not to enforce required on fields that carry
+			// conditional logic (see acf_validate_block_from_local_meta). Same here.
+			if ( ! empty( $field['required'] ) && empty( $field['conditional_logic'] ) ) {
 				return sprintf( __( '%s value is required', 'acf' ), $field['label'] );
 			}
 			return $valid;
