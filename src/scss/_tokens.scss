@@ -13,3 +13,16 @@
 $page_padding_sm: math.div($grid-gutter-width, 2);
 $page_padding_lg: $grid-gutter-width * 2;
 $page_padding_xl: $grid-gutter-width * 3;
+
+// Header heights (also declared in sections/_header.scss); blocks that stick
+// under the header (sub-services nav) need them.
+$hh: 74px;
+$hh_shrink: 58px;
+$hh_sm: 88px;
+$hh_sm_shrink: 58px;
+$hh_lg: 104px;
+$hh_lg_shrink: 62px;
+$hh_xl: 118px;
+$hh_xl_shrink: 70px;
+$hh_sl: 146px;
+$hh_sl_shrink: 84px;

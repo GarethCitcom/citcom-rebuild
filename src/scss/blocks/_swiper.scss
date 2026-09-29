@@ -1,0 +1,27 @@
+// Swiper 11 bundle CSS plus the theme's pagination tweaks (was
+// assets/_dev/scss/plugins/swiper.scss + flexContent/swiper.scss). Imported by
+// the blocks that use Swiper (swiper, sub-services) rather than globally.
+@import "swiper/swiper-bundle.css";
+
+.swiper-free-mode > .swiper-wrapper{
+    transition-timing-function : linear;
+  }
+
+.swiper-pagination{
+  .swiper-pagination-bullet{
+    @include transition(all,0.3s);
+    &.swiper-pagination-bullet-active{
+      width: calc(var(--swiper-pagination-bullet-size) * 2);
+    }
+  }
+}
+
+:root{
+  --swiper-theme-color: #9AD14D;
+  --swiper-pagination-bullet-size: 1.2rem;
+  --swiper-pagination-bullet-border-radius: 20rem;
+}
+
+.swiper-pagination-bullet-active{
+  background-color: #9AD14D;
+}
