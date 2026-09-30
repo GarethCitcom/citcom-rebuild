@@ -22,6 +22,7 @@ import { swiperSetup } from './js/swiper';
 import { sidebar } from './js/sidebar';
 import { displayPosts } from './js/display-posts';
 import { forminatorBootstrap } from './js/forminator-bootstrap';
+import { forms } from './js/forms';
 
 // Bootstrap is exposed for the inline tooltip/modal calls the templates make.
 window.bootstrap = bootstrap;
@@ -109,6 +110,7 @@ $( function () {
 	swiperSetup();
 	displayPosts();
 	forminatorBootstrap();
+	forms();
 
 	if ( $( '.wp-block-categories-list' ).length ) {
 		sidebar();

@@ -1,0 +1,70 @@
+// Theme forms (inc/forms.php). The markup carries the Bootstrap classes the
+// old forminator-bootstrap.js added to Forminator's forms, so most of the look
+// comes from Bootstrap; these rules are what Forminator's grid and the old
+// .forminator-custom-form overrides (elements/_form-fields.scss) added.
+.citcom-form{
+    // The two-column grid depends on the form's own width (see below).
+    container-type: inline-size;
+    container-name: citcom-form;
+
+    [hidden]{
+        display: none !important;
+    }
+    // Honeypot: never shown, never focusable.
+    .citcom-form-hp{
+        display: none !important;
+    }
+    .citcom-form-row-last{
+        margin-bottom: 0 !important;
+        .citcom-form-col{
+            margin-bottom: 0 !important;
+        }
+    }
+    .rounded-label{
+        margin: 0 0 0.25rem 0;
+        @include forma(400);
+    }
+    .form-check-label{
+        @include forma(400);
+    }
+}
+
+.citcom-form-message{
+    @include transition(all,0.3s);
+    p{
+        margin: 0 !important;
+    }
+}
+.citcom-form-error{
+    @include transition(all,0.3s);
+}
+
+// Forminator's "open" grid: rows lay their fields side by side from 783px,
+// unless the form itself is 480px wide or less (it then stacks, as in the
+// contact card and the diner guest check).
+@media (min-width: 783px){
+    @container citcom-form (min-width: 480.02px){
+        .citcom-form-row{
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+        .citcom-form-col{
+            min-width: 0;
+            flex: 1;
+            padding: 0 15px;
+        }
+    }
+}
+
+// "plain" variant (diner guest check): no Bootstrap spacing classes, so the
+// spacing Forminator's grid gave the unconverted form is set here.
+.citcom-form--plain{
+    .citcom-form-row:not(:last-child){
+        margin-bottom: 20px;
+    }
+    .citcom-form-col:not(:last-child){
+        margin-bottom: 20px;
+    }
+}
