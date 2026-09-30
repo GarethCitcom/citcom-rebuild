@@ -1,0 +1,40 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/diner-story",
+	"title": "Diner: Story split",
+	"description": "Dark copy panel beside a photo, chequer bands top and bottom, with the starburst stamp.",
+	"category": "citcom",
+	"icon": "align-pull-left",
+	"keywords": [
+		"diner",
+		"story",
+		"split",
+		"photo"
+	],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [
+			"page",
+			"service",
+			"case-study",
+			"landing-page",
+			"template"
+		],
+		"usePostMeta": false
+	},
+	"style": [
+		"citcom-diner",
+		"file:../../build/blocks/diner-story/style.css"
+	]
+}
