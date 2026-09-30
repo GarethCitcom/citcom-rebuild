@@ -272,19 +272,28 @@ example):
   blocks only (the InnerBlocks that replaced the WYSIWYG fields); classic
   content without blocks keeps the default. Compared against staging, this
   keeps straight quotes and `...` in ACF fields as they are.
-- Staging's rendered sections differ from the reference theme code in two
-  places that are not the theme's doing: the Elfsight `<script>` of the
-  google_reviews layout is not inside the section on staging (moved by a
-  plugin), and `&` in social URLs prints as `&amp;` rather than `esc_url()`'s
-  `&#038;`. Both are equivalent in the browser.
+- `&` in social URLs prints as `&amp;` on staging rather than `esc_url()`'s
+  `&#038;`; equivalent in the browser.
+- Reviews (decided 2026-09-30): Elfsight is no longer used. The old theme
+  still printed its embed from the google_reviews layout (6 rows: /packages/
+  and its four sub-pages, /info/free-seo-audit/) and from the `google_reviews`
+  and `youtube_gallery` shortcodes (the second was a copy of the first, never a
+  gallery). The rebuild uses Trustindex everywhere: the migration turns each
+  google_reviews row into `citcom/trustindex` with `trustindex_code` set to
+  `[trustindex no-registration=google]` (the widget the diner reviews layout
+  shows on the home page, from the Trustindex plugin); `[google_reviews]`
+  prints the same widget; `[youtube_gallery]` stays registered and prints
+  nothing. These six sections therefore differ from the baseline on purpose.
+  The `trustindex_code` fields accept only a `[trustindex...]` shortcode or a
+  cdn.trustindex.io loader snippet (validated on save, rebuilt on output).
 
 ## Still to capture
 
 - Lighthouse / Query Monitor baseline on 5 representative pages (not done).
 - List of shortcodes used by the `shortcode` layout (17 rows) and which
   plugins provide them (not done; the theme's own `google_reviews`,
-  `youtube_gallery` and `chatcom` shortcodes are already ported in
-  `inc/shortcodes.php`). Read them from the `acfAllObjects_{id}` option rows on
+  `youtube_gallery` and `chatcom` shortcodes are in `inc/shortcodes.php`, the
+  first two no longer Elfsight, see the reviews note above). Read them from the `acfAllObjects_{id}` option rows on
   staging when the Phase 3 migration script first parses that data.
 - Decision on the `template` post type (6 items): it must stay for now, because
   archive.php and single.php render the template posts chosen in Site Settings

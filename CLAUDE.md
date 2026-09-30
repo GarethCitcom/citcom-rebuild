@@ -24,7 +24,10 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   it in wp-content/mu-plugins. The focal point image field is the theme's own
   `citcom_focuspoint` type (inc/class-citcom-field-focuspoint.php), which
   replaced the acf-focuspoint mu-plugin with the same {id, top, left} value.
-  PHP 8.5, WP 7.1+.
+  Reviews come from Trustindex (decided 2026-09-30; the old Elfsight embeds are
+  gone): citcom/trustindex, the diner reviews block and [google_reviews] all go
+  through `citcom_trustindex_embed()` in inc/shortcodes.php, which needs the
+  Trustindex plugin for its shortcodes. PHP 8.5, WP 7.1+.
 - UK English in all copy and comments. No em dashes in prose.
 
 ## Block conventions
@@ -50,7 +53,7 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   media_text -> citcom/media-text, cta -> citcom/cta, display_posts ->
   citcom/display-posts, icons -> citcom/icons, gallery -> citcom/gallery,
   quote -> citcom/quote, shortcode -> citcom/shortcode, sub_services ->
-  citcom/sub-services, google_reviews -> citcom/google-reviews, stats ->
+  citcom/sub-services, google_reviews -> citcom/trustindex, stats ->
   citcom/stats, video -> citcom/video, swiper -> citcom/swiper, contact_map ->
   citcom/contact-map, services_showcase -> citcom/services-showcase,
   citdot_cards -> citcom/citdot-cards, diner_* -> citcom/diner-* (all eight).

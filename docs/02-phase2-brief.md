@@ -57,7 +57,7 @@ Rows are from docs/00-discovery.md. "Ref" is the staging page used to compare.
 | 7 | `citcom/quote` | 26 | wysiwyg quote and source; relies on `.flex-quote .wp-block-quote.is-style-plain` rules already in `src/scss/theme/_global.scss`. | /case-studies/bt-smb/ |
 | 8 | `citcom/shortcode` | 17 | before/after wysiwyg around a shortcode text. Needs the list of shortcodes in use (see "Still to capture"); the theme's own `google_reviews`, `youtube_gallery` and `chatcom` shortcodes are in inc/shortcodes.php. | /packages/ |
 | 9 | `citcom/sub-services` | 7 | `post_object` multi-select of services; ports `templates/service-card.php` (Swiper gallery per service). Needs Swiper CSS: `@import "swiper/css/bundle"` in the block style. | /services/creative/ |
-| 10 | `citcom/google-reviews` | 6 | Message field only; renders the Elfsight embed (same as the `google_reviews` shortcode). | /home/ |
+| 10 | `citcom/trustindex` | 6 | Replaces the google_reviews layout (decided 2026-09-30: Elfsight is dropped, reviews are Trustindex everywhere). One textarea, `trustindex_code`, taking a Trustindex shortcode or embed snippet; default `[trustindex no-registration=google]`. Same section wrapper as the old layout. Rendered by `citcom_trustindex_embed()` in inc/shortcodes.php, which the diner reviews block reuses. | /packages/ |
 | 11 | `citcom/stats` | 5 | title, opening text, `number_stats` repeater; uses `thousandsCurrencyFormat()` from inc/helpers.php. | /case-studies/delivering-400-roi-for-the-supercar-rooms/ |
 | 12 | `citcom/video` | 3 | Self-hosted (`audio_video_player`) or YouTube, `player_options` group, `citdot_container`; vlite markup expected by `src/js/vlite.js` (`.vlite` element with `data-options`, `#...-volume` button). | /case-studies/citizen-celebrates-bt-scheme-with-animated-video/ |
 | 13 | `citcom/swiper` | 3 | Image or content slides with the autoplay/loop/speed options read as `data-*` by `src/js/swiper.js`; section has the extra `fluid` class. Import `swiper/css/bundle`. | /about-us/ |
@@ -74,8 +74,10 @@ Rows are from docs/00-discovery.md. "Ref" is the staging page used to compare.
   after normalising ids, image URLs and srcset: sub-services, swiper (three
   sections), stats, services-showcase, citdot-cards and contact-map are
   byte-identical; video differs only in the JSON slash escaping the old
-  `json_encode()` produced (kept unescaped as staging prints it); google-reviews
-  differs only by the Elfsight `<script>` staging moves out of the section.
+  `json_encode()` produced (kept unescaped as staging prints it). The google_reviews layout was first
+  ported with its Elfsight embed, then replaced on 2026-09-30 by
+  `citcom/trustindex`: those six sections intentionally differ from staging,
+  which still prints the dead Elfsight embed.
   Local test content: `tools/local-fixture-phase2.php` (pages /home-classic/,
   /results/, /services/creative/, plus sections appended to /about-us/ and
   /contact-us/). Notes: `citcom/stats` does not use `thousandsCurrencyFormat()`
