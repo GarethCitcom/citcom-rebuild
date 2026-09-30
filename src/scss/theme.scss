@@ -34,3 +34,6 @@
 @import "elements/breadcrumb";
 @import "elements/termsfeed";
 
+
+// Last: the old theme's Customizer Additional CSS came after its stylesheet.
+@import "theme/additional-css";
