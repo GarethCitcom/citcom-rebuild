@@ -1,12 +1,12 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "citcom/google-reviews",
-	"title": "Google Reviews",
-	"description": "The Elfsight Google reviews widget inside the standard section.",
+	"name": "citcom/trustindex",
+	"title": "Trustindex",
+	"description": "A Trustindex widget (Google reviews by default) inside the standard section. Takes a Trustindex shortcode or embed snippet.",
 	"category": "citcom",
 	"icon": "star-filled",
-	"keywords": [ "reviews", "google", "testimonials", "elfsight" ],
+	"keywords": [ "reviews", "google", "testimonials", "trustindex", "rating" ],
 	"textdomain": "citcom",
 	"supports": {
 		"anchor": true,

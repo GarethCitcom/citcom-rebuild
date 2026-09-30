@@ -1,6 +1,6 @@
 <?php
 /**
- * Local fixture for the Phase 2 blocks sub-services, google-reviews, stats,
+ * Local fixture for the Phase 2 blocks sub-services, trustindex, stats,
  * video, swiper, contact-map, services-showcase and citdot-cards. Run after
  * tools/local-fixture.php, from the WordPress root:
  *
@@ -12,7 +12,8 @@
  * - /about-us/          + citdot_cards (staging index 8) and two swipers (10, 12)
  * - /contact-us/        + contact_map (staging /contact-us/ index 2)
  * - /home-classic/      video, services_showcase and swiper from staging /home/
- * - /results/           stats (staging "Delivering 400% ROI" case study) and google_reviews
+ * - /results/           stats (staging "Delivering 400% ROI" case study) and trustindex
+ *                       (the old google_reviews section, now a Trustindex widget)
  * - /services/creative/ sub_services with five child services, as staging
  *
  * Re-running reuses anything that already exists.
@@ -306,7 +307,7 @@ if ( $home_blocks ) {
 }
 
 /*
- * 4. Results: stats and google reviews.
+ * 4. Results: stats and the Trustindex widget that replaces the google_reviews section.
  */
 $results_blocks = array();
 if ( ! empty( $citcom_p2['stats'] ) ) {
@@ -345,7 +346,16 @@ if ( ! empty( $citcom_p2['stats'] ) ) {
 	);
 }
 if ( ! empty( $citcom_p2['google_reviews'] ) ) {
-	$results_blocks[] = citcom_fixture_block( 'citcom/google-reviews', citcom_fixture_section_settings( $citcom_p2['google_reviews']['classes'] ) );
+	$results_blocks[] = citcom_fixture_block(
+		'citcom/trustindex',
+		array_merge(
+			array(
+				'trustindex_code'  => '[trustindex no-registration=google]',
+				'_trustindex_code' => 'field_citcom_trustindex_code',
+			),
+			citcom_fixture_section_settings( $citcom_p2['google_reviews']['classes'] )
+		)
+	);
 }
 if ( $results_blocks ) {
 	$results_id = citcom_fixture_page(
