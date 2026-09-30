@@ -254,6 +254,41 @@
                 "param": "block",
                 "operator": "==",
                 "value": "all"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "citcom/cta"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "citcom/quote"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "citcom/posts-search"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "citcom/latest-posts"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "citcom/newsletter-signup"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "citcom/related-posts"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "citcom/top-blog-posts"
             }
         ]
     ],
@@ -264,7 +299,7 @@
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": true,
-    "description": "Applied to every citcom/* block. Rendered by citcom_section_attrs() exactly as the old layoutSettings() did.",
+    "description": "Section wrapper settings for every section block, rendered by citcom_section_attrs() exactly as the old layoutSettings() did. Not shown on citcom/cta (anchor only, see Section settings (simple)), citcom/quote (the old layout had no settings) or the sidebar blocks.",
     "show_in_rest": 0,
-    "modified": 1790600000
+    "modified": 1790740000
 }
