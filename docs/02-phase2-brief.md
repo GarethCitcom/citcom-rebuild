@@ -114,6 +114,11 @@ Rows are from docs/00-discovery.md. "Ref" is the staging page used to compare.
   the sidebar blocks; the simple group is attached to `citcom/cta`.
 - Decided 2026-09-29: swatch and the ACF Extended field types stay; focuspoint
   is the theme's `citcom_focuspoint` type.
+- Done 2026-09-30: forms are part of the theme and Forminator is no longer
+  needed (eight forms; the RSVP form and the quizzes are retired). Details and
+  the page and form review decisions are in docs/00-discovery.md, "Forms".
+  Local test content: /contact-us/, / (guest check), /packages/, /forms-test/
+  and the two header and footer popups.
 
 ## Not in Phase 2
 

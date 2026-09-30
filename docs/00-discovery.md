@@ -338,9 +338,9 @@ example):
 
 Forminator is being dropped (decided 2026-09-30): forms are built into the
 theme, Mailchimp is the only integration, the old submissions are not
-exported, and new submissions are kept for 30 days. Which of the forms and
-pages below are still needed is for Gareth to mark in
-docs/pages-and-forms-review.xlsx. Read with `wp --skip-themes` on staging 1771004.
+exported, and new submissions are kept for 30 days. Gareth marked which forms
+and pages are still needed in docs/pages-and-forms-review.xlsx (see "Review
+decisions" below). Read with `wp --skip-themes` on staging 1771004.
 
 | Id | Form | Fields (* required) | Used on | Entries |
 |---|---|---|---|---|
@@ -363,30 +363,63 @@ docs/pages-and-forms-review.xlsx. Read with `wp --skip-themes` on staging 177100
 - Behaviour: ajax submit, submissions stored, email notifications with
   conditional routing on 623 and 220023 (staging recipients are rewritten to
   the staging domain).
-- Where the theme touches Forminator: `form` post_object fields (post type
-  `forminator_forms`) in citcom/cta, citcom/contact-map and
-  citcom/diner-guestcheck; `[forminator_form]` in footer.php (newsletter
-  modal) and in those three blocks; `src/js/forminator-bootstrap.js` (adds
-  Bootstrap classes to Forminator's markup); `src/scss/elements/_form-fields.scss`;
-  the "SEND TO THE KITCHEN" relabel script in diner-guestcheck; and any
-  `[forminator_form]` / `[forminator_quiz]` shortcodes inside shortcode
-  layouts on the /info/ pages.
+- Where the old theme touched Forminator: `form` post_object fields (post type
+  `forminator_forms`) in the cta, contact_map and diner_guestcheck layouts;
+  `[forminator_form]` in footer.php (newsletter modal) and in those three
+  layouts; a jQuery module that added Bootstrap classes to Forminator's
+  markup; `.forminator-*` rules in the form fields SCSS; the "SEND TO THE
+  KITCHEN" relabel script in diner-guestcheck; and `[forminator_form]` /
+  `[forminator_quiz]` shortcodes inside shortcode layouts on the /info/ pages.
 - Trustindex on staging is the free plugin `wp-reviews-plugin-for-google`.
+
+### Review decisions (docs/pages-and-forms-review.xlsx, filled in 2026-09-30)
+
+- Forms kept, all rebuilt as theme forms: 623, 220023, 581, 218706, 219819,
+  219727, 219725, 218841.
+- Forms retired: CitCom Event RSVP (218732) and all four quizzes (219271,
+  219265, 219262, 219273). Their shortcodes print nothing.
+- Pages retired (every other page, landing page and service is kept). The
+  Phase 3 migration must not convert these; whether each is deleted, drafted
+  or redirected, and where to, is still to be agreed with Gareth:
+  /comp/ (218753), /marketing-agreement/ (219133), /suite/ (218516),
+  /test-about-us-updates/ (219465), /info/citcom-autumn-event/ (218718),
+  /info/ihd-ojdiudsa/ (219758), /info/junior-developer-quiz/ (219260),
+  /info/thank-you-rsvp/ (218743), /info/wc2026/ (219935).
+- `templates/wc26.php` in this repo is the page template of the retired
+  /info/wc2026/ page; ask before removing it.
+- Once the migration is done nothing in the theme needs the Forminator plugin;
+  deactivating it on staging is Gareth's call.
 
 ### Theme forms (built 2026-09-30)
 
-- `inc/forms.php` is the engine, `forms/<slug>.php` the definitions. Built so
-  far: `contact` (623), `guest-check` (220023), `newsletter` (581) and `brief`
-  (218706). Each definition lists the Forminator ids it replaces
-  (`legacy_ids`), so block data and `[forminator_form id="..."]` shortcodes
-  that still carry an old id render the theme form with no data change. The
-  other five forms and the quizzes wait for the review spreadsheet.
-- Markup: own class names (`citcom-form-*`) on the structure Forminator had
-  after forminator-bootstrap.js restyled it. The diner guest check uses the
-  "plain" variant (no Bootstrap classes), because that form was rendered
-  inline and never restyled. Compared with staging: contact form in the
-  contact map and the guest check form have the same size and the same
-  computed styles; the guest check differs by 0.27% of pixels (anti-aliasing).
+- `inc/forms.php` is the engine (registry, REST route, storage, retention,
+  recipients, shortcodes), `inc/forms-fields.php` renders, validates and
+  summarises the fields, `forms/<slug>.php` are the definitions: `contact`
+  (623), `guest-check` (220023), `newsletter` (581), `brief` (218706),
+  `packages` (219819), `client-survey` (219727), `technical-audit` (219725)
+  and `seo-audit` (218841). Each definition lists the Forminator ids it
+  replaces (`legacy_ids`), so block data and `[forminator_form id="..."]`
+  shortcodes that still carry an old id render the theme form with no data
+  change. `[forminator_form]` with any other id, `[forminator_quiz]` and
+  `[forminator_poll]` print nothing, whether or not the plugin is active.
+- Field types: text, email, tel, url, textarea, select, range, checkbox,
+  checkboxes (optionally with an "Other" text box), radio, html. A field can
+  be shown only when another has a given value (`show_if`); hidden fields are
+  neither required nor stored.
+- Markup: own class names (`citcom-form-*`), three variants.
+  - "bootstrap" (default): the structure Forminator had after the old jQuery
+    module restyled it. Contact, newsletter, brief, technical audit, SEO audit.
+  - "plain": no Bootstrap classes, for the diner guest check, which was
+    rendered inline and never restyled.
+  - "classic": Forminator's own "default" design, which the packages and
+    client survey forms used; colours are CSS custom properties per form
+    (`src/scss/elements/_forms.scss`).
+- Compared with staging, same size and computed styles: contact 452x545,
+  guest check (0.27% of pixels differ, anti-aliasing), packages 646x356
+  (0.000%), client survey 1316x2222 (0.436%), technical audit 1316x889
+  (1.673%, a 1px capture offset), SEO audit 646x452.
+- The technical audit form's bolder labels and red stars were that form's own
+  custom CSS in Forminator; they are scoped to `.citcom-form--technical-audit`.
 - Forminator's two-column grid applied from 783px unless the form itself was
   480px or narrower; the theme does the same with a container query.
 - Submissions go to `POST /wp-json/citcom/v1/forms/<slug>`, are stored as
@@ -394,8 +427,21 @@ docs/pages-and-forms-review.xlsx. Read with `wp --skip-themes` on staging 177100
   by a daily cron event after `CITCOM_FORMS_RETENTION_DAYS` (30).
 - Recipients and the Mailchimp key and audience are in Site Settings > Forms
   (`acf-json/group_citcom_forms.json`); the key can also be the
-  `CITCOM_MAILCHIMP_API_KEY` constant. To set on staging before testing:
-  general recipient (was info@), marketing recipient (was charl@), the key.
+  `CITCOM_MAILCHIMP_API_KEY` constant. They are left empty in the repo on
+  purpose: Gareth enters them on each server (decided 2026-09-30), and the key
+  is never read out of staging. With nothing entered, email goes to the site
+  admin address and Mailchimp sign-ups are skipped.
+- Recipient fields: "Enquiries go to" (general), "Mailing list sign-ups also go
+  to" (marketing), and a "Different recipients for a form" list that overrides
+  the general address for one form. How the old forms were routed (the named
+  addresses are not recorded here, this repo is public; Gareth has the list):
+  - contact, guest check, brief: the general enquiries address, plus the
+    marketing contact when the mailing list box is ticked (contact and guest
+    check)
+  - newsletter: the marketing contact
+  - packages and client survey: two named people
+  - technical audit and SEO audit: one named person each
+- Only contact, guest check and newsletter send to Mailchimp, as before.
 - Mailchimp as the old add-on had it: audience `a4ffec5bd1`, no double opt-in,
   marketing permission `8efa2d4074` (Email); tag "Website Signup" for contact
   and newsletter, "Diner Mailing List" for the guest check; the newsletter
@@ -411,8 +457,11 @@ docs/pages-and-forms-review.xlsx. Read with `wp --skip-themes` on staging 177100
     the submitted data.
   - The captcha field on send-a-brief is not carried over; spam protection is
     a honeypot, a minimum time on the page and a rate limit.
-- `src/js/forminator-bootstrap.js` and the `.forminator-*` rules stay until the
-  remaining Forminator forms are replaced or retired.
+  - The SEO audit's website address stays a free text field, as it was (a
+    repurposed phone field); the technical audit's is a URL field and accepts
+    an address typed without https://.
+- The jQuery module that restyled Forminator's markup and the `.forminator-*`
+  rules are removed; `src/js/forms.js` has no jQuery.
 
 ### Customizer Additional CSS
 
@@ -420,6 +469,7 @@ The old theme has Customizer > Additional CSS (924 bytes on staging). WordPress
 stores it per theme, so it does not follow the site to the new theme. It is
 ported in `src/scss/theme/_additional-css.scss`: the `#chatcom` section
 background (needs `assets/img/patterns/ai-gradient.jpg`, now copied), a top
-margin on the diner landing page's menu heading (`body.postid-219887`), 60px
-under every form submit button, and a small-screen rule for Forminator radio
-groups.
+margin on the diner landing page's menu heading (`body.postid-219887`) and 60px
+under every form submit button. Its small-screen rule for horizontal radio
+groups is not ported: it went with the technical audit form's radio styling,
+and that form no longer has a radio field.
