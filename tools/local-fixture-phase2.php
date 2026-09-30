@@ -18,6 +18,7 @@
  * - /services/creative/ sub_services with five child services, as staging
  * - /                   the diner home page (staging /), set as the front page
  * - /diner-extras/      diner variants staging does not use (sample content)
+ * - five blog posts and the sidebar block widgets (blog listing and blog post)
  *
  * Re-running reuses anything that already exists.
  *
@@ -750,5 +751,108 @@ if ( ! empty( $citcom_p2['diner'] ) ) {
 	WP_CLI::log( "Diner extras page: $extras_id" );
 }
 
+/*
+ * 7. Blog posts and the sidebar block widgets, as staging has them: the blog
+ * listing sidebar (search, top posts, newsletter) and the blog post sidebar
+ * (related posts, newsletter, latest posts). Post titles and categories are the
+ * ones staging lists; the post content is sample text.
+ */
+$blog_posts = array(
+	array( 'Why we bet on WooCommerce', 'why-we-bet-on-woocommerce', 'Development', '2026-09-09' ),
+	array( 'How World Events Are Shaping the Future of AI Search', 'how-world-events-are-shaping-the-future-of-ai-search', 'AISO', '2026-07-13' ),
+	array( 'The Digital Jigsaw: A Beginner\'s Guide to the Tech Stack Behind a Modern Website', 'the-digital-jigsaw-a-beginners-guide-to-the-tech-stack-behind-a-modern-website', 'Development', '2026-06-23' ),
+	array( 'The Rise of Black Friday in the UK', 'the-rise-of-black-friday-in-the-uk', 'Marketing', '2025-09-29' ),
+	array( 'Introducing CitCom.', 'introducing-citcom', 'News', '2024-10-22' ),
+);
+$blog_ids   = array();
+foreach ( $blog_posts as list( $blog_title, $blog_slug, $blog_cat, $blog_date ) ) {
+	$cat = term_exists( $blog_cat, 'category' );
+	if ( ! $cat ) {
+		$cat = wp_insert_term( $blog_cat, 'category' );
+	}
+	$found   = get_page_by_path( $blog_slug, OBJECT, 'post' );
+	$blog_id = $found ? (int) $found->ID : (int) wp_insert_post(
+		wp_slash(
+			array(
+				'post_type'     => 'post',
+				'post_title'    => $blog_title,
+				'post_name'     => $blog_slug,
+				'post_status'   => 'publish',
+				'post_date'     => $blog_date . ' 09:00:00',
+				'post_content'  => '<!-- wp:paragraph --><p>Sample post content for the local fixture. The real article lives on staging.</p><!-- /wp:paragraph -->',
+				'post_category' => is_wp_error( $cat ) ? array() : array( (int) $cat['term_id'] ),
+			)
+		)
+	);
+	if ( $blog_id ) {
+		$blog_ids[ $blog_slug ] = $blog_id;
+	}
+}
+
+$widget_blocks = array(
+	'blog_sidebar' => array(
+		citcom_fixture_block( 'citcom/posts-search', array() ),
+		citcom_fixture_block(
+			'citcom/top-blog-posts',
+			array(
+				'title'  => 'Top Blog Posts',
+				'_title' => 'field_6706ea529eb87',
+				'posts'  => array_map( 'strval', array_filter( array( $blog_ids['introducing-citcom'] ?? 0, $blog_ids['the-rise-of-black-friday-in-the-uk'] ?? 0 ) ) ),
+				'_posts' => 'field_6706ea8c9eb88',
+			)
+		),
+		citcom_fixture_block(
+			'citcom/newsletter-signup',
+			array(
+				'title'  => 'Sign up for CitCom updates, news and trends…',
+				'_title' => 'field_67085971d6f3a',
+			)
+		),
+	),
+	'post_sidebar' => array(
+		citcom_fixture_block( 'citcom/related-posts', array() ),
+		str_replace(
+			'"mode":"preview"',
+			'"mode":"preview","className":"mb-5 mt-4"',
+			citcom_fixture_block(
+				'citcom/newsletter-signup',
+				array(
+					'title'  => 'Sign up for CitCom updates, news and trends…',
+					'_title' => 'field_67085971d6f3a',
+				)
+			)
+		),
+		citcom_fixture_block(
+			'citcom/latest-posts',
+			array(
+				'title'  => 'Latest Posts',
+				'_title' => 'field_670861105f832',
+			)
+		),
+	),
+);
+
+$block_widgets    = get_option( 'widget_block', array() );
+$sidebars_widgets = get_option( 'sidebars_widgets', array() );
+$next_widget      = max( array_merge( array( 1 ), array_filter( array_keys( (array) $block_widgets ), 'is_int' ) ) ) + 1;
+foreach ( $widget_blocks as $sidebar => $blocks ) {
+	$existing = implode( ' ', array_map( static fn( $id ) => $block_widgets[ (int) str_replace( 'block-', '', $id ) ]['content'] ?? '', (array) ( $sidebars_widgets[ $sidebar ] ?? array() ) ) );
+	if ( str_contains( $existing, 'wp:citcom/' ) ) {
+		WP_CLI::log( "Sidebar $sidebar already has citcom block widgets." );
+		continue;
+	}
+	$ids = array();
+	foreach ( $blocks as $block_markup ) {
+		$block_widgets[ $next_widget ] = array( 'content' => $block_markup );
+		$ids[]                         = 'block-' . $next_widget;
+		++$next_widget;
+	}
+	$sidebars_widgets[ $sidebar ] = $ids;
+	WP_CLI::log( "Sidebar $sidebar: " . implode( ', ', $ids ) );
+}
+$block_widgets['_multiwidget'] = 1;
+update_option( 'widget_block', $block_widgets );
+update_option( 'sidebars_widgets', $sidebars_widgets );
+
 flush_rewrite_rules( false );
-WP_CLI::success( 'Phase 2 fixture done: / (diner home), /about-us/, /contact-us/, /home-classic/, /results/, /services/creative/, /diner-extras/.' );
+WP_CLI::success( 'Phase 2 fixture done: / (diner home), /about-us/, /contact-us/, /home-classic/, /results/, /services/creative/, /diner-extras/, five blog posts and the sidebar widgets.' );
