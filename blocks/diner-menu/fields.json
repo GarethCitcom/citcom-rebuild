@@ -1,0 +1,199 @@
+{
+    "key": "group_citcom_diner_menu",
+    "title": "Block: Diner: Services menu",
+    "fields": [
+        {
+            "key": "field_diner_menu_heading",
+            "label": "Heading",
+            "name": "heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
+            "key": "field_diner_menu_cards",
+            "label": "Service cards",
+            "name": "cards",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Card colour alternates automatically across the grid.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "button_label": "Add service",
+            "min": 0,
+            "max": 0,
+            "sub_fields": [
+                {
+                    "key": "field_diner_menu_label",
+                    "label": "Service name",
+                    "name": "label",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    }
+                },
+                {
+                    "key": "field_diner_menu_image",
+                    "label": "Product shot",
+                    "name": "image",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Lifts above the top of the card.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "preview_size": "medium"
+                },
+                {
+                    "key": "field_diner_menu_scale",
+                    "label": "Shot height",
+                    "name": "image_scale",
+                    "aria-label": "",
+                    "type": "range",
+                    "instructions": "Percentage of the card height. The design runs 61 to 87.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 75,
+                    "min": 40,
+                    "max": 110,
+                    "step": 1,
+                    "append": "%"
+                },
+                {
+                    "key": "field_diner_menu_tilt",
+                    "label": "Shot tilt",
+                    "name": "image_tilt",
+                    "aria-label": "",
+                    "type": "range",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 0,
+                    "min": -10,
+                    "max": 10,
+                    "step": 1,
+                    "append": "deg"
+                },
+                {
+                    "key": "field_diner_menu_card_link",
+                    "label": "Card link",
+                    "name": "link",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "Optional. Makes the whole card clickable.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array"
+                }
+            ]
+        },
+        {
+            "key": "field_diner_menu_button",
+            "label": "Button",
+            "name": "button",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        },
+        {
+            "key": "field_diner_menu_bleed_a",
+            "label": "Bleed artwork, left",
+            "name": "bleed_start",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Optional. Sits behind the grid, bleeding off the left edge.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_diner_menu_bleed_b",
+            "label": "Bleed artwork, right",
+            "name": "bleed_end",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "preview_size": "medium"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "citcom/diner-menu"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Fields of the old diner_menu layout (functions/acf/diner-layouts.php), same names and keys.",
+    "show_in_rest": 0,
+    "modified": 1790730000
+}
