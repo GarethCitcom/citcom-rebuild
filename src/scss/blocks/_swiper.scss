@@ -1,7 +1,7 @@
-// Swiper 11 bundle CSS plus the theme's pagination tweaks (was
-// assets/_dev/scss/plugins/swiper.scss + flexContent/swiper.scss). Imported by
-// the blocks that use Swiper (swiper, sub-services) rather than globally.
-@import "swiper/swiper-bundle.css";
+// The theme's Swiper CSS (plugins/_swiper.scss, a customised vendor bundle) plus the
+// pagination tweaks from assets/_dev/scss/flexContent/swiper.scss. Imported by the
+// blocks that use Swiper (swiper, sub-services) rather than globally.
+@import "../plugins/swiper";
 
 .swiper-free-mode > .swiper-wrapper{
     transition-timing-function : linear;
