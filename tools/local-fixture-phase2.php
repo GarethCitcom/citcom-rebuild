@@ -1023,6 +1023,9 @@ if ( ! empty( $citcom_p2['packages'] ) ) {
 			'_type_of_cta' => 'field_66fe71bd5bb02',
 			'content'      => $citcom_p2['packages']['cta']['content'] ?? '',
 			'_content'     => 'field_66fd5dae3ef00',
+			// The old Forminator form id, left as the migration will find it: it resolves to the theme's packages form.
+			'form'         => $citcom_p2['packages']['cta']['form'] ?? '219819',
+			'_form'        => 'field_66fe797df659f',
 			'anchor_name'  => '',
 			'_anchor_name' => 'field_6790f3345a787',
 		)
@@ -1031,6 +1034,45 @@ if ( ! empty( $citcom_p2['packages'] ) ) {
 	WP_CLI::log( "Packages page: $packages_id" );
 }
 
+// Forms test page: the three forms that live on /info/ landing pages on staging, in
+// the sections that hold them there. The shortcodes keep their Forminator ids, as
+// the migrated content will.
+$forms_shortcode = static function ( string $shortcode, string $classes ): string {
+	return citcom_fixture_block(
+		'citcom/shortcode',
+		array_merge(
+			array(
+				'shortcode'  => $shortcode,
+				'_shortcode' => 'field_671a540044e70',
+			),
+			citcom_fixture_section_settings( $classes )
+		)
+	);
+};
+$forms_test = citcom_fixture_page_header(
+	array(
+		'title'    => 'Forms test',
+		'type'     => 'pattern',
+		'bg-color' => '#eff1f3',
+		'pattern'  => 'persian',
+	)
+) . "\n\n" . $forms_shortcode( '[forminator_form id="219727"]', 'bg-default_lighter' )
+	. "\n\n" . $forms_shortcode( '[forminator_form id="219725"]', 'bg-default_lighter text-primary pt-0' )
+	. "\n\n" . citcom_fixture_block(
+		'citcom/cta',
+		array(
+			'type_of_cta'  => 'form',
+			'_type_of_cta' => 'field_66fe71bd5bb02',
+			'content'      => '<h2><strong>Free SEO audit</strong></h2><p>The SEO audit form, as on /info/free-seo-audit/.</p>',
+			'_content'     => 'field_66fd5dae3ef00',
+			'form'         => '218841',
+			'_form'        => 'field_66fe797df659f',
+			'anchor_name'  => '',
+			'_anchor_name' => 'field_6790f3345a787',
+		)
+	);
+$forms_test_id = citcom_fixture_page( 'Forms test', 'forms-test', $forms_test );
+WP_CLI::log( "Forms test page: $forms_test_id" );
 // Any other menu link that still has no local content (policies, package sub-pages)
 // gets a placeholder, so nothing in the menus leads to a 404.
 $placeholders = 0;
