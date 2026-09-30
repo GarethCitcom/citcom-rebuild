@@ -77,11 +77,15 @@ add_action(
 	9
 );
 
+// Priority 1: the theme stylesheet has to come before the block stylesheets, as the
+// flexContent partials came last in the old single stylesheet. WordPress prints block
+// styles where its placeholder was enqueued (wp_enqueue_scripts, priority 10).
 add_action(
 	'wp_enqueue_scripts',
 	function () {
 		wp_enqueue_style( 'theme-style', CITCOM_THEME_URI . '/build/theme.css', array(), citcom_asset_version( 'theme' ), 'all' );
-	}
+	},
+	1
 );
 
 add_action(
@@ -114,6 +118,33 @@ add_action(
 		);
 	},
 	0
+);
+
+// Shared diner rules (src/scss/diner.scss). Each diner block lists this handle
+// before its own stylesheet in block.json, so it loads once, only with a diner block.
+add_action(
+	'init',
+	function () {
+		$file = CITCOM_THEME_DIR . '/build/diner.css';
+		wp_register_style( 'citcom-diner', CITCOM_THEME_URI . '/build/diner.css', array(), file_exists( $file ) ? (string) filemtime( $file ) : CITCOM_THEME_VERSION );
+		wp_style_add_data( 'citcom-diner', 'path', $file ); // Lets WordPress inline it like the block styles.
+	},
+	5
+);
+
+// Block stylesheets that end up linked (not inlined) get WordPress's own version by
+// default; use the file time instead so a new build is never served from cache.
+add_filter(
+	'style_loader_src',
+	function ( $src, $handle ) {
+		if ( ! str_starts_with( (string) $handle, 'citcom-' ) || false === strpos( (string) $src, '/build/' ) ) {
+			return $src;
+		}
+		$path = CITCOM_THEME_DIR . strstr( (string) strtok( (string) $src, '?' ), '/build/' );
+		return file_exists( $path ) ? add_query_arg( 'ver', filemtime( $path ), remove_query_arg( 'ver', $src ) ) : $src;
+	},
+	10,
+	2
 );
 
 // Editor canvas stylesheet: AOS neutralised, clip paths, InnerBlocks areas.
@@ -185,13 +216,21 @@ if ( ! is_admin() ) {
 
 	// Non-theme stylesheets load as preload + onload swap; the theme stylesheet is
 	// emitted as preload followed by the real link so it stays render-blocking.
+	// Block stylesheets (citcom-*) are normally inlined by WordPress; when a page
+	// goes over the inline limit and one is linked instead, it stays render-blocking
+	// too, so a section never paints unstyled.
 	add_filter(
 		'style_loader_tag',
-		function ( $tag ) {
+		function ( $tag, $handle = '' ) {
+			if ( str_starts_with( (string) $handle, 'citcom-' ) ) {
+				return $tag;
+			}
 			if ( false !== strpos( $tag, 'build/theme.css' ) ) {
 				return str_replace( " rel='stylesheet'", ' rel="preload" as="style"', $tag ) . $tag;
 			}
 			return str_replace( " rel='stylesheet'", ' rel="preload" as="style" onload="this.onload=null;this.rel=\'stylesheet\'"', $tag );
-		}
+		},
+		10,
+		2
 	);
 }

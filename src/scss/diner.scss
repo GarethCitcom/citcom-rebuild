@@ -1,0 +1,345 @@
+// Shared diner primitives (.diner-dots, .diner-check, .diner-grain, .diner-btn,
+// .diner-stamp): port of assets/_dev/scss/flexContent/diner-shared.scss.
+// Built to build/diner.css and registered as the "citcom-diner" style, which
+// every diner block lists before its own stylesheet. The three variables now
+// live in blocks/_diner-vars.scss so the block stylesheets can use them
+// without repeating these rules.
+@import "tokens";
+@import "theme/mixin";
+@import "blocks/diner-vars";
+
+/*
+ * Shared primitives for the CitCom Diner homepage sections.
+ */
+
+// The page ground: white carrying the design's HalftoneStains sheet. This is
+// deliberately a bitmap and not a CSS dot grid — the artwork's whole character is that
+// the density varies, with dense clusters and stretches that fall away to bare white.
+// A gradient can only produce an even field, which reads as a screen tint rather than
+// print.
+//
+// The source is 4096px of black on transparency; this is it flattened onto white at
+// the ink weight the reference reads at, downscaled so the dot pitch lands at ~8px,
+// and saved as WebP (108KB, versus 375KB for the original).
+.diner-dots{
+    background-color: $light;
+    background-image: url('../../assets/img/diner/halftone.webp');
+    background-repeat: repeat;
+    background-position: center top;
+    background-size: 1520px auto;
+}
+
+// Chequerboard of brand citdots, from the design's pattern fill: a tile of
+// axis-aligned citdot cells in a two-per-repeat chequer.
+//
+// The cells are square citdots, NOT the rotated diamond in
+// assets/img/patterns/Pattern-starfruit.svg — that is a different lattice.
+//
+// The tile's own white background is switched off in the file, which is why the
+// aubergine underneath is what shows between the cells.
+//
+// Geometry straight from the fig: a 400x400 tile at scale 0.6, so a 240px repeat with
+// 60px cells.
+//
+// A chequer staggers its two row types by half a repeat, so between them green cells
+// cover every horizontal position. That means any edge not falling on a cell boundary
+// slices a green cell in alternate rows, and it is unavoidable somewhere — the design
+// accepts it on the outer edges of the section.
+//
+// So whatever shows this must anchor the background to the edge that has to stay
+// clean, and let the ragged edge fall on the opposite side. Anchoring, not sizing, is
+// what controls it: sizing to whole cells only works at one viewport width.
+
+.diner-check{
+    background-color: var(--brand-primary);
+    background-image: url('../../assets/img/diner/check-starfruit.svg');
+    background-repeat: repeat;
+    background-size: ($diner_check_cell * 2) ($diner_check_cell * 2);
+    background-position: left top;
+}
+
+// Native height of chequer-strip-tile.svg (assets/img/diner/chequer-strip-tile.svg) —
+// viewBox 0 0 200 100, a single seamless repeat unit of the checkerboard, 100px tall
+// for its 2 rows, used at this fixed, undistorted scale with repeat-x.
+//
+// This used to point at chequer-strip.svg (the user-supplied working-folder/
+// Rectangle 15.svg, unmodified) instead — a pre-composed "2 rows, full 1920px
+// design-frame" image used at native 1920:100 scale. That looked fine under 1920px
+// (nothing to repeat), but 1920 isn't a whole multiple of the checkerboard's own
+// ~100px column pitch (1920/100 = 19.2), so on any viewport wide enough for
+// `repeat-x` to start a second copy, the leftover 0.2 of a square at the seam fused
+// with the next copy's first square into one visibly wide blob — reported
+// 2026-09-01 as "these 2 particular chequers are too wide", reproducible only
+// above ~1920px content width, which is why it wasn't caught rendering at typical
+// desktop widths. chequer-strip-tile.svg re-crops the SAME pattern definition to
+// exactly one 200x100 repeat (200 being the pattern's own patternTransform tile
+// size, so it's seamless by construction, not by measurement) — confirmed via a
+// 3000px repeat-x test strip with zero-variance square widths. chequer-strip.svg
+// itself is untouched and no longer referenced; kept in case the full composed
+// image is wanted again.
+
+// Crumpled paper laid over the whole section, so it reads as one printed sheet
+// including the buttons. Sits above the content, with pointer-events: none so
+// anything underneath stays clickable.
+//
+// The design's texture rectangle carries a second fill too, a halftone-stain
+// overlay, but that paint is switched off (visible: false) in the file. Left out
+// deliberately rather than missed.
+.diner-grain{
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    // Figma fills the section with one copy of the texture, so no tiling. The file
+    // is 1920 wide so cover puts it at the same scale Figma renders it.
+    background-image: url('../../assets/img/diner/texture-multiply.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    mix-blend-mode: multiply;
+    opacity: 0.42;
+}
+
+// Pill CTA: a 29x27 outlined star either side of the label at 32px insets and
+// 20px gaps. Width is left to the content so the label can change length.
+// Everything is in em off the label size, so the button keeps the design's
+// proportions through the theme's stepped root font-size. At a 1920 viewport
+// (root 20px) this resolves to exactly 32px insets, 20px gaps and 29x27 stars.
+//
+// Height is unified across every diner pill to the "taste the results" services
+// CTA as the model: 1.25rem Forma extrabold label, 0.86em block padding (~70px
+// tall at 1920). The gradient variants no longer need their own padding override.
+.diner-btn{
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8em;
+    padding: 0.86em 1.28em;
+    border-radius: 100rem;
+    background-color: $light;
+    color: var(--brand-primary);
+    text-decoration: none;
+    // Forma DJR Micro Extra Bold, 25px, uppercase, no tracking, line-height 100% —
+    // straight off the component. The weight is what makes the label 200px wide; it
+    // is not tracked out.
+    //
+    // letter-spacing is reset because theme/_typeography.scss puts -0.03rem on body
+    // under html:not(.wf-active), and nothing in the theme ever adds .wf-active, so
+    // that fallback applies permanently.
+    text-transform: uppercase;
+    letter-spacing: normal;
+    line-height: 1;
+    font-size: 1.25rem;
+    @include forma(extrabold);
+    @include transition(all, 0.3s);
+
+    .diner-btn-star{
+        flex: 0 0 auto;
+        width: 1.16em;
+        height: 1.08em;
+    }
+
+    .diner-btn-label{
+        white-space: nowrap;
+        // Optical centring. align-items centres the label's line box, but capitals
+        // never occupy the font's descender space, so the glyphs land low inside it —
+        // measured at 1.75px on a 25px font. Nudging up 0.07em centres the caps
+        // themselves, and being in em it holds at every root font size.
+        position: relative;
+        top: -0.07em;
+    }
+
+    // Hover swaps the white fill for the starfruit-to-persian gradient (the
+    // component's Variant2). Gradients can't be transitioned, so it crossfades in
+    // on a pseudo element behind the label instead.
+    &::before{
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: inherit;
+        background-image: linear-gradient(90deg, var(--brand-secondary) 0%, var(--brand-persian) 100%);
+        opacity: 0;
+        @include transition(opacity, 0.3s);
+    }
+
+    &:hover,
+    &:focus-visible{
+        color: var(--brand-primary);
+    }
+
+    &:hover::before,
+    &:focus-visible::before{
+        opacity: 1;
+    }
+}
+
+// Starburst credentials badge ("stamp") — a 12-point starburst mask over the brand
+// gradient, with the same paper texture and inner keyline as the CTA pill. First
+// built (still separately, and still only there) for the intro section's own
+// stamp — see diner-intro.scss .diner-intro-stamp for that older copy, left alone
+// since that section is already signed off. This shared version is for any later
+// use, starting with diner-story.
+//
+// Only the visual guts live here: the caller sets --diner-stamp (the badge's
+// width/height) plus its own position/rotation/overhang, since those vary a lot
+// per section — see .diner-story-stamp for an example.
+
+// Every caller sets --diner-stamp to this same formula (kept here, once, rather
+// than repeated per section, after the 3 sections drifted to different sizes
+// before — see working-memory.md). 212px is the signed-off design size, reached
+// and held flat from ~964px wide upward. Below that a single `clamp()` scales
+// smoothly down to a 70px floor.
+//
+// Went through two rounds, both 2026-08-26, per direct feedback:
+// 1. First replaced the original two-step min(212px,55vw)/min(212px,26vw) split
+//    (`clamp(110px, 35vw, 212px)`) — that formula's `55vw` branch only dropped
+//    below the 212px cap once the viewport was under 385px, so on the
+//    ~375-430px range most phones actually are, every stamp was still
+//    rendering within a few px of the full 212px design size.
+// 2. Still reported as "too big on mobile" with a real device screenshot after
+//    round 1 (which measured out to ~131-150px on a typical phone, ~35% of
+//    viewport width) — so this isn't a rotation-bounding-box illusion like the
+//    earlier same-size check, it's a genuine "still reads as too large"
+//    judgement call. Cut the coefficient and floor both roughly in half
+//    (22vw / 70px) to land a typical phone's stamp around ~80-95px, roughly a
+//    quarter of the viewport instead of a third.
+
+.diner-stamp{
+    position: relative;
+    -webkit-mask-image: url('../../assets/img/diner/stamp-star.svg');
+    mask-image: url('../../assets/img/diner/stamp-star.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    background-image: linear-gradient(225deg, var(--brand-secondary) 0%, var(--brand-persian) 100%);
+    color: $light;
+    text-align: center;
+
+    // Multiplies over the lettering as well as the disc, same as the intro stamp.
+    &::before{
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        background-image: url('../../assets/img/diner/texture-stamp.jpg');
+        background-size: cover;
+        background-position: center;
+        mix-blend-mode: multiply;
+        opacity: 0.4;
+        pointer-events: none;
+    }
+
+    &::after{
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url('../../assets/img/diner/stamp-keyline.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        pointer-events: none;
+    }
+}
+
+.diner-stamp-inner{
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    line-height: 1;
+}
+
+// Same proportions (of --diner-stamp) as the intro stamp's over/figure/caption.
+.diner-stamp-over{
+    font-size: calc(var(--diner-stamp) * 0.0943);
+    line-height: 1;
+    @include forma(regular);
+}
+.diner-stamp-figure{
+    max-width: 60%;
+    margin: calc(var(--diner-stamp) * 0.028) 0;
+    font-size: calc(var(--diner-stamp) * 0.1887);
+    line-height: 0.75;
+    @include forma(extrabold);
+}
+.diner-stamp-caption{
+    max-width: 50%;
+    font-size: calc(var(--diner-stamp) * 0.0849);
+    line-height: 1;
+    @include forma(regular);
+}
+
+// Gradient variant, used by the services CTA: aubergine to persian left to right, with
+// the paper texture over it at 50% multiply, and white type instead of aubergine.
+.diner-btn-gradient{
+    background-color: transparent;
+    background-image: url('../../assets/img/diner/texture-stamp.jpg'),
+                      linear-gradient(90deg, var(--brand-primary) 0%, var(--brand-persian) 100%);
+    background-blend-mode: multiply, normal;
+    background-size: cover, 100% 100%;
+    background-position: center, center;
+    color: $light;
+    box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.3);
+
+    // This used to just set content: none, opting out of .diner-btn's own ::before
+    // crossfade trick entirely and relying on the box-shadow alone for the hover
+    // effect. Re-enabled now that hover also needs a colour change: background-image
+    // can't be transitioned by the browser at all (it just snaps between values), so
+    // the swap has to crossfade in via this pseudo element's opacity instead. Solid
+    // brand-primary instead of the primary-to-persian gradient — same two
+    // background-image layers and blend mode as the base rule (only the gradient's
+    // colour stops change, both now the same colour), so the texture still multiplies
+    // over it exactly as before.
+    &::before{
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: inherit;
+        background-image: url('../../assets/img/diner/texture-stamp.jpg'),
+                          linear-gradient(90deg, var(--brand-primary) 0%, var(--brand-primary) 100%);
+        background-blend-mode: multiply, normal;
+        background-size: cover, 100% 100%;
+        background-position: center, center;
+        opacity: 0;
+        @include transition(opacity, 0.6s);
+    }
+
+    &:hover,
+    &:focus-visible{
+        color: $light;
+        box-shadow: 7px 7px 6px rgba(0, 0, 0, 0.35);
+    }
+
+    &:hover::before,
+    &:focus-visible::before{
+        opacity: 1;
+    }
+}
+
+// Brighter modifier for .diner-btn-gradient: secondary-to-persian (green to teal)
+// instead of the default primary-to-persian (aubergine to teal), for CTAs sitting on
+// a dark panel that call for the lighter gradient — e.g. diner_story. Combine both
+// classes; this only overrides the gradient's colour stops, keeping the texture
+// layer, sizing, shadow and hover behaviour from .diner-btn-gradient.
+.diner-btn-bright{
+    background-image: url('../../assets/img/diner/texture-stamp.jpg'),
+                      linear-gradient(90deg, var(--brand-secondary) 0%, var(--brand-persian) 100%);
+
+    // Hover crossfades to solid light green (the gradient's own left-hand stop)
+    // instead of .diner-btn-gradient's default solid aubergine — same mechanism,
+    // just a different solid colour on the ::before it already crossfades in.
+    &::before{
+        background-image: url('../../assets/img/diner/texture-stamp.jpg'),
+                          linear-gradient(90deg, var(--brand-secondary) 0%, var(--brand-secondary) 100%);
+    }
+}

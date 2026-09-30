@@ -3,6 +3,7 @@
  *
  * - theme:  src/theme.js (imports src/scss/theme.scss)  -> build/theme.js, build/theme.css
  * - editor: src/editor.scss                             -> build/editor.css
+ * - diner:  src/scss/diner.scss (shared diner rules)     -> build/diner.css
  * - blocks: blocks/<name>/{style,editor}.scss, view.js  -> build/blocks/<name>/...
  *
  * block.json files reference the built CSS with "file:../../build/blocks/<name>/style.css".
@@ -16,6 +17,7 @@ const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
 const entry = {
 	theme: './src/theme.js',
 	editor: './src/editor.scss',
+	diner: './src/scss/diner.scss',
 };
 
 const blocksDir = path.resolve( __dirname, 'blocks' );
@@ -35,7 +37,19 @@ if ( fs.existsSync( blocksDir ) ) {
 
 // css-loader must leave same-document fragment URLs alone (clip-path: url(#citdot)).
 // Bootstrap 5.3 still uses @import and the old division syntax; keep the build log readable.
+// Raster images are emitted to build/images/, except url(...?inline), which becomes a
+// data URI: a CSS mask has to read the image's pixels, and an image proxy (ShortPixel)
+// rewriting the URL to another origin would break it.
 const rules = defaultConfig.module.rules.map( ( rule ) => {
+	if ( rule.type === 'asset/resource' && String( rule.test ).includes( 'webp' ) ) {
+		return {
+			test: rule.test,
+			oneOf: [
+				{ resourceQuery: /inline/, type: 'asset/inline' },
+				{ type: rule.type, generator: rule.generator },
+			],
+		};
+	}
 	if ( ! rule.test || ! Array.isArray( rule.use ) || ! /css|sc|sa/.test( String( rule.test ) ) ) {
 		return rule;
 	}
