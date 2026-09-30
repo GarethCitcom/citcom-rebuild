@@ -27,7 +27,10 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   Reviews come from Trustindex (decided 2026-09-30; the old Elfsight embeds are
   gone): citcom/trustindex, the diner reviews block and [google_reviews] all go
   through `citcom_trustindex_embed()` in inc/shortcodes.php, which needs the
-  Trustindex plugin for its shortcodes. PHP 8.5, WP 7.1+.
+  Trustindex plugin for its shortcodes. Forms are part of the theme (decided
+  2026-09-30, Forminator is being dropped): definitions in `forms/`, engine in
+  inc/forms.php, Mailchimp in inc/mailchimp.php, submissions kept 30 days.
+  PHP 8.5, WP 7.1+.
 - UK English in all copy and comments. No em dashes in prose.
 
 ## Block conventions

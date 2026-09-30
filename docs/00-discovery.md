@@ -336,8 +336,11 @@ example):
 
 ## Forms: Forminator inventory (read from staging 2026-09-30)
 
-Gareth wants to drop Forminator (said 2026-09-30). Replacement not yet chosen;
-this is what it has to cover. Read with `wp --skip-themes` on staging 1771004.
+Forminator is being dropped (decided 2026-09-30): forms are built into the
+theme, Mailchimp is the only integration, the old submissions are not
+exported, and new submissions are kept for 30 days. Which of the forms and
+pages below are still needed is for Gareth to mark in
+docs/pages-and-forms-review.xlsx. Read with `wp --skip-themes` on staging 1771004.
 
 | Id | Form | Fields (* required) | Used on | Entries |
 |---|---|---|---|---|
@@ -369,3 +372,54 @@ this is what it has to cover. Read with `wp --skip-themes` on staging 1771004.
   `[forminator_form]` / `[forminator_quiz]` shortcodes inside shortcode
   layouts on the /info/ pages.
 - Trustindex on staging is the free plugin `wp-reviews-plugin-for-google`.
+
+### Theme forms (built 2026-09-30)
+
+- `inc/forms.php` is the engine, `forms/<slug>.php` the definitions. Built so
+  far: `contact` (623), `guest-check` (220023), `newsletter` (581) and `brief`
+  (218706). Each definition lists the Forminator ids it replaces
+  (`legacy_ids`), so block data and `[forminator_form id="..."]` shortcodes
+  that still carry an old id render the theme form with no data change. The
+  other five forms and the quizzes wait for the review spreadsheet.
+- Markup: own class names (`citcom-form-*`) on the structure Forminator had
+  after forminator-bootstrap.js restyled it. The diner guest check uses the
+  "plain" variant (no Bootstrap classes), because that form was rendered
+  inline and never restyled. Compared with staging: contact form in the
+  contact map and the guest check form have the same size and the same
+  computed styles; the guest check differs by 0.27% of pixels (anti-aliasing).
+- Forminator's two-column grid applied from 783px unless the form itself was
+  480px or narrower; the theme does the same with a container query.
+- Submissions go to `POST /wp-json/citcom/v1/forms/<slug>`, are stored as
+  private `citcom_submission` posts (wp-admin > Form submissions) and deleted
+  by a daily cron event after `CITCOM_FORMS_RETENTION_DAYS` (30).
+- Recipients and the Mailchimp key and audience are in Site Settings > Forms
+  (`acf-json/group_citcom_forms.json`); the key can also be the
+  `CITCOM_MAILCHIMP_API_KEY` constant. To set on staging before testing:
+  general recipient (was info@), marketing recipient (was charl@), the key.
+- Mailchimp as the old add-on had it: audience `a4ffec5bd1`, no double opt-in,
+  marketing permission `8efa2d4074` (Email); tag "Website Signup" for contact
+  and newsletter, "Diner Mailing List" for the guest check; the newsletter
+  also sets interest `97867c40f1` in the Monthly Marketing Round-Up group.
+- Behaviour changes, on purpose:
+  - The old add-on on the contact and guest check forms had no condition, so
+    it appears to have subscribed every sender, ticked or not. The theme forms
+    subscribe only when the mailing list box is ticked.
+  - The newsletter popup only had its form on the blog listing and the brief
+    popup had its form commented out, so both opened empty elsewhere. Both
+    popups now always contain their form.
+  - GTM still gets `formsuccess` / `formfailed`, with the form slug instead of
+    the submitted data.
+  - The captcha field on send-a-brief is not carried over; spam protection is
+    a honeypot, a minimum time on the page and a rate limit.
+- `src/js/forminator-bootstrap.js` and the `.forminator-*` rules stay until the
+  remaining Forminator forms are replaced or retired.
+
+### Customizer Additional CSS
+
+The old theme has Customizer > Additional CSS (924 bytes on staging). WordPress
+stores it per theme, so it does not follow the site to the new theme. It is
+ported in `src/scss/theme/_additional-css.scss`: the `#chatcom` section
+background (needs `assets/img/patterns/ai-gradient.jpg`, now copied), a top
+margin on the diner landing page's menu heading (`body.postid-219887`), 60px
+under every form submit button, and a small-screen rule for Forminator radio
+groups.
