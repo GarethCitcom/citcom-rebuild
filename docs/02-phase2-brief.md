@@ -31,10 +31,12 @@ For every layout, in this order, one commit per block:
    page_header testing `service` against a field that stores `services`), keep the
    behaviour and comment it, because the baseline was captured with it.
 5. `blocks/<name>/style.scss`: `@import "../../src/scss/tokens"; @import "../../src/scss/theme/mixin";`
-   then the matching `assets/_dev/scss/flexContent/*.scss` partial. Shared partials
-   (`diner-shared.scss`) become `src/scss/blocks/_diner-shared.scss` imported by each
-   diner block. Vendor CSS a block needs (Swiper) is imported from node_modules inside
-   that block's `style.scss`, not globally.
+   then the matching `assets/_dev/scss/flexContent/*.scss` partial. Rules shared
+   by several blocks are not repeated in each: the diner primitives are one stylesheet
+   (`src/scss/diner.scss`, style handle `citcom-diner`, listed before the block's own
+   file in block.json) and only variables go in a partial (`blocks/_diner-vars.scss`).
+   Swiper's CSS is the theme's customised copy (`src/scss/plugins/_swiper.scss`),
+   imported through `blocks/_swiper.scss` by the blocks that use it, not globally.
 6. `blocks/<name>/view.js` only when the layout has JavaScript that is not already in
    `src/theme.js` (display_posts inline `displayPostsQuery`, contact_map Snazzy Maps
    embed, video player options). Register it via `block.json` `viewScript`.
@@ -83,6 +85,18 @@ Rows are from docs/00-discovery.md. "Ref" is the staging page used to compare.
   /contact-us/). Notes: `citcom/stats` does not use `thousandsCurrencyFormat()`
   (the old layout never did); the `audio_video_player` field type is not
   installed locally, so the video block also accepts a bare attachment id.
+- 2026-09-30: blocks 17 to 24 (the eight diner blocks) built. Local `/` is the
+  diner home page (fixture) and was compared with staging `/` at 390, 1024 and
+  1440px: hero, intro, menu, story and wall have identical markup, identical
+  section heights at all three widths and a pixel difference of 0.00 to 0.04%
+  at 1440px. Reviews and guest check have identical markup around the widget
+  and form, which need the Trustindex and Forminator plugins and so are empty
+  locally. `diner-story-light`, the intro stamp and the reviews placeholder
+  (no Trustindex code) are not used on staging; /diner-extras/ shows them with
+  sample content. Shared diner rules are `src/scss/diner.scss` (style handle
+  `citcom-diner`, listed first in each diner block.json), not a partial
+  imported into each block; the three shared variables are
+  `src/scss/blocks/_diner-vars.scss`; helpers are `inc/diner.php`.
 
 ## Also in Phase 2
 

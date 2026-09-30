@@ -272,6 +272,29 @@ example):
   blocks only (the InnerBlocks that replaced the WYSIWYG fields); classic
   content without blocks keeps the default. Compared against staging, this
   keeps straight quotes and `...` in ACF fields as they are.
+- Stylesheet order: in the old single stylesheet the flexContent partials came
+  last, after Bootstrap and the theme partials. WordPress prints block styles
+  where its placeholder is enqueued (wp_enqueue_scripts, priority 10), so the
+  theme stylesheet is enqueued at priority 1 to keep the same cascade (theme
+  first, blocks after). Block styles are inlined in the head up to
+  WordPress's 40 KB total; on a heavy page (the diner home page) the largest
+  are linked instead, and inc/assets.php keeps those render-blocking and
+  versions them by file time.
+- Swiper CSS: the old theme's `plugins/swiper.scss` is the Swiper 11.2.10
+  bundle with one rule changed, `.swiper-slide` without `width: 100%` and with
+  `height: auto`. The logo swiper depends on it (the col-* classes size the
+  slides), so `src/scss/plugins/_swiper.scss` is that file, not the vendor
+  bundle from node_modules.
+- A `static` variable in a block's render.php does not persist between blocks:
+  statics in an included file start again on every include. Use
+  `citcom_counter()` / `citcom_once()` (inc/helpers.php) for ids and for
+  inline scripts printed once per page.
+- CSS masks and ShortPixel: block CSS is often inlined into the page, and
+  ShortPixel rewrites url()s it finds in the HTML to its CDN; a mask image
+  served from another origin is blocked by the browser. SVG masks are inlined
+  as data URIs by the build; the one raster mask (diner intro,
+  texture-worn.webp) is inlined with `url(...?inline)` (webpack.config.js).
+  Check the intro ribbon on staging once deployed.
 - `&` in social URLs prints as `&amp;` on staging rather than `esc_url()`'s
   `&#038;`; equivalent in the browser.
 - Reviews (decided 2026-09-30): Elfsight is no longer used. The old theme
