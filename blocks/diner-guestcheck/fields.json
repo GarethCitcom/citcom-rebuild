@@ -74,8 +74,8 @@
             "label": "Form",
             "name": "form",
             "aria-label": "",
-            "type": "post_object",
-            "instructions": "The Forminator form rendered on the right (Name / Email / Message / mailing-list signup). Defaults to \"diner-guest-check-form\" (220023) — a dedicated copy of the site's shared \"contact-form\" (623) with ajax-load disabled so it renders inline instead of popping in after the rest of the section; the shared form itself was deliberately left untouched since other pages use it too.",
+            "type": "select",
+            "instructions": "The theme form rendered on the right. Forms are defined in the theme's forms/ folder.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -83,11 +83,14 @@
                 "class": "",
                 "id": ""
             },
-            "post_type": [
-                "forminator_forms"
-            ],
-            "return_format": "id",
-            "default_value": 220023
+            "choices": [],
+            "default_value": "guest-check",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": ""
         },
         {
             "key": "field_diner_guestcheck_stamp",
@@ -188,5 +191,5 @@
     "active": true,
     "description": "Fields of the old diner_guestcheck layout (functions/acf/diner-layouts.php), same names and keys.",
     "show_in_rest": 0,
-    "modified": 1790730000
+    "modified": 1790750000
 }

@@ -3,7 +3,7 @@
  * citcom/diner-guestcheck
  *
  * Mirrors flexDinerGuestcheck() (templates/flexFunctions/diner_guestcheck.php):
- * the "GUEST CHECK" receipt card on the left with a live Forminator form on the
+ * the "GUEST CHECK" receipt card on the left with a theme form (forms/) on the
  * right, chequer bands top and bottom, and the shared starburst stamp. Only the
  * receipt itself is baked into the artwork; the card heading and body copy are
  * real text laid over it ("Thank You!" at the bottom is part of the artwork).
@@ -26,7 +26,7 @@ $heading      = (string) ( $fields['heading'] ?? '' );
 $card_heading = (string) ( $fields['card_heading'] ?? '' );
 $card_content = (string) ( $fields['card_content'] ?? '' );
 $card_image   = is_array( $fields['card_image'] ?? null ) ? $fields['card_image'] : null;
-$form         = (int) ( $fields['form'] ?? 0 );
+$form         = is_scalar( $fields['form'] ?? null ) ? (string) $fields['form'] : ''; // Theme form slug, or a legacy Forminator id.
 $stamp        = is_array( $fields['stamp'] ?? null ) ? $fields['stamp'] : array();
 
 // Ships with the theme so the section renders before anything is uploaded.
@@ -70,11 +70,8 @@ $card_fallback = CITCOM_THEME_URI . '/assets/img/diner/guest-check.webp';
 			<?php if ( $form ) : ?>
 				<div class="diner-guestcheck-form">
 					<?php
-					if ( shortcode_exists( 'forminator_form' ) ) {
-						echo do_shortcode( '[forminator_form id="' . $form . '"]' );
-					} elseif ( $is_preview ) {
-						echo '<p><em>' . esc_html__( 'Forminator is not active on this site, so the form will not show.', 'citcom' ) . '</em></p>';
-					}
+					// "plain": no Bootstrap classes, this block styles the bare form itself.
+					echo citcom_render_form( $form, array( 'variant' => 'plain' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in citcom_render_form()
 					?>
 				</div>
 			<?php endif; ?>
@@ -90,49 +87,20 @@ $card_fallback = CITCOM_THEME_URI . '/assets/img/diner/guest-check.webp';
 
 <?php
 /*
- * Printed once. Two jobs, both scoped to .diner-guestcheck-form:
- *
- * 1. Retitles the submit button to "SEND TO THE KITCHEN" without touching the
- *    Forminator form's stored button text (the form may be shared with other
- *    pages). Forminator can inject the fields after load (ajax-load) and
- *    re-render the button after a validation error, so a MutationObserver
- *    stays attached.
- * 2. Reveals the card and form wrappers by adding AOS's own "aos-animate"
- *    class. AOS does not re-measure when content is injected inside an element
- *    that already has data-aos, and the card image loading shifts the row, so
- *    these two could stay at opacity 0.
+ * Printed once. Reveals the card and form wrappers by adding AOS's own
+ * "aos-animate" class once the page has loaded: the card image loading shifts
+ * the row after AOS has measured it, so these two could stay at opacity 0.
+ * (The old script also relabelled the Forminator submit button; the theme form
+ * has its own label.)
  */
 if ( ! $is_preview && citcom_once( 'diner-guestcheck-script' ) ) :
 	?>
 	<script>
-	(function () {
-		var LABEL = 'SEND TO THE KITCHEN';
-		function relabel(btn) {
-			var span = btn.querySelector('span:not([aria-hidden])');
-			var target = span || btn;
-			if (target.textContent.trim() !== LABEL) {
-				target.textContent = LABEL;
-			}
-		}
-		function revealAOS() {
-			document.querySelectorAll('.diner-guestcheck-card-aos, .diner-guestcheck-form-wrap').forEach(function (el) {
-				el.classList.add('aos-animate');
-			});
-		}
-		document.querySelectorAll('.diner-guestcheck-form').forEach(function (wrap) {
-			var existing = wrap.querySelector('.forminator-button-submit');
-			if (existing) {
-				relabel(existing);
-				revealAOS();
-			}
-			new MutationObserver(function () {
-				var btn = wrap.querySelector('.forminator-button-submit');
-				if (btn) relabel(btn);
-				revealAOS();
-			}).observe(wrap, { childList: true, subtree: true });
+	window.addEventListener('load', function () {
+		document.querySelectorAll('.diner-guestcheck-card-aos, .diner-guestcheck-form-wrap').forEach(function (el) {
+			el.classList.add('aos-animate');
 		});
-		window.addEventListener('load', revealAOS);
-	})();
+	});
 	</script>
 	<?php
 endif;

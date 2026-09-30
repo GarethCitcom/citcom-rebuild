@@ -19,7 +19,7 @@ $attrs  = citcom_section_attrs( $block, $fields );
 $index  = citcom_block_index();
 
 $show_socials = ! empty( $fields['show_socials'] );
-$form_id      = (int) ( $fields['form'] ?? 0 );
+$form_id      = is_scalar( $fields['form'] ?? null ) ? (string) $fields['form'] : ''; // Theme form slug, or a legacy Forminator id.
 $desktop_map  = ! empty( $fields['snazzy_map'] ) ? html_entity_decode( (string) $fields['snazzy_map'] ) : '<iframe src="https://snazzymaps.com/embed/650882" width="100%" height="100%" style="border:none;"></iframe>';
 $mobile_map   = ! empty( $fields['mobile_snazzy_map'] ) ? html_entity_decode( (string) $fields['mobile_snazzy_map'] ) : '<iframe src="https://snazzymaps.com/embed/650914" width="100%" height="100%" style="border:none;"></iframe>';
 $social_icons = (array) citcom_get_option( 'social_icon_links' );
@@ -55,10 +55,11 @@ citcom_preview_clip_paths( (bool) $is_preview );
 					<?php endif; ?>
 					<div class="form pt-4" data-aos="fade">
 						<?php
-						if ( $form_id ) {
-							echo do_shortcode( '[forminator_form id="' . $form_id . '"]' );
+						$form_html = citcom_render_form( $form_id );
+						if ( '' !== $form_html ) {
+							echo $form_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in citcom_render_form()
 						} elseif ( $is_preview ) {
-							echo '<p><em>' . esc_html__( 'Choose a Forminator form in the block settings.', 'citcom' ) . '</em></p>';
+							echo '<p><em>' . esc_html__( 'Choose a form in the block settings.', 'citcom' ) . '</em></p>';
 						}
 						?>
 					</div>

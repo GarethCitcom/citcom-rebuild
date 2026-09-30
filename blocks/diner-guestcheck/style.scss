@@ -383,16 +383,16 @@
     }
 
     // Forminator's own markup (see form-fields.scss for the site-wide
-    // .forminator-custom-form overrides this adds to) restyled to the design's pill
+    // .citcom-form overrides this adds to) restyled to the design's pill
     // inputs on a light grey fill.
     .diner-guestcheck-form{
-        .forminator-label{
+        .citcom-form-label{
             margin-bottom: 0.4em;
             color: var(--brand-primary);
             @include forma(400);
         }
 
-        .forminator-input{
+        .citcom-form-input{
             width: 100%;
             border: none;
             border-radius: 999px;
@@ -400,7 +400,7 @@
             padding: 0.75em 1.25em;
         }
 
-        .forminator-textarea{
+        .citcom-form-textarea{
             width: 100%;
             border: none;
             border-radius: 20px;
@@ -415,19 +415,19 @@
         // with --headless=new --screenshot — see working-memory.md, worth
         // remembering for future sections instead of assuming no visual
         // verification is possible at all) plus an isolated test fixture: the
-        // white square being reported was never the styled `.forminator-checkbox-
+        // white square being reported was never the styled `.citcom-form-checkbox-
         // box` span at all. It's Forminator's real `<input type="checkbox">`,
         // which is SUPPOSED to be visually hidden by Forminator's own base CSS but
         // wasn't rendering hidden in this context — and separately, the decorative
         // span itself was collapsing to ~0 width because its own `flex:0 0 20px`
-        // (which depends on `.forminator-checkbox` actually being `display:flex`)
+        // (which depends on `.citcom-form-checkbox` actually being `display:flex`)
         // also wasn't taking effect. Both confirmed by forcing debug outlines/
         // dimensions in isolation: a red outline on the span showed only a 1px
         // sliver, and forcing explicit width turned up a SECOND, separate visible
         // box next to the native input. Never fully root-caused which competing
         // rule wins that fight (Bootstrap's global `label{display:inline-block}`
         // was the closest suspect, but it's lower-specificity than
-        // `.forminator-checkbox{display:flex}` and shouldn't actually win) — fixed
+        // `.citcom-form-checkbox{display:flex}` and shouldn't actually win) — fixed
         // pragmatically instead by making this section's checkbox entirely
         // self-sufficient: hide the input and size/colour the box explicitly
         // ourselves rather than depending on Forminator's own equivalent rules to
@@ -435,12 +435,12 @@
         // box and label were touching) the same way, via a real flex `gap` instead
         // of depending on Forminator's `~span{margin-left:10px}` sibling rule,
         // which wasn't applying for the same underlying reason.
-        .forminator-checkbox{
+        .citcom-form-checkbox{
             display: flex !important;
             align-items: center !important;
             gap: 10px !important;
             // Forminator's own base CSS sets `pointer-events: none` here,
-            // relying on its own `.forminator-checkbox span{pointer-events:
+            // relying on its own `.citcom-form-checkbox span{pointer-events:
             // all}` to re-enable clicking on the child spans — the same kind
             // of unscoped base rule that's already been confirmed NOT
             // reliably applying in this section three separate times (input-
@@ -451,12 +451,12 @@
             pointer-events: auto !important;
         }
 
-        .forminator-checkbox-box,
-        .forminator-checkbox-label{
+        .citcom-form-checkbox-box,
+        .citcom-form-checkbox-label{
             pointer-events: auto !important;
         }
 
-        .forminator-checkbox input[type="checkbox"]{
+        .citcom-form-checkbox input[type="checkbox"]{
             position: absolute !important;
             width: 1px !important;
             height: 1px !important;
@@ -469,7 +469,7 @@
             margin: -1px !important;
         }
 
-        .forminator-checkbox-box{
+        .citcom-form-checkbox-box{
             display: inline-block !important;
             flex: 0 0 20px !important;
             width: 20px !important;
@@ -479,8 +479,8 @@
             background-color: var(--brand-default) !important;
             color: var(--brand-primary) !important;
             // Forminator's own checked-state indicator relies on its
-            // `.forminator-checkbox-box:before` ("✓", revealed via `input:
-            // checked + .forminator-checkbox-box:before{opacity:1}") — checked
+            // `.citcom-form-checkbox-box:before` ("✓", revealed via `input:
+            // checked + .citcom-form-checkbox-box:before{opacity:1}") — checked
             // via CDP (getComputedStyle(box, '::before') with the input's own
             // `checked` property forced true): the opacity:1 reveal rule DOES
             // fire, but `content` computes to `none` and `position` to `static`
@@ -498,7 +498,7 @@
         // chasing why its rule won't apply — draws the tick ourselves, fully
         // under our own control, same "make it self-sufficient" approach
         // already used for hiding the native input and sizing this box.
-        .forminator-checkbox-box::before{
+        .citcom-form-checkbox-box::before{
             content: "\2713" !important;
             position: absolute !important;
             inset: 0 !important;
@@ -512,15 +512,15 @@
             transition: opacity 0.2s ease !important;
         }
 
-        .forminator-checkbox input[type="checkbox"]:checked ~ .forminator-checkbox-box::before{
+        .citcom-form-checkbox input[type="checkbox"]:checked ~ .citcom-form-checkbox-box::before{
             opacity: 1 !important;
         }
 
-        .forminator-checkbox-label{
+        .citcom-form-checkbox-label{
             color: var(--brand-primary);
         }
 
-        .forminator-description{
+        .citcom-form-description{
             font-size: 0.75rem;
             color: var(--brand-primary-lighter);
         }
@@ -544,7 +544,7 @@
         // button's own background" — `isolation: isolate` forces a local stacking
         // context the same way .diner-btn gets one, which is the only reason that
         // component's identical trick actually works.
-        .forminator-button-submit{
+        .citcom-form-submit{
             position: relative;
             isolation: isolate;
             border: none;
