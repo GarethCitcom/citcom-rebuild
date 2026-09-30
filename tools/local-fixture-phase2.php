@@ -19,6 +19,7 @@
  * - /                   the diner home page (staging /), set as the front page
  * - /diner-extras/      diner variants staging does not use (sample content)
  * - five blog posts and the sidebar block widgets (blog listing and blog post)
+ * - /services/ (archive template, six core services), /blog/ (posts page), /packages/
  *
  * Re-running reuses anything that already exists.
  *
@@ -854,5 +855,229 @@ $block_widgets['_multiwidget'] = 1;
 update_option( 'widget_block', $block_widgets );
 update_option( 'sidebars_widgets', $sidebars_widgets );
 
+/*
+ * 8. The pages the main menu links to that had no local content: /services/
+ * (the services archive template with the six core services), /blog/ (the posts
+ * page) and /packages/. All copied from staging.
+ */
+if ( ! empty( $citcom_p2['services_archive'] ) ) {
+	$sa       = $citcom_p2['services_archive'];
+	$core_ids = array();
+	foreach ( $sa['rows'] as $row ) {
+		$found = get_page_by_path( $row['slug'], OBJECT, 'service' );
+		$id    = $found ? (int) $found->ID : (int) wp_insert_post(
+			array(
+				'post_type'   => 'service',
+				'post_title'  => $row['title'],
+				'post_name'   => $row['slug'],
+				'post_status' => 'publish',
+			)
+		);
+		if ( ! $id ) {
+			continue;
+		}
+		$gallery = array();
+		foreach ( $row['gallery'] as $img ) {
+			$img_id = citcom_fixture_image( $img['url'], $img['alt'] );
+			if ( $img_id ) {
+				$gallery[] = $img_id;
+			}
+		}
+		$terms = array();
+		foreach ( $row['cs_tags'] as $tag ) {
+			$term = term_exists( $tag, 'cs-tag' );
+			if ( ! $term ) {
+				$term = wp_insert_term( ucwords( str_replace( '-', ' ', $tag ) ), 'cs-tag', array( 'slug' => $tag ) );
+			}
+			if ( ! is_wp_error( $term ) ) {
+				$terms[] = (int) $term['term_id'];
+			}
+		}
+		update_field( 'field_670d0f707d675', $gallery, $id );
+		update_field( 'field_670d0fb97d676', $row['excerpt'], $id );
+		update_field( 'field_670d0ffb7d677', $terms, $id );
+		$core_ids[] = $id;
+	}
+
+	$services_content = citcom_fixture_page_header(
+		array(
+			'title'    => $sa['title'],
+			'type'     => 'pattern',
+			'bg-color' => '#eff1f3',
+			'pattern'  => 'secondary',
+		)
+	) . "\n\n" . citcom_fixture_block(
+		'citcom/sub-services',
+		array_merge(
+			array(
+				'select_sub_services'  => $core_ids,
+				'_select_sub_services' => 'field_670d082986a53',
+			),
+			citcom_fixture_section_settings( $sa['classes'] )
+		)
+	);
+	$services_template = get_page_by_path( 'services-archive', OBJECT, 'template' );
+	$services_args     = array(
+		'post_type'    => 'template',
+		'post_title'   => 'Services archive',
+		'post_name'    => 'services-archive',
+		'post_status'  => 'publish',
+		'post_content' => wp_slash( $services_content ),
+	);
+	if ( $services_template ) {
+		$services_args['ID'] = $services_template->ID;
+		$services_id         = (int) wp_update_post( $services_args );
+	} else {
+		$services_id = (int) wp_insert_post( $services_args );
+	}
+	update_field( 'services_archive', $services_id, 'option' );
+	WP_CLI::log( "Services archive template: $services_id with " . count( $core_ids ) . ' services.' );
+}
+
+// Service pages with no content yet get a header and a note, so the "Find out more"
+// links from the service rows do not land on an empty page.
+foreach ( get_posts( array( 'post_type' => 'service', 'posts_per_page' => -1 ) ) as $service_post ) {
+	if ( '' !== trim( $service_post->post_content ) ) {
+		continue;
+	}
+	wp_update_post(
+		array(
+			'ID'           => $service_post->ID,
+			'post_content' => wp_slash(
+				citcom_fixture_page_header(
+					array(
+						'title'    => $service_post->post_title,
+						'type'     => 'pattern',
+						'bg-color' => '#eff1f3',
+						'pattern'  => 'persian',
+					)
+				) . "
+
+" . citcom_fixture_editor_block( '<!-- wp:paragraph --><p>Placeholder for the local fixture. The real content of this service page arrives with the Phase 3 migration.</p><!-- /wp:paragraph -->' )
+			),
+		)
+	);
+}
+
+// Blog: the posts page, with the listing (and its sidebar) and the newsletter CTA.
+$blog_content = citcom_fixture_page_header(
+	array(
+		'title'    => 'Blog',
+		'type'     => 'pattern',
+		'bg-color' => '#eff1f3',
+		'pattern'  => 'carrot',
+	)
+) . "\n\n" . citcom_fixture_block(
+	'citcom/display-posts',
+	array_merge(
+		array(
+			'type_of_display'  => 'archive',
+			'_type_of_display' => 'field_670444d07937b',
+			'post_type'        => 'post',
+			'_post_type'       => 'field_670444347937a',
+		),
+		citcom_fixture_section_settings( '' )
+	)
+) . "\n\n" . citcom_fixture_block(
+	'citcom/cta',
+	array(
+		'type_of_cta'  => 'sign-up',
+		'_type_of_cta' => 'field_66fe71bd5bb02',
+		'content'      => '<h3>Sign up to our newsletter</h3>',
+		'_content'     => 'field_66fd5dae3ef00',
+		'anchor_name'  => '',
+		'_anchor_name' => 'field_6790f3345a787',
+	)
+);
+$blog_page_id = citcom_fixture_page( 'Blog', 'blog', $blog_content );
+update_option( 'page_for_posts', $blog_page_id );
+WP_CLI::log( "Blog (posts page): $blog_page_id" );
+
+// Packages: five media and text sections, the reviews widget and the social CTA.
+if ( ! empty( $citcom_p2['packages'] ) ) {
+	$packages_content = citcom_fixture_page_header(
+		array(
+			'title'    => $citcom_p2['packages']['title'],
+			'type'     => 'pattern',
+			'bg-color' => '#eff1f3',
+			'pattern'  => 'secondary',
+		)
+	);
+	foreach ( citcom_fixture_about_sections( 'packages-sections.json' ) as $section ) {
+		$packages_content .= "\n\n" . $section;
+	}
+	$packages_content .= "\n\n" . citcom_fixture_block(
+		'citcom/trustindex',
+		array_merge(
+			array(
+				'trustindex_code'  => '[trustindex no-registration=google]',
+				'_trustindex_code' => 'field_citcom_trustindex_code',
+			),
+			citcom_fixture_section_settings( '' )
+		)
+	);
+	$packages_content .= "\n\n" . citcom_fixture_block(
+		'citcom/cta',
+		array(
+			'type_of_cta'  => $citcom_p2['packages']['cta']['type'] ?? 'social',
+			'_type_of_cta' => 'field_66fe71bd5bb02',
+			'content'      => $citcom_p2['packages']['cta']['content'] ?? '',
+			'_content'     => 'field_66fd5dae3ef00',
+			'anchor_name'  => '',
+			'_anchor_name' => 'field_6790f3345a787',
+		)
+	);
+	$packages_id = citcom_fixture_page( 'CitCom Packages', 'packages', $packages_content );
+	WP_CLI::log( "Packages page: $packages_id" );
+}
+
+// Any other menu link that still has no local content (policies, package sub-pages)
+// gets a placeholder, so nothing in the menus leads to a 404.
+$placeholders = 0;
+foreach ( wp_get_nav_menus() as $nav_menu ) {
+	foreach ( (array) wp_get_nav_menu_items( $nav_menu->term_id ) as $menu_item ) {
+		if ( ! str_starts_with( $menu_item->url, home_url( '/' ) ) ) {
+			continue;
+		}
+		$path     = trim( (string) wp_parse_url( $menu_item->url, PHP_URL_PATH ), '/' );
+		$segments = array_values( array_filter( explode( '/', $path ) ) );
+		if ( ! $segments || in_array( $segments[0], array( 'case-studies', 'blog' ), true ) ) {
+			continue;
+		}
+		$is_service = 'services' === $segments[0] && count( $segments ) > 1;
+		$type       = $is_service ? 'service' : 'page';
+		$lookup     = $is_service ? implode( '/', array_slice( $segments, 1 ) ) : $path;
+		if ( 'services' === $path || get_page_by_path( $lookup, OBJECT, $type ) ) {
+			continue;
+		}
+		$parent_path = implode( '/', array_slice( $is_service ? array_slice( $segments, 1 ) : $segments, 0, -1 ) );
+		$parent      = '' !== $parent_path ? get_page_by_path( $parent_path, OBJECT, $type ) : null;
+		$title       = html_entity_decode( $menu_item->title, ENT_QUOTES | ENT_HTML5 );
+		wp_insert_post(
+			array(
+				'post_type'    => $type,
+				'post_title'   => $title,
+				'post_name'    => end( $segments ),
+				'post_parent'  => $parent ? $parent->ID : 0,
+				'post_status'  => 'publish',
+				'post_content' => wp_slash(
+					citcom_fixture_page_header(
+						array(
+							'title'    => $title,
+							'type'     => 'pattern',
+							'bg-color' => '#eff1f3',
+							'pattern'  => 'persian',
+						)
+					) . "
+
+" . citcom_fixture_editor_block( '<!-- wp:paragraph --><p>Placeholder for the local fixture. The real content of this page arrives with the Phase 3 migration.</p><!-- /wp:paragraph -->' )
+				),
+			)
+		);
+		++$placeholders;
+	}
+}
+WP_CLI::log( "Placeholder pages created: $placeholders" );
+
 flush_rewrite_rules( false );
-WP_CLI::success( 'Phase 2 fixture done: / (diner home), /about-us/, /contact-us/, /home-classic/, /results/, /services/creative/, /diner-extras/, five blog posts and the sidebar widgets.' );
+WP_CLI::success( 'Phase 2 fixture done: / (diner home), /about-us/, /contact-us/, /home-classic/, /results/, /services/, /services/creative/, /blog/, /packages/, /diner-extras/, five blog posts and the sidebar widgets.' );

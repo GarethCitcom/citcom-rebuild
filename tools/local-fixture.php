@@ -352,8 +352,8 @@ function citcom_fixture_editor_block( string $inner_blocks, string $section_clas
  *
  * @return string[]
  */
-function citcom_fixture_about_sections(): array {
-	$file = __DIR__ . '/fixtures/about-sections.json';
+function citcom_fixture_about_sections( string $fixture = 'about-sections.json' ): array {
+	$file = __DIR__ . '/fixtures/' . $fixture;
 	if ( ! file_exists( $file ) ) {
 		return array();
 	}

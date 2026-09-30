@@ -1,0 +1,77 @@
+[
+    {
+        "index": 1,
+        "layout": "media_text",
+        "classes": "section-padding flex-media_text position-relative d-flex align-items-center section-extra-padding media_right",
+        "content": "<h2 class=\"wp-block-heading\">Packaged for Growth</h2>\r\n\r\n\r\n\r\n<p>As a full-service marketing agency, we deliver tailored, professional solutions across Websites, Branding, and Creative designed to be both profitable and powerful. While we provide clearly structured packages for efficiency and impact, should a standard option not perfectly meet your requirements, our in-house team is always ready to collaborate on a bespoke solution tailored entirely to your vision.</p>",
+        "image": {
+            "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/01/CitCom-Packages-Mockup-scaled.jpg",
+            "position": "49.9% 87.37%",
+            "scale": "100%",
+            "alt": "Citcom Packages Mockup"
+        },
+        "align": "media_right",
+        "extra_padding": true,
+        "citdot": true
+    },
+    {
+        "index": 2,
+        "layout": "media_text",
+        "classes": "section-padding flex-media_text position-relative d-flex align-items-center section-extra-padding media_left",
+        "content": "<h2 class=\"wp-block-heading\">Website Packages</h2>\r\n\r\n\r\n\r\n<p>Our Website Packages are engineered to give your business a professional, powerful, and profitable online home. Whether your objective is establishing a simple portfolio or executing a complex, full e-commerce solution, we offer a structured package to fit your vision and drive measurable growth. Starting from the essential One-Page presence up to the comprehensive E-Commerce solution, every package includes expert technical setup, SEO optimisation, and design tailored to your specific functionality requirements.</p>\r\n\r\n\r\n\r\n<div class=\"wp-block-buttons is-layout-flex wp-block-buttons-is-layout-flex\">\r\n<div class=\"wp-block-button\"><a class=\"wp-block-button__link wp-element-button\" href=\"https://citcomstaging.mystagingwebsite.com/packages/website-packages/\"><strong>View website packages</strong></a></div>\r\n</div>",
+        "image": {
+            "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Innovo-website-mockup-1-scaled.jpg",
+            "position": "36.33% 43.19%",
+            "scale": "100%",
+            "alt": "Innovo Website Mockup"
+        },
+        "align": "media_left",
+        "extra_padding": true,
+        "citdot": true
+    },
+    {
+        "index": 3,
+        "layout": "media_text",
+        "classes": "section-padding flex-media_text position-relative d-flex align-items-center section-extra-padding media_right",
+        "content": "<h2 class=\"wp-block-heading\">Branding Packages</h2>\r\n\r\n\r\n\r\n<p>Our Branding Packages provide the essential strategic and visual assets needed to establish and maintain a professional and consistent visual identity. Our tiers: Essential, Growth, and Premium, ensure brand consistency across all touchpoints. Deliverables range from foundational elements like logo design and mini-guidelines to comprehensive assets, including full brand guidelines, defined tone of voice, typography suites, and annual brand audits.</p>\r\n\r\n\r\n\r\n<div class=\"wp-block-buttons is-layout-flex wp-block-buttons-is-layout-flex\">\r\n<div class=\"wp-block-button\"><a class=\"wp-block-button__link wp-element-button\" href=\"https://citcomstaging.mystagingwebsite.com/packages/branding-packages/\">View branding packages</a></div>\r\n</div>",
+        "image": {
+            "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Ebbon-Fest-guidelines-mockup-scaled.jpg",
+            "position": "50% 50%",
+            "scale": "100%",
+            "alt": "Ebbon Fest Guidelines Mockup"
+        },
+        "align": "media_right",
+        "extra_padding": true,
+        "citdot": true
+    },
+    {
+        "index": 4,
+        "layout": "media_text",
+        "classes": "section-padding flex-media_text position-relative d-flex align-items-center section-extra-padding media_left",
+        "content": "<h2 class=\"wp-block-heading\">Creative Retainers</h2>\r\n\r\n\r\n\r\n<p>Creative Retainers guarantee that your business maintains consistent visual execution and messaging. You secure priority access to our studio&#8217;s professional design resources on an ongoing basis. These packages, ranging from Core to Premium, are built for efficiency, providing a fixed amount of monthly deliverables, such as static social media graphics, campaign assets, and presentation decks. Clients committing to longer partnerships (up to 12 months) receive increasing cost savings on the total retainer value.</p>\r\n\r\n\r\n\r\n<div class=\"wp-block-buttons is-layout-flex wp-block-buttons-is-layout-flex\">\r\n<div class=\"wp-block-button\"><a class=\"wp-block-button__link wp-element-button\" href=\"https://citcomstaging.mystagingwebsite.com/packages/creative-retainers/\">View creative retainers</a></div>\r\n</div>",
+        "image": {
+            "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Weddings-at-bewdley-museum-brochure-flat-mockup-scaled.jpg",
+            "position": "50% 50%",
+            "scale": "100%",
+            "alt": "Weddings At Bewdley Museum Brochure Flat Mockup"
+        },
+        "align": "media_left",
+        "extra_padding": true,
+        "citdot": true
+    },
+    {
+        "index": 5,
+        "layout": "media_text",
+        "classes": "section-padding flex-media_text position-relative d-flex align-items-center section-extra-padding media_right",
+        "content": "<h2 class=\"wp-block-heading\">Website Hosting &amp; Management</h2>\r\n\r\n\r\n\r\n<p>Our tiered Hosting Levels are precisely structured to match your website&#8217;s traffic, complexity, and resource needs. We guarantee your online presence is fast, reliable, and powerful. <br>Our Management Levels provide essential insurance for the long-term health of your website, as operating on hosting alone is not recommended. These services ensure your website&#8217;s security, optimal performance, and stability through consistent monitoring and updates.</p>\r\n\r\n\r\n\r\n<div class=\"wp-block-buttons is-layout-flex wp-block-buttons-is-layout-flex\">\r\n<div class=\"wp-block-button\"><a class=\"wp-block-button__link wp-element-button\" href=\"https://citcomstaging.mystagingwebsite.com/packages/hosting-management/\">View hosting &amp; management</a></div>\r\n</div>",
+        "image": {
+            "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/10/Dacro-mobile-mockup-scaled.jpg",
+            "position": "50% 50%",
+            "scale": "100%",
+            "alt": "Dacro Mobile Mockup"
+        },
+        "align": "media_right",
+        "extra_padding": true,
+        "citdot": true
+    }
+]

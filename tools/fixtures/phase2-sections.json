@@ -760,5 +760,148 @@
                 "line_3": "of combined experience"
             }
         }
+    },
+    "services_archive": {
+        "classes": "section-padding flex-sub_services bg-default_lighter",
+        "title": "Our Services",
+        "rows": [
+            {
+                "slug": "creative",
+                "title": "Creative",
+                "excerpt": "Unleash the power of big ideas with our creative services. We blend imagination and expertise to craft compelling campaigns that captivate your audience and drive results.",
+                "cs_tags": [
+                    "branding",
+                    "creative",
+                    "creative-campaigns",
+                    "incentives-and-internal-comms",
+                    "pos-packaging",
+                    "print",
+                    "web-design",
+                    "website-design"
+                ],
+                "gallery": [
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/IMG_3431-1-scaled.jpeg",
+                        "alt": "Img 3431"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Ebbon-fest-Map-lanyard-scaled.jpg",
+                        "alt": "Ebbon Fest Map Lanyard"
+                    }
+                ]
+            },
+            {
+                "slug": "development",
+                "title": "Development",
+                "excerpt": "Engage your audience with a stunning online presence. CitCom develops websites and applications that are both beautiful and deliver exceptional results.",
+                "cs_tags": [
+                    "web-design",
+                    "web-domain-and-hosting",
+                    "website-design",
+                    "website-development",
+                    "websites"
+                ],
+                "gallery": [
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/01/K9-Leisure-Club-desktop-3-mockup-1-scaled.jpg",
+                        "alt": "K9 Leisure Club Desktop"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/10/Screen-print-world-laptop-mobile-mockup-scaled.jpg",
+                        "alt": "Screen Print World Laptop Mobile Mockup"
+                    }
+                ]
+            },
+            {
+                "slug": "marketing",
+                "title": "Marketing",
+                "excerpt": "Choose our marketing services to help your business grow. We blend creative solutions and customer focus to deliver results across all digital and traditional channels.",
+                "cs_tags": [
+                    "incentives-and-internal-comms",
+                    "marketing",
+                    "traditional-marketing"
+                ],
+                "gallery": [
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Copy-of-1E5A6426-1.jpg",
+                        "alt": "Copy Of 1e5a6426"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/Mark-Solomos-linkedin-phone-mockup-scaled.jpg",
+                        "alt": "Mark Solomos Linkedin Phone Mockup"
+                    }
+                ]
+            },
+            {
+                "slug": "events",
+                "title": "Events",
+                "excerpt": "Create unforgettable event experiences with CitCom. We blend creativity and expertise to achieve your business objectives.",
+                "cs_tags": [
+                    "creative",
+                    "events",
+                    "marketing",
+                    "print"
+                ],
+                "gallery": [
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/05/IMG_7236-scaled.jpg",
+                        "alt": "Img 7236"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/IMG_4763-scaled.jpg",
+                        "alt": "Img 4763"
+                    }
+                ]
+            },
+            {
+                "slug": "print",
+                "title": "Print",
+                "excerpt": "Make a lasting impression with our high-quality print solutions. Bring your ideas to life in vibrant colours, delivering impactful print materials that elevate your brand.",
+                "cs_tags": [
+                    "branding",
+                    "creative-campaigns",
+                    "events",
+                    "marketing",
+                    "pos-packaging",
+                    "print"
+                ],
+                "gallery": [
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/IMG_1546-scaled.jpeg",
+                        "alt": "Img 1546"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/IMG_1022-scaled.jpg",
+                        "alt": "Img 1022"
+                    }
+                ]
+            },
+            {
+                "slug": "video",
+                "title": "Video Production",
+                "excerpt": "Captivate your audience with stunning visuals and compelling storytelling. CitCom's video production services bring your vision to life, creating impactful videos.",
+                "cs_tags": [
+                    "video"
+                ],
+                "gallery": [
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2024/10/EE-Teesside-23rd-Jan-DIGI-21.jpg",
+                        "alt": "Ee, Teesside, 23rd Jan Digi (21"
+                    },
+                    {
+                        "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2025/10/NASDAQ-Developing-the-European-Markets-of-Tomorrow-mockup-scaled.jpg",
+                        "alt": "Nasdaq Developing The European Markets Of Tomorrow Mockup"
+                    }
+                ]
+            }
+        ]
+    },
+    "packages": {
+        "title": "CitCom Packages",
+        "cta": {
+            "classes": "section-padding flex-cta grad-slate text-white",
+            "type": "social",
+            "content": "<h2><strong>Powerful solutions, clearly structured. </strong></h2>\n<p><span style=\"font-weight: 400\">Find the perfect fit for your website, brand, and creative needs.</span></p>"
+        }
     }
 }
