@@ -474,3 +474,28 @@ function thousandsCurrencyFormat( $num ) { // phpcs:ignore WordPress.NamingConve
 	}
 	return $num;
 }
+
+/**
+ * Per-request counter, for ids that must stay unique across several blocks of
+ * the same type on one page. (A static variable in a block's render.php does
+ * not do this: statics in an included file start again on every include.)
+ *
+ * @param string $key Counter name.
+ * @return int 1 on the first call, then 2, 3 ...
+ */
+function citcom_counter( string $key ): int {
+	static $counters = array();
+	$counters[ $key ] = ( $counters[ $key ] ?? 0 ) + 1;
+	return $counters[ $key ];
+}
+
+/**
+ * True the first time it is called with a key on this request. For inline
+ * scripts a block prints once however many times it is on the page.
+ *
+ * @param string $key Name of the thing printed once.
+ * @return bool
+ */
+function citcom_once( string $key ): bool {
+	return 1 === citcom_counter( 'once:' . $key );
+}

@@ -23,8 +23,6 @@ $title        = (string) ( $fields['title'] ?? '' );
 $opening_text = (string) ( $fields['opening_text'] ?? '' );
 $number_stats = is_array( $fields['number_stats'] ?? null ) ? $fields['number_stats'] : array();
 
-// Stat ids must be unique on the page even with several stats blocks.
-static $citcom_stat_counter = 0;
 
 ?>
 
@@ -42,7 +40,7 @@ static $citcom_stat_counter = 0;
 		<div class="row justify-content-around mt-5 row-gap-4">
 			<?php
 			foreach ( $number_stats as $stat ) :
-				$i     = ++$citcom_stat_counter;
+				$i     = citcom_counter( 'stat' ); // Unique on the page, also with several stats blocks.
 				$value = (int) ( $stat['stat'] ?? 0 );
 				$color = citcom_choice_label( 'stat_color', $stat['stat_color'] ?? 'secondary' );
 				?>
