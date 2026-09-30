@@ -576,5 +576,189 @@
                 ]
             }
         ]
+    },
+    "diner": {
+        "hero": {
+            "heading": "Welcome to the CitCom Creative Diner",
+            "sign": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/09/Adobe-Express-CIT-1104-CitCom-diner-sign-test-6.mp4",
+            "button": "open the menu",
+            "texture": true
+        },
+        "intro": {
+            "heading": "Serving bold ideas and fresh results",
+            "accent": "since 1987",
+            "content": "At CitCom, we’re an independent creative kitchen crafting bespoke digital web design, punchy branding, and physical print collateral from scratch. Honest work, plucky ideas, and zero fluff. That's our signature house recipe.",
+            "stamp": {
+                "enabled": false,
+                "line_1": "",
+                "line_2": "",
+                "line_3": ""
+            }
+        },
+        "menu": {
+            "heading": "Feeling peckish?",
+            "cards": [
+                {
+                    "label": "Creative",
+                    "image": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/ebbon-fest-cup-e1788957746707.png",
+                    "alt": "Diner Creative shot",
+                    "scale": "87",
+                    "tilt": "0",
+                    "link": "https://citcomstaging.mystagingwebsite.com/services/creative/",
+                    "target": ""
+                },
+                {
+                    "label": "Development",
+                    "image": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/innovo-mockup.png",
+                    "alt": "Diner Development shot",
+                    "scale": "61",
+                    "tilt": "5",
+                    "link": "https://citcomstaging.mystagingwebsite.com/services/development/",
+                    "target": ""
+                },
+                {
+                    "label": "Events",
+                    "image": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/europcar-pod-stand.png",
+                    "alt": "Diner Events shot",
+                    "scale": "82",
+                    "tilt": "-4",
+                    "link": "https://citcomstaging.mystagingwebsite.com/services/events/",
+                    "target": ""
+                },
+                {
+                    "label": "Marketing",
+                    "image": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/bewdley-weddings.png",
+                    "alt": "Diner Marketing shot",
+                    "scale": "72",
+                    "tilt": "-4",
+                    "link": "https://citcomstaging.mystagingwebsite.com/services/marketing/",
+                    "target": ""
+                },
+                {
+                    "label": "Print",
+                    "image": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/ee-halloween-box.png",
+                    "alt": "Diner Print shot",
+                    "scale": "74",
+                    "tilt": "0",
+                    "link": "https://citcomstaging.mystagingwebsite.com/services/print/",
+                    "target": ""
+                },
+                {
+                    "label": "Video",
+                    "image": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/nasdaq-video.png",
+                    "alt": "Diner Video shot",
+                    "scale": "64",
+                    "tilt": "-5",
+                    "link": "https://citcomstaging.mystagingwebsite.com/services/video/",
+                    "target": ""
+                }
+            ],
+            "bleed": {
+                "start": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/bleed-left-v3-scaled.png",
+                    "alt": "Diner Bleed Left v3"
+                },
+                "end": {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/bleed-right-v3-scaled.png",
+                    "alt": "Diner Bleed Right v3"
+                }
+            },
+            "button": {
+                "url": "https://citcomstaging.mystagingwebsite.com/services/",
+                "title": "taste the results"
+            }
+        },
+        "story": {
+            "heading": "Full-Service Strategy, Cooked Fresh Daily",
+            "content": "Small town roots, big city mindset, and over three decades of secret recipe expertise. At CitCom, we don't just pull one lever, we run the whole kitchen. From quick branding snacks and high quality print to meaty web builds and five course marketing campaigns, our senior team preps every project from scratch, without delay.\n\nNo artificial fluff. Just high impact creatives served hot and fast.",
+            "button": {
+                "url": "https://citcomstaging.mystagingwebsite.com/contact-us/",
+                "title": "Speak to the chefs"
+            },
+            "stamp": {
+                "enabled": true,
+                "line_1": "Est.",
+                "line_2": "1987",
+                "line_3": ""
+            }
+        },
+        "wall": {
+            "heading": "The Wall of",
+            "script": "Fame",
+            "logos": [
+                {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/Client-wall-fame-BT-e1788951915502.png",
+                    "name": "BT"
+                },
+                {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/Client-wall-fame-C-e1788951894876.png",
+                    "name": "Collect+"
+                },
+                {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/Client-wall-fame-EE-e1788951874108.png",
+                    "name": "EE"
+                },
+                {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/Client-wall-fame-Innovo-e1788951842694.png",
+                    "name": "Innovo"
+                },
+                {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/Client-wall-fame-SPW-e1788951817821.png",
+                    "name": "Screen Print World"
+                },
+                {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/Client-wall-fame-Wyre-forest-e1788951796175.png",
+                    "name": "Wyre Forest District Council"
+                },
+                {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/Client-wall-fame-Dacro-e1788951777789.png",
+                    "name": "Dacro"
+                },
+                {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/Client-wall-fame-PayPoint-e1788951757814.png",
+                    "name": "PayPoint"
+                },
+                {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/Client-wall-fame-Ebbon-e1788951736568.png",
+                    "name": "Ebbon Group"
+                },
+                {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/Client-wall-fame-Europcar-e1788951708565.png",
+                    "name": "Europcar"
+                },
+                {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/Client-wall-fame-Nasdaq-e1788951687724.png",
+                    "name": "Nasdaq"
+                },
+                {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/Client-wall-fame-K9-e1788951631939.png",
+                    "name": "K9 Leisure Club"
+                },
+                {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/Client-wall-fame-Weddings-bewdley-e1788951652156.png",
+                    "name": "Weddings by Beverley Mascall"
+                },
+                {
+                    "url": "https://citcomstaging.mystagingwebsite.com/wp-content/uploads/2026/08/Client-wall-fame-Wyre-forest-e1788951796175.png",
+                    "name": "Wyre Forest District Council"
+                }
+            ]
+        },
+        "reviews": {
+            "heading": "Five Star Reputation",
+            "trustindex_code": "[trustindex no-registration=google]"
+        },
+        "guestcheck": {
+            "heading": "Ready to order?",
+            "card_heading": "Ready to Order?",
+            "card_content": "Complete the form and one of our chefs will be in touch",
+            "form": 220023,
+            "stamp": {
+                "enabled": true,
+                "line_1": "over",
+                "line_2": "100 years",
+                "line_3": "of combined experience"
+            }
+        }
     }
 }

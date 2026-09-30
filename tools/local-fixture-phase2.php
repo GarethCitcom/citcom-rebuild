@@ -1,7 +1,8 @@
 <?php
 /**
  * Local fixture for the Phase 2 blocks sub-services, trustindex, stats,
- * video, swiper, contact-map, services-showcase and citdot-cards. Run after
+ * video, swiper, contact-map, services-showcase, citdot-cards and the eight
+ * diner blocks. Run after
  * tools/local-fixture.php, from the WordPress root:
  *
  *   wp eval-file wp-content/themes/citcom-rebuild/tools/local-fixture-phase2.php
@@ -15,6 +16,8 @@
  * - /results/           stats (staging "Delivering 400% ROI" case study) and trustindex
  *                       (the old google_reviews section, now a Trustindex widget)
  * - /services/creative/ sub_services with five child services, as staging
+ * - /                   the diner home page (staging /), set as the front page
+ * - /diner-extras/      diner variants staging does not use (sample content)
  *
  * Re-running reuses anything that already exists.
  *
@@ -463,5 +466,289 @@ if ( ! empty( $citcom_p2['sub_services'] ) ) {
 	WP_CLI::log( "Creative service: $creative with " . count( $child_ids ) . ' children.' );
 }
 
+/*
+ * 6. The diner home page (staging /): hero, intro, menu, story, wall, reviews and
+ * guest check, set as the static front page. A second page, /diner-extras/, holds
+ * what the staging home page does not use: the light story split, the intro stamp
+ * and the reviews placeholder (summary badge and cards) shown when no Trustindex
+ * code is set. Its review content is sample text.
+ */
+
+/**
+ * Stamp group data for a diner block.
+ *
+ * @param string $prefix Field key prefix, e.g. "story" for field_diner_story_stamp_on.
+ * @param array  $stamp  enabled / line_1 / line_2 / line_3.
+ */
+function citcom_fixture_diner_stamp( string $prefix, array $stamp ): array {
+	return array(
+		'stamp'          => '',
+		'_stamp'         => 'field_diner_' . $prefix . '_stamp',
+		'stamp_enabled'  => ! empty( $stamp['enabled'] ) ? '1' : '0',
+		'_stamp_enabled' => 'field_diner_' . $prefix . '_stamp_on',
+		'stamp_line_1'   => (string) ( $stamp['line_1'] ?? '' ),
+		'_stamp_line_1'  => 'field_diner_' . $prefix . '_stamp_1',
+		'stamp_line_2'   => (string) ( $stamp['line_2'] ?? '' ),
+		'_stamp_line_2'  => 'field_diner_' . $prefix . '_stamp_2',
+		'stamp_line_3'   => (string) ( $stamp['line_3'] ?? '' ),
+		'_stamp_line_3'  => 'field_diner_' . $prefix . '_stamp_3',
+	);
+}
+
+/**
+ * ACF link value pointing at the same path on the local site.
+ */
+function citcom_fixture_local_link( string $url, string $title, string $target = '' ): array {
+	return array(
+		'title'  => $title,
+		'url'    => '' === $url ? '' : home_url( (string) wp_parse_url( $url, PHP_URL_PATH ) ),
+		'target' => $target,
+	);
+}
+
+if ( ! empty( $citcom_p2['diner'] ) ) {
+	$d        = $citcom_p2['diner'];
+	$settings = citcom_fixture_section_settings( '' );
+	$diner    = array();
+
+	// Hero: the sign is an MP4 on staging.
+	$sign_id = ! empty( $d['hero']['sign'] ) ? citcom_fixture_sideload( $d['hero']['sign'], 'CitCom diner sign' ) : 0;
+	$diner[] = citcom_fixture_block(
+		'citcom/diner-hero',
+		array_merge(
+			array(
+				'heading'       => $d['hero']['heading'],
+				'_heading'      => 'field_diner_hero_heading',
+				'sign_image'    => $sign_id ? (string) $sign_id : '',
+				'_sign_image'   => 'field_diner_hero_sign',
+				'show_texture'  => ! empty( $d['hero']['texture'] ) ? '1' : '0',
+				'_show_texture' => 'field_diner_hero_texture',
+				'button'        => array(
+					'title'  => $d['hero']['button'],
+					'url'    => '#feeling-peckish',
+					'target' => '',
+				),
+				'_button'       => 'field_diner_hero_button',
+			),
+			$settings
+		)
+	);
+
+	$diner[] = citcom_fixture_block(
+		'citcom/diner-intro',
+		array_merge(
+			array(
+				'heading'         => $d['intro']['heading'],
+				'_heading'        => 'field_diner_intro_heading',
+				'heading_accent'  => $d['intro']['accent'],
+				'_heading_accent' => 'field_diner_intro_accent',
+				'content'         => $d['intro']['content'],
+				'_content'        => 'field_diner_intro_content',
+			),
+			citcom_fixture_diner_stamp( 'intro', $d['intro']['stamp'] ),
+			$settings
+		)
+	);
+
+	$card_rows = array();
+	foreach ( $d['menu']['cards'] as $card ) {
+		$card_rows[] = array(
+			'label'       => array( 'field_diner_menu_label', $card['label'] ),
+			'image'       => array( 'field_diner_menu_image', (string) citcom_fixture_image( $card['image'], $card['alt'] ) ),
+			'image_scale' => array( 'field_diner_menu_scale', (string) $card['scale'] ),
+			'image_tilt'  => array( 'field_diner_menu_tilt', (string) $card['tilt'] ),
+			'link'        => array( 'field_diner_menu_card_link', citcom_fixture_local_link( $card['link'], $card['label'], $card['target'] ) ),
+		);
+	}
+	$bleed_start = ! empty( $d['menu']['bleed']['start'] ) ? citcom_fixture_image( $d['menu']['bleed']['start']['url'], $d['menu']['bleed']['start']['alt'] ) : 0;
+	$bleed_end   = ! empty( $d['menu']['bleed']['end'] ) ? citcom_fixture_image( $d['menu']['bleed']['end']['url'], $d['menu']['bleed']['end']['alt'] ) : 0;
+	$diner[]     = citcom_fixture_block(
+		'citcom/diner-menu',
+		array_merge(
+			array(
+				'heading'      => $d['menu']['heading'],
+				'_heading'     => 'field_diner_menu_heading',
+				'button'       => citcom_fixture_local_link( $d['menu']['button']['url'], $d['menu']['button']['title'] ),
+				'_button'      => 'field_diner_menu_button',
+				'bleed_start'  => $bleed_start ? (string) $bleed_start : '',
+				'_bleed_start' => 'field_diner_menu_bleed_a',
+				'bleed_end'    => $bleed_end ? (string) $bleed_end : '',
+				'_bleed_end'   => 'field_diner_menu_bleed_b',
+			),
+			citcom_fixture_repeater( 'cards', 'field_diner_menu_cards', $card_rows ),
+			$settings
+		)
+	);
+
+	$diner[] = citcom_fixture_block(
+		'citcom/diner-story',
+		array_merge(
+			array(
+				'heading'  => $d['story']['heading'],
+				'_heading' => 'field_diner_story_heading',
+				'content'  => $d['story']['content'],
+				'_content' => 'field_diner_story_content',
+				'button'   => citcom_fixture_local_link( $d['story']['button']['url'], $d['story']['button']['title'] ),
+				'_button'  => 'field_diner_story_button',
+				'image'    => '',
+				'_image'   => 'field_diner_story_image',
+			),
+			citcom_fixture_diner_stamp( 'story', $d['story']['stamp'] ),
+			$settings
+		)
+	);
+
+	$logo_rows = array();
+	foreach ( $d['wall']['logos'] as $logo ) {
+		$logo_rows[] = array(
+			'image' => array( 'field_diner_wall_logo_image', (string) citcom_fixture_image( $logo['url'], 'Client wall of fame ' . $logo['name'] ) ),
+			'name'  => array( 'field_diner_wall_logo_name', $logo['name'] ),
+		);
+	}
+	$diner[] = citcom_fixture_block(
+		'citcom/diner-wall',
+		array_merge(
+			array(
+				'heading'         => $d['wall']['heading'],
+				'_heading'        => 'field_diner_wall_heading',
+				'heading_script'  => $d['wall']['script'],
+				'_heading_script' => 'field_diner_wall_heading_script',
+			),
+			citcom_fixture_repeater( 'logos', 'field_diner_wall_logos', $logo_rows ),
+			citcom_fixture_diner_stamp( 'wall', array() ),
+			$settings
+		)
+	);
+
+	$reviews_base = array(
+		'heading'               => $d['reviews']['heading'],
+		'_heading'              => 'field_diner_reviews_heading',
+		'summary'               => '',
+		'_summary'              => 'field_diner_reviews_summary',
+		'summary_label'         => 'Excellent',
+		'_summary_label'        => 'field_diner_reviews_summary_label',
+		'summary_rating'        => '5',
+		'_summary_rating'       => 'field_diner_reviews_summary_rating',
+		'summary_review_count'  => '20',
+		'_summary_review_count' => 'field_diner_reviews_summary_count',
+		'summary_link'          => '',
+		'_summary_link'         => 'field_diner_reviews_summary_link',
+	);
+	$diner[]      = citcom_fixture_block(
+		'citcom/diner-reviews',
+		array_merge(
+			$reviews_base,
+			array(
+				'trustindex_code'  => $d['reviews']['trustindex_code'],
+				'_trustindex_code' => 'field_diner_reviews_trustindex',
+			),
+			citcom_fixture_repeater( 'reviews', 'field_diner_reviews_cards', array() ),
+			$settings
+		)
+	);
+
+	$diner[] = citcom_fixture_block(
+		'citcom/diner-guestcheck',
+		array_merge(
+			array(
+				'heading'       => $d['guestcheck']['heading'],
+				'_heading'      => 'field_diner_guestcheck_heading',
+				'card_heading'  => $d['guestcheck']['card_heading'],
+				'_card_heading' => 'field_diner_guestcheck_card_heading',
+				'card_content'  => $d['guestcheck']['card_content'],
+				'_card_content' => 'field_diner_guestcheck_card_content',
+				'card_image'    => '',
+				'_card_image'   => 'field_diner_guestcheck_card_image',
+				'form'          => (string) $d['guestcheck']['form'],
+				'_form'         => 'field_diner_guestcheck_form',
+			),
+			citcom_fixture_diner_stamp( 'guestcheck', $d['guestcheck']['stamp'] ),
+			$settings
+		)
+	);
+
+	$diner_id = citcom_fixture_page( 'CitCom Creative Diner', 'creative-diner', implode( "\n\n", $diner ) );
+	update_option( 'show_on_front', 'page' );
+	update_option( 'page_on_front', $diner_id );
+	WP_CLI::log( "Diner home page: $diner_id (set as the front page)" );
+
+	// Extras: the variants the staging home page does not use.
+	$sample_reviews = array();
+	foreach ( array( 'Sample Reviewer One', 'Sample Reviewer Two', 'Sample Reviewer Three', 'Sample Reviewer Four' ) as $n => $name ) {
+		$sample_reviews[] = array(
+			'avatar'      => array( 'field_diner_reviews_card_avatar', '' ),
+			'name'        => array( 'field_diner_reviews_card_name', $name ),
+			'time_ago'    => array( 'field_diner_reviews_card_time', ( $n + 2 ) . ' months ago' ),
+			'rating'      => array( 'field_diner_reviews_card_rating', 3 === $n ? '4' : '5' ),
+			'verified'    => array( 'field_diner_reviews_card_verified', 2 === $n ? '0' : '1' ),
+			'review_text' => array( 'field_diner_reviews_card_text', 'Sample review text for the local fixture. It runs long enough to wrap over a few lines inside the card, as a real review would.' ),
+			'link'        => array(
+				'field_diner_reviews_card_link',
+				0 === $n ? array(
+					'title'  => 'Read more',
+					'url'    => 'https://www.google.com/',
+					'target' => '_blank',
+				) : '',
+			),
+		);
+	}
+	$extras = array(
+		citcom_fixture_block(
+			'citcom/diner-intro',
+			array_merge(
+				array(
+					'heading'         => $d['intro']['heading'],
+					'_heading'        => 'field_diner_intro_heading',
+					'heading_accent'  => $d['intro']['accent'],
+					'_heading_accent' => 'field_diner_intro_accent',
+					'content'         => $d['intro']['content'],
+					'_content'        => 'field_diner_intro_content',
+				),
+				citcom_fixture_diner_stamp(
+					'intro',
+					array(
+						'enabled' => true,
+						'line_1'  => 'Est.',
+						'line_2'  => '1987',
+						'line_3'  => 'Kidderminster',
+					)
+				),
+				$settings
+			)
+		),
+		citcom_fixture_block(
+			'citcom/diner-story-light',
+			array_merge(
+				array(
+					'heading'  => $d['story']['heading'],
+					'_heading' => 'field_diner_story_light_heading',
+					'content'  => $d['story']['content'],
+					'_content' => 'field_diner_story_light_content',
+					'button'   => citcom_fixture_local_link( $d['story']['button']['url'], $d['story']['button']['title'] ),
+					'_button'  => 'field_diner_story_light_button',
+					'image'    => '',
+					'_image'   => 'field_diner_story_light_image',
+				),
+				citcom_fixture_diner_stamp( 'story_light', array() ),
+				$settings
+			)
+		),
+		citcom_fixture_block(
+			'citcom/diner-reviews',
+			array_merge(
+				$reviews_base,
+				array(
+					'trustindex_code'  => '',
+					'_trustindex_code' => 'field_diner_reviews_trustindex',
+				),
+				citcom_fixture_repeater( 'reviews', 'field_diner_reviews_cards', $sample_reviews ),
+				$settings
+			)
+		),
+	);
+	$extras_id = citcom_fixture_page( 'Diner extras', 'diner-extras', implode( "\n\n", $extras ) );
+	WP_CLI::log( "Diner extras page: $extras_id" );
+}
+
 flush_rewrite_rules( false );
-WP_CLI::success( 'Phase 2 fixture done: /about-us/, /contact-us/, /home-classic/, /results/, /services/creative/.' );
+WP_CLI::success( 'Phase 2 fixture done: / (diner home), /about-us/, /contact-us/, /home-classic/, /results/, /services/creative/, /diner-extras/.' );
