@@ -333,3 +333,39 @@ example):
   > Templates (case study archive, services archive, tag archives, blog post
   footer). Revisit once those templates are blocks.
 - Font Awesome kit allowed domains (see the baseline note above).
+
+## Forms: Forminator inventory (read from staging 2026-09-30)
+
+Gareth wants to drop Forminator (said 2026-09-30). Replacement not yet chosen;
+this is what it has to cover. Read with `wp --skip-themes` on staging 1771004.
+
+| Id | Form | Fields (* required) | Used on | Entries |
+|---|---|---|---|---|
+| 623 | contact-form | Name*, Email*, Message, mailing list checkbox, Company name* | contact_map (/contact-us/, /about-us/, /home/), cta "form", some service pages | 112 |
+| 581 | newsletter-signup | name*, email*, two text*, consent checkbox* | footer newsletter modal (posts page only), /info/mailing-list/, newsletter page | 15 |
+| 220023 | diner-guest-check-form | Name*, Last name*, Company name*, Email*, Message, mailing list checkbox | diner guest check (home, diner landing page) | 8 |
+| 218706 | send-a-brief | name, email*, phone*, two text*, textarea*, captcha | /send-us-a-brief/, events service pages | 4 |
+| 219819 | citcom-client-survey-2 | name*, email*, checkbox*, textarea | /packages/ and its four sub-pages | 0 |
+| 219727 | citcom-client-survey | ten fields, mostly checkbox and radio groups | /info/client-survey/ | 14 |
+| 219725 | free-technical-audit | ten fields incl. url*, two selects, slider* | /info/zero-click-era/ | 1 |
+| 218841 | seo-audit | name*, email*, phone*, select | /info/free-seo-audit/ | 2 |
+| 218732 | citcom-event-rsvp | six fields incl. phone*, email*, checkbox | /info/citcom-autumn-event/ | 25 |
+
+- Quizzes (Forminator's scored quiz type): 219262 technical-skills-assessment,
+  219265 jd-basic, 219271 basic-quiz and one unnamed (219273); used on
+  /info/junior-developer-quiz/; 25 entries between them.
+- Mailchimp: the Forminator Mailchimp add-on is active and connected on forms
+  581, 623, 218732 and 220023 (the mailing list checkbox subscribes).
+- Spam: honeypot on; Akismet off; a captcha field on send-a-brief.
+- Behaviour: ajax submit, submissions stored, email notifications with
+  conditional routing on 623 and 220023 (staging recipients are rewritten to
+  the staging domain).
+- Where the theme touches Forminator: `form` post_object fields (post type
+  `forminator_forms`) in citcom/cta, citcom/contact-map and
+  citcom/diner-guestcheck; `[forminator_form]` in footer.php (newsletter
+  modal) and in those three blocks; `src/js/forminator-bootstrap.js` (adds
+  Bootstrap classes to Forminator's markup); `src/scss/elements/_form-fields.scss`;
+  the "SEND TO THE KITCHEN" relabel script in diner-guestcheck; and any
+  `[forminator_form]` / `[forminator_quiz]` shortcodes inside shortcode
+  layouts on the /info/ pages.
+- Trustindex on staging is the free plugin `wp-reviews-plugin-for-google`.
