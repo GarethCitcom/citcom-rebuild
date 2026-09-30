@@ -14,7 +14,7 @@ define( 'CITCOM_THEME_DIR', get_stylesheet_directory() );
 define( 'CITCOM_THEME_URI', get_stylesheet_directory_uri() );
 define( 'CITCOM_THEME_VERSION', wp_get_theme( get_stylesheet() )->get( 'Version' ) );
 
-foreach ( array( 'helpers', 'class-citcom-nav-walker', 'setup', 'assets', 'cpt', 'acf', 'blocks', 'shortcodes', 'diner', 'mailchimp', 'forms', 'ajax', 'blocks-convert' ) as $citcom_inc ) {
+foreach ( array( 'helpers', 'class-citcom-nav-walker', 'setup', 'assets', 'cpt', 'acf', 'blocks', 'shortcodes', 'diner', 'mailchimp', 'forms', 'forms-fields', 'ajax', 'blocks-convert' ) as $citcom_inc ) {
 	require CITCOM_THEME_DIR . '/inc/' . $citcom_inc . '.php';
 }
 unset( $citcom_inc );

@@ -3,7 +3,8 @@
  * Theme forms (replaces Forminator, decided 2026-09-30).
  *
  * - A form is a PHP file in forms/ that returns its definition; the file name
- *   is the form's slug. citcom_render_form() prints it, the REST route
+ *   is the form's slug. citcom_render_form() prints it (inc/forms-fields.php,
+ *   with the field types, validation and variants), the REST route
  *   citcom/v1/forms/<slug> receives it.
  * - Every submission is validated on the server, stored as a private
  *   "citcom_submission" post (Form submissions in wp-admin), emailed to the
@@ -102,221 +103,41 @@ function citcom_form_choices(): array {
 }
 
 /**
- * Markup of a form.
- *
- * Two variants. "bootstrap" (default) carries the Bootstrap classes the old
- * forminator-bootstrap.js added to Forminator's markup, so forms look as they
- * did. "plain" carries none: the diner guest check styles the bare elements
- * itself, as it did with the unconverted Forminator form.
- *
- * @param string|int $id   Slug or legacy Forminator id.
- * @param array      $args variant (bootstrap|plain), submit (button label override).
- * @return string Empty when the form does not exist.
- */
-function citcom_render_form( $id, array $args = array() ): string {
-	$form = citcom_form( $id );
-	if ( ! $form ) {
-		return '';
-	}
-	$plain    = 'plain' === ( $args['variant'] ?? 'bootstrap' );
-	$instance = 'cf' . citcom_counter( 'form' );
-	$class    = static function ( string $own, string $bootstrap ) use ( $plain ): string {
-		return $plain ? $own : trim( $own . ' ' . $bootstrap );
-	};
-
-	ob_start();
-	?>
-	<form class="citcom-form citcom-form--<?php echo esc_attr( $form['slug'] ); ?><?php echo $plain ? ' citcom-form--plain' : ''; ?>" data-citcom-form="<?php echo esc_attr( $form['slug'] ); ?>" method="post" action="<?php echo esc_url( rest_url( 'citcom/v1/forms/' . $form['slug'] ) ); ?>" novalidate>
-		<div class="citcom-form-message" role="alert" aria-live="polite" hidden></div>
-		<?php
-		foreach ( (array) $form['rows'] as $row ) :
-			$row       = array_values( (array) $row );
-			$condition = '';
-			foreach ( $row as $field ) {
-				// A row is hidden as a whole when all its fields share one show_if.
-				$condition = (string) ( $field['show_if'] ?? '' );
-				if ( '' === $condition ) {
-					break;
-				}
-			}
-			?>
-			<div class="<?php echo esc_attr( $class( 'citcom-form-row', 'mb-0' ) ); ?>"<?php echo '' !== $condition ? ' data-show-if="' . esc_attr( $condition ) . '" hidden' : ''; ?>>
-				<?php
-				foreach ( $row as $field ) :
-					$type     = (string) ( $field['type'] ?? 'text' );
-					$name     = (string) ( $field['name'] ?? '' );
-					$label    = (string) ( $field['label'] ?? '' );
-					$required = ! empty( $field['required'] );
-					$field_id = $instance . '-' . $name;
-					$star     = $required ? ' <span class="citcom-form-required">*</span>' : '';
-
-					if ( 'html' === $type ) :
-						?>
-						<div class="<?php echo esc_attr( $class( 'citcom-form-col citcom-form-field citcom-form-field--html no-label', 'mb-3' ) ); ?>">
-							<?php echo wp_kses_post( (string) ( $field['html'] ?? '' ) ); ?>
-						</div>
-						<?php
-					elseif ( 'checkbox' === $type ) :
-						?>
-						<div class="<?php echo esc_attr( $class( 'citcom-form-col citcom-form-field citcom-form-field--checkbox no-label', 'mb-3' ) ); ?>" data-field="<?php echo esc_attr( $name ); ?>">
-							<?php if ( ! empty( $field['group_label'] ) ) : ?>
-								<span class="visually-hidden" id="<?php echo esc_attr( $field_id ); ?>-group"><?php echo esc_html( $field['group_label'] ); ?></span>
-							<?php endif; ?>
-							<?php if ( $plain ) : ?>
-								<label for="<?php echo esc_attr( $field_id ); ?>" class="citcom-form-checkbox">
-									<input type="checkbox" name="<?php echo esc_attr( $name ); ?>" value="1" id="<?php echo esc_attr( $field_id ); ?>"<?php echo $required ? ' required aria-required="true"' : ''; ?>>
-									<span class="citcom-form-checkbox-box" aria-hidden="true"></span>
-									<span class="citcom-form-checkbox-label"><?php echo esc_html( $label ); ?></span>
-								</label>
-							<?php else : ?>
-								<div class="form-check">
-									<input type="checkbox" name="<?php echo esc_attr( $name ); ?>" value="1" id="<?php echo esc_attr( $field_id ); ?>" class="form-check-input"<?php echo $required ? ' required aria-required="true"' : ''; ?><?php echo ! empty( $field['group_label'] ) ? ' aria-describedby="' . esc_attr( $field_id ) . '-group"' : ''; ?>>
-									<label for="<?php echo esc_attr( $field_id ); ?>" class="citcom-form-checkbox form-check-label lh-md"><span class="citcom-form-checkbox-label"><?php echo esc_html( $label ); ?></span></label>
-								</div>
-							<?php endif; ?>
-						</div>
-						<?php
-					else :
-						$common = ' name="' . esc_attr( $name ) . '" id="' . esc_attr( $field_id ) . '"'
-							. ( $required ? ' required aria-required="true"' : '' )
-							. ( ! empty( $field['autocomplete'] ) ? ' autocomplete="' . esc_attr( $field['autocomplete'] ) . '"' : '' );
-						?>
-						<div class="<?php echo esc_attr( $class( 'citcom-form-col citcom-form-field citcom-form-field--' . $type, 'mb-3' ) ); ?>" data-field="<?php echo esc_attr( $name ); ?>">
-							<label for="<?php echo esc_attr( $field_id ); ?>" class="<?php echo esc_attr( $class( 'citcom-form-label', 'form-label rounded-label' ) ); ?>"><?php echo esc_html( $label ) . $star; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
-							<?php if ( 'textarea' === $type ) : ?>
-								<textarea<?php echo $common; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> placeholder="<?php echo esc_attr( (string) ( $field['placeholder'] ?? '' ) ); ?>" class="<?php echo esc_attr( $class( 'citcom-form-textarea', 'form-control rounded-3 p-4' ) ); ?>"></textarea>
-							<?php elseif ( 'select' === $type ) : ?>
-								<select<?php echo $common; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> class="<?php echo esc_attr( $class( 'citcom-form-select', 'form-select rounded-pill px-4' ) ); ?>">
-									<?php foreach ( (array) ( $field['options'] ?? array() ) as $value => $text ) : ?>
-										<option value="<?php echo esc_attr( (string) $value ); ?>"><?php echo esc_html( (string) $text ); ?></option>
-									<?php endforeach; ?>
-								</select>
-							<?php else : ?>
-								<input type="<?php echo esc_attr( in_array( $type, array( 'email', 'tel', 'url' ), true ) ? $type : 'text' ); ?>"<?php echo $common; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> value="" placeholder="<?php echo esc_attr( (string) ( $field['placeholder'] ?? '' ) ); ?>" class="<?php echo esc_attr( $class( 'citcom-form-input', 'form-control rounded-pill px-4' ) ); ?>">
-							<?php endif; ?>
-						</div>
-						<?php
-					endif;
-				endforeach;
-				?>
-			</div>
-		<?php endforeach; ?>
-		<div class="<?php echo esc_attr( $class( 'citcom-form-row citcom-form-row-last', 'mb-0' ) ); ?>">
-			<div class="citcom-form-col">
-				<button type="submit" class="<?php echo esc_attr( $class( 'citcom-form-submit', 'btn btn-primary px-4 rounded-pill' ) ); ?>"><?php echo esc_html( (string) ( $args['submit'] ?? $form['submit'] ?? __( 'Send', 'citcom' ) ) ); ?></button>
-			</div>
-		</div>
-		<label class="citcom-form-hp" aria-hidden="true">Please do not fill in this field. <input type="text" name="citcom_hp" value="" autocomplete="off" tabindex="-1"></label>
-	</form>
-	<?php
-	return (string) ob_get_clean();
-}
-
-/**
- * Whether a field's show_if condition is met by the submitted values.
- */
-function citcom_form_field_shown( array $field, array $values ): bool {
-	$condition = (string) ( $field['show_if'] ?? '' );
-	return '' === $condition || ! empty( $values[ $condition ] );
-}
-
-/**
- * Sanitise and validate a submission against a form definition.
- *
- * @param array $form Form definition.
- * @param array $raw  Request parameters.
- * @return array{0:array<string,mixed>,1:array<string,string>} Values and errors by field name.
- */
-function citcom_form_validate( array $form, array $raw ): array {
-	$fields = citcom_form_fields( $form );
-	$values = array();
-	$errors = array();
-
-	// Checkboxes first: other fields' show_if conditions read them.
-	foreach ( $fields as $name => $field ) {
-		if ( 'checkbox' === ( $field['type'] ?? '' ) ) {
-			$values[ $name ] = ! empty( $raw[ $name ] );
-		}
-	}
-
-	foreach ( $fields as $name => $field ) {
-		$type  = (string) ( $field['type'] ?? 'text' );
-		$label = (string) ( $field['label'] ?? $name );
-		$shown = citcom_form_field_shown( $field, $values );
-
-		if ( 'checkbox' === $type ) {
-			if ( ! empty( $field['required'] ) && $shown && ! $values[ $name ] ) {
-				$errors[ $name ] = (string) ( $field['required_message'] ?? __( 'This field is required. Please check it.', 'citcom' ) );
-			}
-			continue;
-		}
-
-		$value = is_scalar( $raw[ $name ] ?? null ) ? (string) $raw[ $name ] : ''; // REST parameters arrive unslashed.
-		switch ( $type ) {
-			case 'email':
-				$typed = trim( $value );
-				$value = sanitize_email( $typed );
-				if ( '' !== $typed && ! is_email( $value ) ) {
-					// Something was typed but it is not an address: say so, not "required".
-					$values[ $name ] = '';
-					if ( $shown ) {
-						$errors[ $name ] = __( 'Valid email required', 'citcom' );
-					}
-					continue 2;
-				}
-				break;
-			case 'textarea':
-				$value = mb_substr( sanitize_textarea_field( $value ), 0, 5000 );
-				break;
-			case 'url':
-				$value = esc_url_raw( $value );
-				break;
-			case 'select':
-				$value = array_key_exists( $value, (array) ( $field['options'] ?? array() ) ) ? $value : '';
-				break;
-			default:
-				$value = mb_substr( sanitize_text_field( $value ), 0, 200 );
-		}
-		$values[ $name ] = $shown ? $value : '';
-
-		if ( ! $shown ) {
-			continue;
-		}
-		if ( ! empty( $field['required'] ) && '' === $value ) {
-			/* translators: %s: field label */
-			$errors[ $name ] = (string) ( $field['required_message'] ?? sprintf( __( '%s is required', 'citcom' ), $label ) );
-		} elseif ( 'email' === $type && '' !== $value && ! is_email( $value ) ) {
-			$errors[ $name ] = __( 'Valid email required', 'citcom' );
-		}
-	}
-
-	return array( $values, $errors );
-}
-
-/**
  * Email addresses a submission goes to.
  *
- * Forms name recipient groups ("general", "marketing"); the addresses live in
- * Site Settings > Forms, so they are not in code.
+ * None are in code. Site Settings > Forms holds a general and a marketing
+ * address, which forms refer to by group name, and an optional list of
+ * addresses per form that replaces the form's default groups. A form's
+ * recipients_if groups (the marketing copy on a mailing list signup) are added
+ * either way.
  *
  * @param array $form   Form definition.
  * @param array $values Validated values.
  * @return string[]
  */
 function citcom_form_recipients( array $form, array $values ): array {
-	$groups = (array) ( $form['recipients'] ?? array( 'general' ) );
-	foreach ( (array) ( $form['recipients_if'] ?? array() ) as $field => $extra ) {
-		if ( ! empty( $values[ $field ] ) ) {
-			$groups = array_merge( $groups, (array) $extra );
-		}
-	}
+	$split = static function ( $list ): array {
+		return array_values( array_filter( (array) preg_split( '/[\s,;]+/', (string) $list ), 'is_email' ) );
+	};
+	$group = static function ( string $name ) use ( $split ): array {
+		return $split( 'marketing' === $name ? get_field( 'forms_marketing_recipient', 'option' ) : get_field( 'forms_recipient', 'option' ) );
+	};
 
 	$addresses = array();
-	foreach ( array_unique( $groups ) as $group ) {
-		$setting = 'marketing' === $group ? get_field( 'forms_marketing_recipient', 'option' ) : get_field( 'forms_recipient', 'option' );
-		foreach ( preg_split( '/[\s,;]+/', (string) $setting ) as $address ) {
-			if ( is_email( $address ) ) {
-				$addresses[] = $address;
+	foreach ( (array) get_field( 'forms_recipients', 'option' ) as $row ) {
+		if ( is_array( $row ) && ( $row['form'] ?? '' ) === $form['slug'] ) {
+			$addresses = array_merge( $addresses, $split( $row['addresses'] ?? '' ) );
+		}
+	}
+	if ( ! $addresses ) {
+		foreach ( (array) ( $form['recipients'] ?? array( 'general' ) ) as $name ) {
+			$addresses = array_merge( $addresses, $group( (string) $name ) );
+		}
+	}
+	foreach ( (array) ( $form['recipients_if'] ?? array() ) as $field => $extra ) {
+		if ( ! empty( $values[ $field ] ) ) {
+			foreach ( (array) $extra as $name ) {
+				$addresses = array_merge( $addresses, $group( (string) $name ) );
 			}
 		}
 	}
@@ -324,26 +145,6 @@ function citcom_form_recipients( array $form, array $values ): array {
 		$addresses[] = (string) get_option( 'admin_email' );
 	}
 	return array_values( array_unique( (array) apply_filters( 'citcom_form_recipients', $addresses, $form, $values ) ) );
-}
-
-/**
- * Label => printable value, in form order, for the email and the stored copy.
- *
- * @return array<string,string>
- */
-function citcom_form_summary( array $form, array $values ): array {
-	$summary = array();
-	foreach ( citcom_form_fields( $form ) as $name => $field ) {
-		if ( ! citcom_form_field_shown( $field, $values ) ) {
-			continue;
-		}
-		$value = $values[ $name ] ?? '';
-		if ( 'checkbox' === ( $field['type'] ?? '' ) ) {
-			$value = $value ? __( 'Yes', 'citcom' ) : __( 'No', 'citcom' );
-		}
-		$summary[ (string) ( $field['label'] ?? $name ) ] = (string) $value;
-	}
-	return $summary;
 }
 
 /**
@@ -673,7 +474,7 @@ add_action(
  * Forminator ids before the migration still resolve, and show as the right
  * choice when the block is edited.
  */
-foreach ( array( 'field_66fe797df659f', 'field_670d892735b99', 'field_diner_guestcheck_form' ) as $citcom_form_field_key ) {
+foreach ( array( 'field_66fe797df659f', 'field_670d892735b99', 'field_diner_guestcheck_form', 'field_citcom_forms_recipients_form' ) as $citcom_form_field_key ) {
 	add_filter(
 		'acf/load_field/key=' . $citcom_form_field_key,
 		function ( $field ) {

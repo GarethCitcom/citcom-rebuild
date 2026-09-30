@@ -1,18 +1,37 @@
 /**
- * Theme forms (inc/forms.php): conditional rows, submission over the REST API,
- * field errors and the thank-you message. No jQuery.
+ * Theme forms (inc/forms.php): conditional fields, the "Other" text box,
+ * submission over the REST API, field errors and the thank-you message.
+ * No jQuery.
  *
- * The message and error classes are the ones the old forminator-bootstrap.js
- * put on Forminator's markup, so the states look as they did. The GTM events
- * keep their names (formsuccess, formfailed); the form's slug is sent instead
- * of the submitted data.
+ * On the default (Bootstrap) forms the message and error classes are the ones
+ * the old forminator-bootstrap.js put on Forminator's markup, so the states
+ * look as they did; the "classic" forms have their own (elements/_forms.scss).
+ * The GTM events keep their names (formsuccess, formfailed); the form's slug is
+ * sent instead of the submitted data.
  */
 const pageLoaded = Date.now();
 
-function toggleConditionalRows( form ) {
-	form.querySelectorAll( '[data-show-if]' ).forEach( ( row ) => {
-		const controller = form.elements[ row.dataset.showIf ];
-		row.hidden = ! ( controller && controller.checked );
+function controls( form, name ) {
+	return Array.from( form.querySelectorAll( '[name="' + name + '"], [name="' + name + '[]"]' ) );
+}
+
+// A condition holds when the controlling field has the wanted value ticked or
+// selected, or, with no wanted value, when it is ticked at all.
+function conditionMet( form, name, value ) {
+	return controls( form, name ).some( ( control ) => {
+		if ( control.type === 'checkbox' || control.type === 'radio' ) {
+			return control.checked && ( value === undefined || control.value === value );
+		}
+		return value === undefined ? control.value !== '' : control.value === value;
+	} );
+}
+
+function toggleConditional( form ) {
+	form.querySelectorAll( '[data-show-if]' ).forEach( ( el ) => {
+		el.hidden = ! conditionMet( form, el.dataset.showIf, el.dataset.showIfValue );
+	} );
+	form.querySelectorAll( '[data-other-for]' ).forEach( ( el ) => {
+		el.hidden = ! conditionMet( form, el.dataset.otherFor, 'other' );
 	} );
 }
 
@@ -29,20 +48,28 @@ function showMessage( form, text, isError ) {
 	if ( ! box ) {
 		return;
 	}
-	box.className = 'citcom-form-message alert alert-light rounded-4 px-4 fw-bold' + ( isError ? ' alert-danger' : '' );
+	// Classic forms draw their own message box; every other form uses the alert.
+	const classic = form.classList.contains( 'citcom-form--classic' );
+	let state = ' alert alert-light rounded-4 px-4 fw-bold' + ( isError ? ' alert-danger' : '' );
+	if ( classic ) {
+		state = isError ? ' is-error' : ' is-success';
+	}
+	box.className = 'citcom-form-message' + state;
 	box.textContent = text;
 	box.hidden = false;
+	box.scrollIntoView( { block: 'nearest', behavior: 'smooth' } );
 }
 
 function showFieldErrors( form, errors ) {
 	Object.entries( errors ).forEach( ( [ name, text ] ) => {
-		const control = form.elements[ name ];
 		const wrapper = form.querySelector( '[data-field="' + name + '"]' );
-		if ( ! control || ! wrapper ) {
+		if ( ! wrapper ) {
 			return;
 		}
-		control.classList.add( 'is-invalid' );
-		control.setAttribute( 'aria-invalid', 'true' );
+		controls( form, name ).forEach( ( control ) => {
+			control.classList.add( 'is-invalid' );
+			control.setAttribute( 'aria-invalid', 'true' );
+		} );
 		const message = document.createElement( 'span' );
 		message.className = 'citcom-form-error invalid-feedback d-block';
 		message.textContent = text;
@@ -82,7 +109,7 @@ async function submit( form ) {
 	if ( result && result.success ) {
 		showMessage( form, result.message, false );
 		form.reset();
-		toggleConditionalRows( form );
+		toggleConditional( form );
 		if ( window.dataLayer ) {
 			window.dataLayer.push( { event: 'formsuccess', form: form.dataset.citcomForm } );
 		}
@@ -109,12 +136,12 @@ async function submit( form ) {
 }
 
 export function forms() {
-	document.querySelectorAll( 'form[data-citcom-form]' ).forEach( toggleConditionalRows );
+	document.querySelectorAll( 'form[data-citcom-form]' ).forEach( toggleConditional );
 
 	document.addEventListener( 'change', ( e ) => {
 		const form = e.target.closest ? e.target.closest( 'form[data-citcom-form]' ) : null;
 		if ( form ) {
-			toggleConditionalRows( form );
+			toggleConditional( form );
 		}
 	} );
 

@@ -1,7 +1,13 @@
-// Theme forms (inc/forms.php). The markup carries the Bootstrap classes the
-// old forminator-bootstrap.js added to Forminator's forms, so most of the look
-// comes from Bootstrap; these rules are what Forminator's grid and the old
-// .forminator-custom-form overrides (elements/_form-fields.scss) added.
+// Theme forms (inc/forms.php, inc/forms-fields.php).
+//
+// Three variants of the same markup:
+// - default ("bootstrap"): the markup carries the Bootstrap classes the old
+//   forminator-bootstrap.js added to Forminator's forms, so most of the look
+//   comes from Bootstrap; the rules here are what Forminator's grid and the old
+//   .forminator-custom-form overrides added.
+// - .citcom-form--plain: the diner guest check, styled by its own block.
+// - .citcom-form--classic: Forminator's own "default" design, which the
+//   packages and client survey forms used. Values measured on staging.
 .citcom-form{
     // The two-column grid depends on the form's own width (see below).
     container-type: inline-size;
@@ -26,6 +32,16 @@
     }
     .form-check-label{
         @include forma(400);
+    }
+    .citcom-form-custom-input{
+        margin-top: 10px;
+    }
+    .citcom-form-range-min{
+        max-width: 45%;
+    }
+    .citcom-form-range-max{
+        max-width: 45%;
+        text-align: right;
     }
 }
 
@@ -58,13 +74,293 @@
     }
 }
 
-// "plain" variant (diner guest check): no Bootstrap spacing classes, so the
-// spacing Forminator's grid gave the unconverted form is set here.
-.citcom-form--plain{
+// The technical audit form had its own custom CSS: bolder labels, red stars.
+.citcom-form--technical-audit{
+    .citcom-form-label{
+        font-weight: 600 !important;
+    }
+    .citcom-form-required{
+        color: red !important;
+    }
+}
+
+// "plain" and "classic" carry no Bootstrap spacing classes, so the spacing
+// Forminator's grid gave its own forms is set here.
+.citcom-form--plain,
+.citcom-form--classic{
     .citcom-form-row:not(:last-child){
         margin-bottom: 20px;
     }
     .citcom-form-col:not(:last-child){
         margin-bottom: 20px;
     }
+}
+
+// Forminator's "default" design. The colours are per form, as they were.
+.citcom-form--classic{
+    --cf-border: #28a298;
+    --cf-border-hover: #99d152;
+    --cf-border-active: #1c0221;
+    --cf-required: #E51919;
+    --cf-mark: #28a298;
+    --cf-checked-border: #1c0221;
+    --cf-checked-bg: #1c0221;
+    --cf-button-bg: #1c0221;
+    --cf-button-color: #ffffff;
+    --cf-button-hover-bg: #28a298;
+    --cf-button-hover-color: #ffffff;
+    --cf-error-bg: #F9E4E8;
+
+    .citcom-form-label{
+        display: block;
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.7em;
+        letter-spacing: normal;
+    }
+    label.citcom-form-label{
+        cursor: pointer;
+    }
+    .citcom-form-required{
+        color: var(--cf-required);
+    }
+    .citcom-form-description{
+        display: block;
+        margin: 0 0 5px;
+        font-size: 12px;
+        line-height: 1.5em;
+    }
+    .citcom-form-input,
+    .citcom-form-textarea{
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 9px;
+        border: 1px solid var(--cf-border);
+        border-radius: 20px;
+        background-color: #ffffff;
+        color: #000000;
+        font-size: 16px;
+        letter-spacing: normal;
+        box-shadow: none;
+        outline: 0;
+        transition: 0.2s ease;
+        &:hover{
+            border-color: var(--cf-border-hover);
+        }
+        &:focus{
+            border-color: var(--cf-border-active);
+        }
+    }
+    .citcom-form-input{
+        height: auto;
+        line-height: 1.3em;
+    }
+    .citcom-form-textarea{
+        min-height: 140px;
+        line-height: 20px;
+        resize: vertical;
+        &:focus{
+            outline: 2px solid #28a298;
+            outline-offset: 1px;
+        }
+    }
+
+    // Tick boxes and radio buttons: the real input is visually hidden and a
+    // drawn box or bullet follows it.
+    .citcom-form-checkbox,
+    .citcom-form-radio{
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        cursor: default;
+        &:first-of-type{
+            margin-top: 10px;
+        }
+        &:last-of-type{
+            margin-bottom: 10px;
+        }
+        input{
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            border: 0;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            clip-path: inset(50%);
+            white-space: nowrap;
+        }
+    }
+    .citcom-form-checkbox{
+        font-size: 16px;
+    }
+    .citcom-form-radio{
+        font-size: 15px;
+    }
+    .citcom-form-checkbox-box,
+    .citcom-form-radio-bullet{
+        position: relative;
+        display: block;
+        flex: 0 0 20px;
+        width: 20px;
+        height: 20px;
+        border: 1px solid var(--cf-border);
+        background-color: #ffffff;
+        color: var(--cf-mark);
+        cursor: pointer;
+        &:hover{
+            border-color: var(--cf-border-hover);
+        }
+        &::before{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            display: block;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            transition: 0.2s ease;
+        }
+    }
+    .citcom-form-checkbox-box{
+        border-radius: 4px;
+        &::before{
+            content: "\2713";
+            width: 12px;
+            height: 12px;
+            font-size: 12px;
+            line-height: 12px;
+            letter-spacing: 0;
+            text-align: center;
+        }
+    }
+    .citcom-form-radio-bullet{
+        border-radius: 40px;
+        &::before{
+            content: " ";
+            width: 10px;
+            height: 10px;
+            border-radius: 100%;
+            background-color: var(--cf-mark);
+        }
+    }
+    input:checked + .citcom-form-checkbox-box,
+    input:checked + .citcom-form-radio-bullet{
+        border-color: var(--cf-checked-border);
+        background-color: var(--cf-checked-bg);
+        &::before{
+            opacity: 1;
+        }
+    }
+    input:focus-visible + .citcom-form-checkbox-box,
+    input:focus-visible + .citcom-form-radio-bullet{
+        outline: 2px solid #28a298;
+        outline-offset: 1px;
+    }
+    .citcom-form-checkbox-label,
+    .citcom-form-radio-label{
+        display: block;
+        margin-left: 10px;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    .citcom-form-submit{
+        position: relative;
+        display: inline-block;
+        margin: 0;
+        padding: 14px 30px;
+        border: 0;
+        border-radius: 30px;
+        background-color: var(--cf-button-bg);
+        color: var(--cf-button-color);
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.45em;
+        letter-spacing: normal;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 0.2s ease;
+        &:hover{
+            background-color: var(--cf-button-hover-bg);
+            color: var(--cf-button-hover-color);
+        }
+        &:focus{
+            outline: 2px solid #28a298;
+            outline-offset: 1px;
+        }
+    }
+
+    // Messages, as Forminator's default design drew them.
+    .citcom-form-message{
+        margin: 0 0 20px;
+        padding: 15px 20px 15px 22px;
+        border-radius: 2px;
+        color: #333333;
+        font-size: 15px;
+        line-height: 1.3em;
+        text-align: left;
+        &.is-error{
+            background-color: #F9E4E8;
+            box-shadow: inset 2px 0 0 0 #E51919;
+        }
+        &.is-success{
+            background-color: #BCEEE6;
+            box-shadow: inset 2px 0 0 0 #067963;
+        }
+    }
+    .is-invalid,
+    .is-invalid + .citcom-form-checkbox-box,
+    .is-invalid + .citcom-form-radio-bullet{
+        border-color: #E51919;
+    }
+    .citcom-form-error{
+        display: block;
+        margin: 5px 0 0;
+        padding: 2px 10px;
+        border-radius: 2px;
+        background-color: var(--cf-error-bg);
+        color: #333333;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 2em;
+    }
+}
+
+// Forminator's wider spacing between rows on larger forms.
+@media (min-width: 783px){
+    @container citcom-form (min-width: 480.02px){
+        .citcom-form--classic{
+            .citcom-form-row:not(:last-child){
+                margin-bottom: 30px;
+            }
+            .citcom-form-col:not(:last-child){
+                margin-bottom: 0;
+            }
+            .citcom-form-message{
+                margin-bottom: 30px;
+            }
+            // Only when the option really is last: a group with an "Other" text
+            // box after it keeps its 10px, as Forminator's did.
+            .citcom-form-checkbox:last-child,
+            .citcom-form-radio:last-child{
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+// Packages form: sits on the dark gradient of the CTA section.
+.citcom-form--packages{
+    --cf-required: #9ad14d;
+    --cf-checked-border: #28a298;
+    --cf-checked-bg: #ffffff;
+    --cf-button-bg: #ffffff;
+    --cf-button-color: #1c0221;
+    --cf-button-hover-bg: #1c0221;
+    --cf-button-hover-color: #ffffff;
+    --cf-error-bg: #ffffff;
 }
