@@ -57,6 +57,9 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   citcom/stats, video -> citcom/video, swiper -> citcom/swiper, contact_map ->
   citcom/contact-map, services_showcase -> citcom/services-showcase,
   citdot_cards -> citcom/citdot-cards, diner_* -> citcom/diner-* (all eight).
+  The old sidebar blocks acf/latest-posts, acf/newsletter-signup,
+  acf/posts-search, acf/related-posts and acf/top-blog-posts are citcom/* with
+  the same slugs.
 - Keep field names identical to the old sub-field names wherever possible; the
   migration script maps old row data onto block attributes by name.
 

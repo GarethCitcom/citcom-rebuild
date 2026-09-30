@@ -102,14 +102,16 @@ Rows are from docs/00-discovery.md. "Ref" is the staging page used to compare.
 
 - `template-parts/card-post.php`, `template-parts/service-card.php` and `inc/ajax.php`
   (needed by display-posts and sub-services).
-- The five old ACF blocks (`latest-posts`, `newsletter-signup`, `posts-search`,
-  `related-posts`, `top-blog-posts`) used in the blog sidebars: port them into
-  `blocks/` with their field groups (`group_6706ea51d5e74`, `group_67085971d331a`,
-  `group_670861105bed5`) so widgets keep working. The `posts-search` block relies on
-  the `postsearch` ajax handler.
-- The "Section settings (simple)" group (`group_6790f33456b40`, anchor only): find
-  which layouts used it instead of the full group before deciding whether it is
-  needed as a separate group or just the anchor field on those blocks.
+- Done 2026-09-30: the five old ACF blocks (`latest-posts`, `newsletter-signup`,
+  `posts-search`, `related-posts`, `top-blog-posts`) used in the blog sidebars are
+  `citcom/*` blocks in `blocks/`, with their field groups as fields.json under the
+  old group and field keys. Their markup matches the staging sidebars. The old
+  block names were `acf/*`, so the Phase 3 migration renames them in the
+  `widget_block` option.
+- Done 2026-09-30: "Section settings (simple)" (`group_6790f33456b40`, anchor
+  only) was used by the cta layout alone, and the quote layout had no settings.
+  The full Section settings group now excludes `citcom/cta`, `citcom/quote` and
+  the sidebar blocks; the simple group is attached to `citcom/cta`.
 - Decided 2026-09-29: swatch and the ACF Extended field types stay; focuspoint
   is the theme's `citcom_focuspoint` type.
 

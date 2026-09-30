@@ -256,6 +256,16 @@ example):
   migration has to drop the hidden ones per layout.
 - The old editor and media_text HTML strings become inner blocks; core/html
   is a valid interim container for HTML that has no clean block equivalent.
+- Section settings per block: most blocks take the full group
+  (`group_65f8774c86a9d`). `citcom/cta` takes only `anchor_name` from
+  "Section settings (simple)" (`_anchor_name` = `field_6790f3345a787`, not the
+  full group's `field_6616e84d4614e`), and `citcom/quote` takes none, as the
+  old layouts did.
+- Sidebar widgets: the old blocks are stored in the `widget_block` option as
+  `wp:acf/latest-posts`, `acf/newsletter-signup`, `acf/posts-search`,
+  `acf/related-posts` and `acf/top-blog-posts`. The migration renames them to
+  `citcom/*` (block comment name and the `name` attribute); field names and
+  keys are unchanged.
 - Groups are flattened the same way as repeaters: `group_sub` for each
   sub-field (`player_options_options`, `creative_showcase_image`,
   `citdot_card_0_staff_name`), each with its `_group_sub` field key twin, and
