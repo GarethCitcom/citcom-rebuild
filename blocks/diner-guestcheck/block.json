@@ -1,0 +1,40 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/diner-guestcheck",
+	"title": "Diner: Guest check + form",
+	"description": "The guest check receipt card beside a Forminator form, chequer bands and the starburst stamp.",
+	"category": "citcom",
+	"icon": "clipboard",
+	"keywords": [
+		"diner",
+		"guest check",
+		"form",
+		"contact"
+	],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [
+			"page",
+			"service",
+			"case-study",
+			"landing-page",
+			"template"
+		],
+		"usePostMeta": false
+	},
+	"style": [
+		"citcom-diner",
+		"file:../../build/blocks/diner-guestcheck/style.css"
+	]
+}

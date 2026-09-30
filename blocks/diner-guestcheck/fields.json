@@ -1,0 +1,192 @@
+{
+    "key": "group_citcom_diner_guestcheck",
+    "title": "Block: Diner: Guest check + form",
+    "fields": [
+        {
+            "key": "field_diner_guestcheck_heading",
+            "label": "Heading",
+            "name": "heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "For screen readers and search engines. Not shown on screen — the design carries no visible section heading here.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
+            "key": "field_diner_guestcheck_card_heading",
+            "label": "Card heading",
+            "name": "card_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Printed over the guest check artwork.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Ready to Order?"
+        },
+        {
+            "key": "field_diner_guestcheck_card_content",
+            "label": "Card body copy",
+            "name": "card_content",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Printed under the card heading, above the form.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 3,
+            "new_lines": "",
+            "default_value": "Complete the form and one of our chefs will be in touch"
+        },
+        {
+            "key": "field_diner_guestcheck_card_image",
+            "label": "Guest check artwork",
+            "name": "card_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Leave empty to use the guest check receipt bundled with the theme.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all"
+        },
+        {
+            "key": "field_diner_guestcheck_form",
+            "label": "Form",
+            "name": "form",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "The Forminator form rendered on the right (Name / Email / Message / mailing-list signup). Defaults to \"diner-guest-check-form\" (220023) — a dedicated copy of the site's shared \"contact-form\" (623) with ajax-load disabled so it renders inline instead of popping in after the rest of the section; the shared form itself was deliberately left untouched since other pages use it too.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "forminator_forms"
+            ],
+            "return_format": "id",
+            "default_value": 220023
+        },
+        {
+            "key": "field_diner_guestcheck_stamp",
+            "label": "Credentials stamp",
+            "name": "stamp",
+            "aria-label": "",
+            "type": "group",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_diner_guestcheck_stamp_on",
+                    "label": "Show the stamp",
+                    "name": "enabled",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 1,
+                    "ui": 1
+                },
+                {
+                    "key": "field_diner_guestcheck_stamp_1",
+                    "label": "Small line above",
+                    "name": "line_1",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    }
+                },
+                {
+                    "key": "field_diner_guestcheck_stamp_2",
+                    "label": "Headline figure",
+                    "name": "line_2",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    }
+                },
+                {
+                    "key": "field_diner_guestcheck_stamp_3",
+                    "label": "Small line below",
+                    "name": "line_3",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    }
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "citcom/diner-guestcheck"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Fields of the old diner_guestcheck layout (functions/acf/diner-layouts.php), same names and keys.",
+    "show_in_rest": 0,
+    "modified": 1790730000
+}
