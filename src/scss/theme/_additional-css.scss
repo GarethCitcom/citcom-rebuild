@@ -16,24 +16,10 @@ body.postid-219887 #feeling-peckish{
 }
 
 // Space under every form's submit button (was .forminator-button).
-.citcom-form-submit,
-.forminator-button{
+.citcom-form-submit{
     margin-bottom: 60px;
 }
 
-// Forminator radio groups on small screens. Only matters while a Forminator
-// form with radios (the client survey) is still in use.
-@media only screen and (max-width: 600px) {
-    .forminator-field-radio div[role="radiogroup"]{
-        flex-direction: column;
-        gap: 1rem;
-        justify-content: space-between;
-    }
-    .forminator-field-radio div[role="radiogroup"]:after{
-        width: 2px;
-        height: calc(100% - 3rem);
-        bottom: 1em;
-        left: 0.643em;
-        top: unset;
-    }
-}
+// Not ported: a small-screen rule for horizontal radio groups. It went with the
+// technical audit form's own radio styling, and that form no longer has a radio
+// field (it has the slider); the survey's radios were never laid out that way.

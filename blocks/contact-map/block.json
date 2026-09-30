@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "citcom/contact-map",
 	"title": "Contact Map",
-	"description": "Snazzy Maps embed behind a gradient contact card with title, message, socials and a Forminator form.",
+	"description": "Snazzy Maps embed behind a gradient contact card with title, message, socials and a form.",
 	"category": "citcom",
 	"icon": "location",
 	"keywords": [ "contact", "map", "form", "address" ],

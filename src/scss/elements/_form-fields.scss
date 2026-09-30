@@ -42,37 +42,6 @@ footer{
         font-size: 1rem;
     }
 }
-.forminator-custom-form{
-    .forminator-row{
-        &.forminator-row-last{
-            margin-bottom: 0!important;
-            .forminator-col{
-                margin-bottom: 0!important;
-            }
-        }
-    }
-    .no-label{
-        .forminator-label{
-            display: none;
-        }
-    }
-    .rounded-label{
-        margin: 0 0 0.25rem 0;
-        @include forma(400);
-    }
-    .form-check-label{
-        @include forma(400);
-    }
-}
-.forminator-response-message{
-    @include transition(all,0.3s);
-    p{
-        margin: 0!important;
-    }
-}
-.forminator-error-message{
-    @include transition(all,0.3s);
-}
 
 input[type="range"].form-range {
     --bs-range-track-bg: #fff;
@@ -97,9 +66,3 @@ input[type="range"].form-range {
         background: var(--brand-secondary, #28a745);
     }
 }
-
-.forminator-slider-label-max{
-    max-width: 45%;
-    text-align: right;
-}
-.forminator-slider-label-min{ max-width: 45%; }

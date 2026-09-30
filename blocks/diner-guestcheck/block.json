@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "citcom/diner-guestcheck",
 	"title": "Diner: Guest check + form",
-	"description": "The guest check receipt card beside a Forminator form, chequer bands and the starburst stamp.",
+	"description": "The guest check receipt card beside a form, chequer bands and the starburst stamp.",
 	"category": "citcom",
 	"icon": "clipboard",
 	"keywords": [

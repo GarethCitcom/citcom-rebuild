@@ -27,6 +27,9 @@ if ( ! defined( 'CITCOM_FORMS_RETENTION_DAYS' ) ) {
 	define( 'CITCOM_FORMS_RETENTION_DAYS', 30 );
 }
 
+// Forminator's shortcodes, which old content may still carry.
+const CITCOM_FORMINATOR_SHORTCODES = array( 'forminator_form', 'forminator_quiz', 'forminator_poll' );
+
 /**
  * All form definitions, keyed by slug.
  *
@@ -494,8 +497,9 @@ unset( $citcom_form_field_key );
 
 /*
  * Shortcodes. [citcom_form id="contact"] is the theme's own; [forminator_form
- * id="623"] in existing content renders the theme form that replaced that id,
- * whether or not Forminator is still active.
+ * id="623"] in existing content renders the theme form that replaced that id.
+ * Forminator shortcodes with no theme form (the retired RSVP form, the quizzes,
+ * polls) print nothing, whether or not Forminator is still active.
  */
 add_shortcode(
 	'citcom_form',
@@ -507,11 +511,11 @@ add_shortcode(
 add_filter(
 	'pre_do_shortcode_tag',
 	function ( $output, $tag, $atts ) {
-		if ( 'forminator_form' !== $tag || false !== $output ) {
+		if ( ! in_array( $tag, CITCOM_FORMINATOR_SHORTCODES, true ) || false !== $output ) {
 			return $output;
 		}
-		$form = citcom_form( (string) ( $atts['id'] ?? '' ) );
-		return $form ? citcom_render_form( $form['slug'] ) : $output;
+		$form = 'forminator_form' === $tag ? citcom_form( (string) ( is_array( $atts ) ? $atts['id'] ?? '' : '' ) ) : null;
+		return $form ? citcom_render_form( $form['slug'] ) : '';
 	},
 	10,
 	3
@@ -520,9 +524,11 @@ add_filter(
 add_action(
 	'init',
 	function () {
-		// Without Forminator the tag would print as text; forms with no theme replacement print nothing.
-		if ( ! shortcode_exists( 'forminator_form' ) ) {
-			add_shortcode( 'forminator_form', '__return_empty_string' );
+		// Without Forminator the tags would print as text; the filter above decides what they output.
+		foreach ( CITCOM_FORMINATOR_SHORTCODES as $tag ) {
+			if ( ! shortcode_exists( $tag ) ) {
+				add_shortcode( $tag, '__return_empty_string' );
+			}
 		}
 	},
 	20

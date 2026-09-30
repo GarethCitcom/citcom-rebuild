@@ -4,7 +4,7 @@
 @import "../../src/scss/theme/mixin";
 @import "../../src/scss/blocks/diner-vars";
 
-// Diner guest check + form — receipt-styled card next to a live Forminator contact
+// Diner guest check + form — receipt-styled card next to a live contact
 // form, chequer-bordered top and bottom.
 //
 // Built from real Figma screenshots + the guest check artwork extracted at full
@@ -382,9 +382,11 @@
         }
     }
 
-    // Forminator's own markup (see form-fields.scss for the site-wide
-    // .citcom-form overrides this adds to) restyled to the design's pill
-    // inputs on a light grey fill.
+    // The form's markup restyled to the design's pill inputs on a light grey
+    // fill. The form was Forminator's when these rules were written and is now
+    // the theme's "plain" variant (inc/forms-fields.php), which keeps the same
+    // structure under citcom-form-* class names; the notes below that mention
+    // Forminator's base CSS are the old theme's history.
     .diner-guestcheck-form{
         .citcom-form-label{
             margin-bottom: 0.4em;

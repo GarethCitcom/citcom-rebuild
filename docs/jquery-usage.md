@@ -17,7 +17,6 @@ plain-DOM replacement.
 | `swiper.js` | Loops `.swiper-gallery` and `.swiper-swiper`, reads `data-*` options | `querySelectorAll` and `dataset`; Swiper itself has no jQuery dependency |
 | `sidebar.js` | Category list pill (`height`, `position`, `css`), hover/mouseleave | Native listeners and `offsetTop` |
 | `display-posts.js` | `$.ajax` load-more and search, `$(document).on('click')`, `.html()`, `.before()`, `.trigger()` | `fetch()` with `FormData`, delegated listeners, `insertAdjacentHTML` |
-| `forminator-bootstrap.js` | Listens to Forminator's jQuery events (`forminator:form:submit:success`, `after.load.forminator`) and restyles form fields with `addClass`, `insertBefore`, `detach`, `wrap` | Forminator only emits jQuery events, so this module keeps jQuery until Forminator is replaced or the styling moves to CSS selectors |
 | `outdatedbrowser.min.js` (vendor, `assets/vendor/`) | Enqueued with a jQuery dependency in the old theme; the library itself is vanilla | Drop the dependency, or remove the library (it targets IE-era browsers) |
 
 Removed already (present in the old bundle but never called): `bootstrap-select.js`
