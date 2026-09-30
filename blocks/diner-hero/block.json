@@ -1,0 +1,40 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/diner-hero",
+	"title": "Diner: Hero",
+	"description": "The \"Welcome to the CitCom Creative Diner\" sign (image or video) with the pill button over it.",
+	"category": "citcom",
+	"icon": "store",
+	"keywords": [
+		"diner",
+		"hero",
+		"sign",
+		"home"
+	],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [
+			"page",
+			"service",
+			"case-study",
+			"landing-page",
+			"template"
+		],
+		"usePostMeta": false
+	},
+	"style": [
+		"citcom-diner",
+		"file:../../build/blocks/diner-hero/style.css"
+	]
+}

@@ -1,0 +1,302 @@
+// citcom/diner-hero: port of assets/_dev/scss/flexContent/diner-hero.scss.
+// Shared diner rules come from the "citcom-diner" style (src/scss/diner.scss).
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+@import "../../src/scss/blocks/diner-vars";
+
+.flex-diner_hero{
+    position: relative;
+    overflow: hidden;
+
+    // Chequer strips either side of the sign, filling the gap the sign leaves:
+    // (100% - 78.125%) / 2.
+    //
+    // Each anchors its background to its INNER edge, so a cell boundary always lands
+    // against the sign whatever the viewport width, and the ragged edge falls on the
+    // outer edge of the section where the design has it too. Anchoring outward instead
+    // would only line up at exactly 1920px.
+    .diner-hero-edge{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        z-index: 0;
+        width: 10.9375%;
+        &.diner-hero-edge-start{
+            left: 0;
+            background-position: right top;
+        }
+        &.diner-hero-edge-end{
+            right: 0;
+            background-position: left top;
+        }
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+
+
+
+    // The design frame is 1920x961, so the stage holds that ratio on desktop and
+    // falls back to content height once the sign has to shrink.
+    .diner-hero-stage{
+        position: relative;
+        aspect-ratio: 1920 / 961;
+        @include media-breakpoint-down(lg) {
+            aspect-ratio: auto;
+            padding-top: $page_padding_lg;
+            padding-bottom: $page_padding_lg;
+        }
+    }
+
+    // Sign artwork is 1500 wide in a 1920 frame, centred and full bleed vertically.
+    // The sign rectangle is opaque aubergine in the design, which is what masks the
+    // chequerboard down to the two 210px strips either side of it.
+    .diner-hero-sign-wrap{
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1;
+        width: 78.125%;
+        height: 100%;
+        background-color: var(--brand-primary);
+        // The artwork is deliberately offset outside this box (see below). In Figma a
+        // fill is clipped to its shape, so clip here too or it bleeds over the
+        // chequer strips and eats their inner column.
+        overflow: hidden;
+
+        // <picture> (wrapping the bundled fallback image, see diner_hero.php) is
+        // inline by default, same whitespace-gap risk a bare <img> would have —
+        // block avoids it mattering, same reasoning as .diner-hero-sign's own
+        // display: block below.
+        picture{
+            display: block;
+        }
+
+        // The design crops the artwork rather than fitting it: its paint matrix
+        // maps the image to 100% x 84.375% of this box, offset by -1.21% / -6.98%,
+        // so the artwork ends at 77.4% and the solid aubergine shows through below.
+        // That is what leaves room for the signpost to fade out. object-fit: fill
+        // because the matrix scales the axes independently (a ~4% stretch).
+        .diner-hero-sign{
+            position: absolute;
+            left: -1.21%;
+            top: -6.98%;
+            display: block;
+            width: 100%;
+            height: 84.375%;
+            object-fit: fill;
+        }
+
+        // Third fill on the sign rectangle in the design: aubergine at zero alpha
+        // down to 62.7%, fully opaque by 76.9%, which dissolves the signpost into
+        // the background. Stated as rgba rather than `transparent` so it doesn't
+        // interpolate through black.
+        &::after{
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image: linear-gradient(to bottom, rgba(28, 2, 33, 0) 62.7%, rgba(28, 2, 33, 1) 76.9%);
+        }
+
+        // Below lg the sign is shown full/uncropped (object-fit: contain) instead
+        // of the desktop crop, so the wrap just hugs the image tightly (height:
+        // auto) — there's no longer a separate "solid colour tail" below the
+        // artwork for the desktop ::after's percentage stops to fade into (they
+        // were tuned against a box deliberately taller than the image itself, see
+        // above). Fixed 2026-08-25 (was just disabling the fade outright, per the
+        // comment this replaced, which left a hard cut instead of dissolving into
+        // the background) by turning that fade into its own dedicated strip below
+        // the image instead — .diner-hero-sign-fade, added in diner_hero.php,
+        // hidden here by default and only shown at this breakpoint.
+        @include media-breakpoint-down(lg) {
+            position: relative;
+            left: auto;
+            transform: none;
+            width: 100%;
+            height: auto;
+            .diner-hero-sign{
+                position: relative;
+                left: auto;
+                top: auto;
+                width: 100%;
+                height: auto;
+                object-fit: contain;
+            }
+            &::after{
+                display: none;
+            }
+
+            // First pass made this a separate in-flow block below the image
+            // (via a padding-top-percentage-of-width trick) — compiled fine but
+            // was invisible: transparent-to-aubergine over ground that's ALREADY
+            // aubergine has no visible transition at all when it isn't overlapping
+            // anything else. The pole's own GREEN has to be what's fading, so this
+            // needs to overlap the image's own bottom edge, not sit below it.
+            // inset: 0 works here because .diner-hero-sign-wrap is position:
+            // relative with its height resolved by the image in normal flow before
+            // this absolutely-positioned sibling is placed — percentages against
+            // an auto-height containing block still resolve correctly for an
+            // absolute child once that layout pass has happened.
+            .diner-hero-sign-fade{
+                display: block;
+                position: absolute;
+                inset: 0;
+                pointer-events: none;
+                // Went through four passes, same day (2026-08-25):
+                // 1. 81%/99%, rescaled directly from the desktop crop's own
+                //    62.7%/76.9% stops — left a visible white sliver right at the
+                //    bottom (the pole's white highlight stripe needs more overlay
+                //    opacity than the green to read as "gone", since it starts so
+                //    much brighter).
+                // 2. Widened to 60%/100% to fix that — pixel-sampled afterward
+                //    (headless-Chrome screenshot + GD colour sampling down the
+                //    pole) and confirmed it DOES converge to the exact background
+                //    colour by the true bottom edge, no lingering colour mismatch.
+                // 3. Tried finishing earlier instead (45%/80%, leaving a flat
+                //    margin after) on the theory that a gradient ending exactly at
+                //    the box edge still reads as a visible shape even once its
+                //    endpoint colour matches — this made it darker overall but
+                //    **reverted per direct feedback**: still visible, not actually
+                //    better, don't reach for this "finish earlier, leave a flat
+                //    tail" idea again without a stronger reason than the theory
+                //    above — it didn't hold up against a real screenshot.
+                // 5. Root cause finally found via headless-Chrome screenshots with
+                //    brightness digitally boosted ~2.2x in post (PowerShell/GDI+
+                //    ColorMatrix) to make small residual differences visible — a
+                //    plain 2-stop linear gradient ramps OPACITY linearly, but that
+                //    is not the same as a linear ramp in how HIDDEN a pixel looks:
+                //    blending 62.5% aubergine onto white still leaves a light,
+                //    clearly-visible result (255*0.375 + 28*0.625 ≈ 113), while the
+                //    same 62.5% onto the mid-tone green fill already reads as
+                //    basically gone. So even the "fixed" 60%/100% pass still left
+                //    the white highlight's own extent visibly longer than the
+                //    green's — confirmed directly: the white line was still
+                //    plainly visible past where the green had already vanished.
+                //    Fixed with a 3-stop gradient that front-loads opacity instead
+                //    of ramping it linearly — reaches 90% opacity by the 85% mark
+                //    (vs ~62.5% a straight 60-100% line would give there), so even
+                //    the brightest pixel is nearly fully hidden well before the
+                //    final stretch, then eases to full opacity by 100%. Confirmed
+                //    via pixel-sampling the pole's own actual brightest column
+                //    (x=541 in a 1038px-wide render, found by scanning for the
+                //    peak brightness below the sign board rather than assuming an
+                //    x-coordinate — an earlier sampling round mistakenly measured
+                //    the sign board's own white background at a different x and
+                //    wrongly read that as "already fine") that this DOES converge
+                //    fully to the exact background colour with no residual
+                //    mismatch by the true bottom edge.
+                // 6. Tried shifting the front-loaded curve earlier still
+                //    (40%/75%/95%, for a genuine flat margin before the true edge)
+                //    — **reverted per direct feedback** ("revert back one step"),
+                //    back to pass 5's values below. Don't reach for "shift the
+                //    front-loaded curve earlier" again without a stronger reason;
+                //    it wasn't confirmed as an improvement.
+                // 7. This gradient only ever faded the BOTTOM edge — the mobile
+                //    picture is the whole baked scene (chequers/stars included), so
+                //    its own top edge cut straight against the flat section
+                //    background with no fade at all, same seam as the desktop
+                //    left/right edges but unaddressed until now. Added two more
+                //    stops at the top (0%-12%) using the same "opaque colour,
+                //    rgba not transparent" approach as everything else on this
+                //    section; left the tuned 55/85/100 bottom stops untouched.
+                background-image: linear-gradient(to bottom, rgba(28, 2, 33, 1) 0%, rgba(28, 2, 33, 0) 12%, rgba(28, 2, 33, 0) 55%, rgba(28, 2, 33, 0.9) 85%, rgba(28, 2, 33, 1) 100%);
+            }
+        }
+    }
+
+    // Hidden except at the lg-down breakpoint above — kept outside that media
+    // query too so there's a single always-correct default rather than relying on
+    // the breakpoint block being the only place `display` is ever set.
+    .diner-hero-sign-fade{
+        display: none;
+    }
+
+    // Thin reinforcement strip over the seam between the mobile sign-wrap and the
+    // flat void below it (see .diner-hero-sign-fade) — a video's brighter frames
+    // can still leave a faint trace of the pole right at that boundary. Sits
+    // outside the wrap, in normal flow, and is pulled up with a negative
+    // margin-top to straddle the seam: half over the wrap's own last few pixels,
+    // half over the void, so it reinforces rather than replaces the existing
+    // fade. Desktop-only, matching .diner-hero-sign-fade.
+    .diner-hero-sign-veil{
+        display: none;
+        @include media-breakpoint-down(lg) {
+            display: block;
+            position: relative;
+            z-index: 2;
+            height: 40px;
+            margin-top: -20px;
+            pointer-events: none;
+            background-image: linear-gradient(to bottom, rgba(28, 2, 33, 0) 0%, rgba(28, 2, 33, 1) 50%, rgba(28, 2, 33, 1) 100%);
+        }
+    }
+
+    // Feathers the artwork's left/right edges into the aubergine background colour
+    // so the hard cut where it meets .diner-hero-edge's chequer strips reads as a
+    // smooth blend instead of a seam — same idea as the bottom fade above, just
+    // horizontal. rgba rather than `transparent` so it doesn't interpolate through
+    // black (same reasoning as the other fades on this section). Desktop-only:
+    // below lg the wrap goes full-bleed and the chequer strips this blends into
+    // are hidden entirely (see .diner-hero-edge), so there's nothing to seam against.
+    .diner-hero-sign-edge{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 20%;
+        pointer-events: none;
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+        // Front-loaded rather than a plain 2-stop linear ramp: held fully opaque
+        // through the first third before fading, so the purple reads as more
+        // dominant across the strip instead of thinning out immediately from the
+        // edge (a straight 0%-100% ramp looked blended technically but not
+        // noticeably "more purple" on request).
+        &.diner-hero-sign-edge-start{
+            left: 0;
+            background-image: linear-gradient(to right, rgba(28, 2, 33, 1) 0%, rgba(28, 2, 33, 1) 35%, rgba(28, 2, 33, 0) 100%);
+        }
+        &.diner-hero-sign-edge-end{
+            right: 0;
+            background-image: linear-gradient(to left, rgba(28, 2, 33, 1) 0%, rgba(28, 2, 33, 1) 35%, rgba(28, 2, 33, 0) 100%);
+        }
+    }
+
+    // .diner-grain (shared primitive, diner-shared.scss) uses background-size: cover
+    // sized for the desktop stage's fixed 1920x961 aspect-ratio box. Below lg the
+    // stage's height is auto (content-driven, and much taller relative to its width
+    // than 1920x961), so `cover` scales by the height axis and stretches the ENTIRE
+    // 1280px-tall source texture to fit — including a real fold crease baked into the
+    // photo at roughly its vertical midpoint, which is invisible at the desktop crop
+    // but on mobile gets stretched into a hard, near-full-width line straight across
+    // the empty purple gap below the sign (reported as a stray border there). Natural
+    // size + vertical repeat instead of a single forced stretch, so no single crease
+    // spans the full height as one obvious line.
+    @include media-breakpoint-down(lg) {
+        .diner-grain{
+            background-size: 1920px auto;
+            background-repeat: repeat-y;
+            background-position: top center;
+        }
+    }
+
+    // Centred with insets rather than a translate, because AOS sets its own transform
+    // on this element and would overwrite translateX(-50%).
+    // Above the halftone grain (2) but below the paper pass (5).
+    .diner-hero-cta{
+        position: absolute;
+        z-index: 3;
+        top: 85.3%;
+        left: 0;
+        right: 0;
+        text-align: center;
+        @include media-breakpoint-down(lg) {
+            position: relative;
+            top: auto;
+            margin-top: $page_padding_lg;
+        }
+    }
+}
+
