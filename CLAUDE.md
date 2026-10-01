@@ -65,8 +65,10 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   The old sidebar blocks acf/latest-posts, acf/newsletter-signup,
   acf/posts-search, acf/related-posts and acf/top-blog-posts are citcom/* with
   the same slugs.
-- Keep field names identical to the old sub-field names wherever possible; the
-  migration script maps old row data onto block attributes by name.
+- Keep field names and keys identical to the old sub-field names and keys; the
+  migration (`wp citcom migrate`, inc/migrate.php, docs/03-phase3-brief.md)
+  copies old row values into block data by the new blocks' own field
+  definitions, so a renamed field would lose its content.
 
 ## Build
 

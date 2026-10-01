@@ -50,9 +50,11 @@ page 20, service 40, case-study 37, landing-page 11, template 6. 114 posts,
   autoload off). The front end reads THIS via `ACFAllObj::get()`, not postmeta.
   `functions/lib/acf-cache-disabled-layouts.php` exists to patch a bug where
   disabled rows never reach that cache.
-- Migration source: read `acfAllObjects_{id}` JSON (already formatted, closest
-  to what the templates receive). Fall back to unserialising `acf` meta and
-  formatting through ACF if an option row is missing.
+- Migration source (revised in Phase 3): the raw values in the `acf` meta
+  row, which are what the blocks store, with individual postmeta rows as the
+  fallback. The `acfAllObjects_{id}` JSON holds formatted values (images as
+  arrays) and is not used; the cleanup step deletes it. See
+  docs/03-phase3-brief.md.
 
 ### Layout usage across all 114 posts (rows)
 
@@ -211,8 +213,9 @@ Notes on the tool:
   those ACF UI entries is the FIRST step of the Phase 3 staging run, in the same
   session the new theme is activated on staging, or the slugs collide.
 - ACF Extended performance mode ("ultra", single `acf` meta row) is kept on in
-  `inc/acf.php` so existing option and post-meta values stay readable; Phase 3
-  decides whether to turn it off and convert.
+  `inc/acf.php` so existing option and post-meta values stay readable. Phase 3
+  keeps it: the migration reads the single row, and nothing needs the values
+  as individual postmeta.
 - `page_header` tested `$data['type'] == 'service'` but the field stores
   `services`, so the `service-{name}` class never rendered. The block keeps
   that behaviour (with a comment) because the baseline was captured with it.
@@ -326,8 +329,9 @@ example):
 - List of shortcodes used by the `shortcode` layout (17 rows) and which
   plugins provide them (not done; the theme's own `google_reviews`,
   `youtube_gallery` and `chatcom` shortcodes are in `inc/shortcodes.php`, the
-  first two no longer Elfsight, see the reviews note above). Read them from the `acfAllObjects_{id}` option rows on
-  staging when the Phase 3 migration script first parses that data.
+  first two no longer Elfsight, see the reviews note above).
+  `wp citcom migrate run --dry-run` lists them as notes in its report
+  (docs/03-phase3-brief.md); read them off the staging dry run.
 - Decision on the `template` post type (6 items): it must stay for now, because
   archive.php and single.php render the template posts chosen in Site Settings
   > Templates (case study archive, services archive, tag archives, blog post
