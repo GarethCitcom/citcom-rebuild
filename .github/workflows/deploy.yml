@@ -52,6 +52,10 @@ jobs:
             --exclude 'package-lock.json' \
             --exclude 'webpack.config.js' \
             --exclude '.editorconfig' \
+            --exclude 'vendor' \
+            --exclude 'composer.json' \
+            --exclude 'composer.lock' \
+            --exclude 'phpcs.xml.dist' \
             --exclude '*.log' \
             ./ "$DEPLOY/wp-content/themes/citcom-rebuild/"
           test -f "$DEPLOY/wp-content/themes/citcom-rebuild/style.css"

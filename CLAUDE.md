@@ -83,7 +83,10 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
 
 - Visual: `node tools/visual-baseline.mjs capture|diff` (see
   `docs/00-discovery.md`). Pixel-identical is the bar; any diff is a bug.
-- PHP: `composer phpcs` (WordPress-Extra + PHPCompatibility 8.5) and
-  `composer phpstan` once configured.
+- PHP: `composer install` once, then `composer phpcs` (WordPress-Extra,
+  WordPress-Docs and PHPCompatibilityWP; ruleset in `phpcs.xml.dist`) must
+  pass before a commit; `composer phpcbf` fixes formatting. Composer is
+  development tooling only and `vendor/` is never deployed. On this machine
+  Composer is `php C:\laragon\bin\composer\composer.phar`.
 - Local dev site: https://citcom-rebuild.test/ (Laragon, this repo is its active theme).
 - Never test against live (site 1572392). Staging is 1771004.

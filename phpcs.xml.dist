@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<ruleset name="Citcom Rebuild">
+	<description>WordPress coding standards for the citcom-rebuild theme.</description>
+
+	<file>.</file>
+
+	<exclude-pattern>*/build/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/.baseline/*</exclude-pattern>
+	<exclude-pattern>*.asset.php</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="sp"/>
+	<arg name="parallel" value="8"/>
+
+	<config name="minimum_wp_version" value="7.1"/>
+	<config name="testVersion" value="8.2-"/>
+
+	<rule ref="WordPress-Extra">
+		<!-- The theme's own file layout: inc/, blocks/<name>/render.php, forms/<slug>.php. -->
+		<exclude name="WordPress.Files.FileName"/>
+		<!-- `get_fields() ?: array()` and the like: the short ternary is the right tool for a fallback. -->
+		<exclude name="Universal.Operators.DisallowShortTernary"/>
+	</rule>
+	<rule ref="WordPress-Docs">
+		<!-- Docblocks often open with a block or file name in lower case (citcom/cta: ...). -->
+		<exclude name="Generic.Commenting.DocComment.ShortNotCapital"/>
+		<exclude name="Generic.Commenting.DocComment.LongNotCapital"/>
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamTag"/>
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
+		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
+	</rule>
+	<rule ref="PHPCompatibilityWP"/>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="citcom"/>
+				<!-- The focal point field type reuses ACF's own image field strings. -->
+				<element value="acf"/>
+			</property>
+		</properties>
+	</rule>
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="citcom"/>
+				<element value="diner"/>
+				<element value="CITCOM"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Block render templates are included by ACF inside a function, template parts
+		inside get_template_part(), and the fixture scripts run under WP-CLI: their
+		variables are not globals.
+	-->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound">
+		<exclude-pattern>*/blocks/*/render.php</exclude-pattern>
+		<exclude-pattern>*/template-parts/*</exclude-pattern>
+		<exclude-pattern>*/tools/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.WP.GlobalVariablesOverride">
+		<exclude-pattern>*/blocks/*/render.php</exclude-pattern>
+		<exclude-pattern>*/template-parts/*</exclude-pattern>
+		<exclude-pattern>*/tools/*</exclude-pattern>
+	</rule>
+	<!-- The nav walker re-applies the core menu filters, as Walker_Nav_Menu does. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound">
+		<exclude-pattern>*/inc/class-citcom-nav-walker.php</exclude-pattern>
+	</rule>
+
+	<!-- Block templates, template parts and fixtures print markup; escaping is checked by hand where output is trusted HTML. -->
+	<rule ref="WordPress.Security.EscapeOutput">
+		<properties>
+			<property name="customAutoEscapedFunctions" type="array">
+				<element value="citcom_section_attrs"/>
+				<element value="citcom_render_form"/>
+				<element value="citcom_trustindex_embed"/>
+				<element value="diner_button"/>
+				<element value="diner_stamp"/>
+				<element value="diner_star_svg"/>
+				<element value="diner_rating_star_svg"/>
+				<element value="diner_rating_stars"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Local fixture scripts run under WP-CLI only and read their own JSON and SVG files. -->
+	<rule ref="WordPress.DB.DirectDatabaseQuery">
+		<exclude-pattern>*/tools/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents">
+		<exclude-pattern>*/tools/*</exclude-pattern>
+	</rule>
+	<rule ref="Squiz.Commenting">
+		<exclude-pattern>*/tools/*</exclude-pattern>
+	</rule>
+	<rule ref="Universal.NamingConventions.NoReservedKeywordParameterNames">
+		<exclude-pattern>*/tools/*</exclude-pattern>
+	</rule>
+</ruleset>
