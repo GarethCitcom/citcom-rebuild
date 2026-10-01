@@ -123,5 +123,6 @@ Rows are from docs/00-discovery.md. "Ref" is the staging page used to compare.
 ## Not in Phase 2
 
 Migration command (Phase 3), jQuery removal (Phase 4), deploy wiring and the
-cutover checklist (Phase 5), the WC2026 sweepstake plugin page template
-(`templates/wc26.php` is already ported as is).
+cutover checklist (Phase 5). The WC2026 sweepstake page template was ported
+and then removed on 2026-10-01 with its page (see the review decisions in
+docs/00-discovery.md).
