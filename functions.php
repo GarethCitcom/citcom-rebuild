@@ -18,3 +18,9 @@ foreach ( array( 'helpers', 'class-citcom-nav-walker', 'setup', 'assets', 'cpt',
 	require CITCOM_THEME_DIR . '/inc/' . $citcom_inc . '.php';
 }
 unset( $citcom_inc );
+
+// The Phase 3 migration command (docs/03-phase3-brief.md) only exists on the command line.
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	require CITCOM_THEME_DIR . '/inc/migrate.php';
+	require CITCOM_THEME_DIR . '/inc/cli-migrate.php';
+}
