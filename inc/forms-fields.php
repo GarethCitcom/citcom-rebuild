@@ -322,7 +322,7 @@ function citcom_form_validate( array $form, array $raw ): array {
 				break;
 			default:
 				$value = mb_substr( sanitize_text_field( $value ), 0, 200 );
-		}//end switch
+		}
 		$values[ $name ] = $shown ? $value : '';
 
 		if ( ! $shown ) {
@@ -334,7 +334,7 @@ function citcom_form_validate( array $form, array $raw ): array {
 			/* translators: %s: field label */
 			$errors[ $name ] = (string) ( $field['required_message'] ?? sprintf( __( '%s is required', 'citcom' ), $label ) );
 		}
-	}//end foreach
+	}
 
 	return array( $values, $errors );
 }
@@ -366,6 +366,6 @@ function citcom_form_summary( array $form, array $values ): array {
 			$value = $options[ (string) $value ] ?? '';
 		}
 		$summary[ (string) ( $field['label'] ?? $name ) ] = (string) $value;
-	}//end foreach
+	}
 	return $summary;
 }

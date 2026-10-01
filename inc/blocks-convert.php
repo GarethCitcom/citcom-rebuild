@@ -175,7 +175,7 @@ function citcom_html_node_to_block( DOMElement $el, DOMDocument $doc ): string {
 				$alt      = $img ? $img->getAttribute( 'alt' ) : '';
 				$img_html = '<img src="' . esc_url( $src ) . '" alt="' . esc_attr( $alt ) . '"' . ( $id ? ' class="wp-image-' . $id . '"' : '' ) . '/>';
 				return '<!-- wp:image' . $attr_json . ' --><figure class="' . esc_attr( implode( ' ', $figure_classes ) ) . '">' . $img_html . '</figure><!-- /wp:image -->';
-			}//end if
+			}
 			if ( in_array( 'wp-block-video', $classes, true ) ) {
 				return '<!-- wp:video -->' . $outer . '<!-- /wp:video -->';
 			}
@@ -209,5 +209,5 @@ function citcom_html_node_to_block( DOMElement $el, DOMDocument $doc ): string {
 
 		default:
 			return '<!-- wp:html -->' . $outer . '<!-- /wp:html -->';
-	}//end switch
+	}
 }

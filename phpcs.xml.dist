@@ -31,6 +31,8 @@
 		<exclude name="Squiz.Commenting.FunctionComment.MissingParamTag"/>
 		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
 		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
+		<!-- No "//end if" comments after long blocks. -->
+		<exclude name="Squiz.Commenting.LongConditionClosingComment"/>
 	</rule>
 	<rule ref="PHPCompatibilityWP"/>
 

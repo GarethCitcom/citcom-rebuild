@@ -71,7 +71,7 @@ get_header();
 										$citcom_icon        = 'fa-regular fa-citdot';
 										$citcom_result_type = 'Result';
 										break;
-								}//end switch
+								}
 
 								$citcom_excerpt = custom_excerpt( get_the_content(), 30, ' ...' );
 								?>
