@@ -23,7 +23,7 @@ if ( ! function_exists( 'extractYouTubeID' ) ) {
 	 * @param string $link URL.
 	 * @return string
 	 */
-	function extractYouTubeID( $link ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
+	function extractYouTubeID( $link ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- the old theme's name.
 		$video_id = explode( '?v=', $link );
 		if ( empty( $video_id[1] ) ) {
 			$video_id = explode( '/v/', $link );
@@ -79,7 +79,8 @@ if ( $poster ) {
 $player_options['autoHide']      = true;
 $player_options['playsinline']   = true;
 $player_options['autoHideDelay'] = 2000;
-$player_options_json             = wp_json_encode( $player_options, JSON_UNESCAPED_SLASHES ); // As rendered on the old site.
+$player_options_json             = wp_json_encode( $player_options, JSON_UNESCAPED_SLASHES );
+// As rendered on the old site.
 
 $video_section_id = uniqid();
 $citdot           = ! empty( $fields['citdot_container'] ) ? 'citdot' : 'rounded-4 overflow-hidden';

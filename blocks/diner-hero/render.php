@@ -59,12 +59,16 @@ $sign_fallback_mobile = CITCOM_THEME_URI . '/assets/img/diner/diner-sign-mobile.
 				</picture>
 			<?php endif; ?>
 
-			<?php // Feathers the artwork's own edge into the aubergine where it meets the chequer strips (desktop only). ?>
+			<?php
+			// Feathers the artwork's own edge into the aubergine where it meets the chequer strips (desktop only).
+			?>
 			<span class="diner-hero-sign-edge diner-hero-sign-edge-start" aria-hidden="true"></span>
 			<span class="diner-hero-sign-edge diner-hero-sign-edge-end" aria-hidden="true"></span>
 		</div>
 
-		<?php // Reinforces the fade's bottom edge on mobile; in flow after the wrap, pulled up over the seam. ?>
+		<?php
+		// Reinforces the fade's bottom edge on mobile; in flow after the wrap, pulled up over the seam.
+		?>
 		<span class="diner-hero-sign-veil" aria-hidden="true"></span>
 
 		<?php if ( $show_texture ) : ?>

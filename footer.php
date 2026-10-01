@@ -118,7 +118,9 @@ if ( is_singular( 'landing-page' ) && ! get_field( 'show_footer' ) ) {
 				<div class="modal-body">
 					<button type="button" class="btn btn-outline-primary p-1 lh-1 position-absolute top-0 end-0" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark fa-fw"></i></button>
 					<p class="h3 mb-4 lh-1 w-75">Sign up for our Monthly Marketing<br>Round-Up Newsletter</p>
-					<?php // The old theme only loaded this form on the blog listing, so the popup opened empty everywhere else. ?>
+					<?php
+					// The old theme only loaded this form on the blog listing, so the popup opened empty everywhere else.
+					?>
 					<?php echo citcom_render_form( 'newsletter' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in citcom_render_form() ?>
 				</div>
 			</div>
@@ -133,7 +135,9 @@ if ( is_singular( 'landing-page' ) && ! get_field( 'show_footer' ) ) {
 				<div class="modal-body">
 					<button type="button" class="btn btn-outline-primary p-1 lh-1 position-absolute top-0 end-0" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark fa-fw"></i></button>
 					<p class="h3 mb-4 lh-1 w-75">Send us a brief</p>
-					<?php // The old theme had this form commented out, so the popup opened empty. ?>
+					<?php
+					// The old theme had this form commented out, so the popup opened empty.
+					?>
 					<?php echo citcom_render_form( 'brief' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in citcom_render_form() ?>
 				</div>
 			</div>
@@ -154,6 +158,7 @@ if ( is_singular( 'landing-page' ) && ! get_field( 'show_footer' ) ) {
 </div>
 
 <!-- Trustindex verified -->
+<?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- the Trustindex certificate loader, printed as the old theme did. ?>
 <script defer async src='https://cdn.trustindex.io/loader-cert.js?62151d265fe0109be77674ec245'></script>
 
 <script>

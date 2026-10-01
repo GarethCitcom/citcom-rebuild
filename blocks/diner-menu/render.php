@@ -38,7 +38,9 @@ $bleed_end   = is_array( $fields['bleed_end'] ?? null ) ? $fields['bleed_end'] :
 	<?php endif; ?>
 
 	<?php if ( $heading ) : ?>
-		<?php // Jump target for the hero's CTA: the id is on the heading, so it cannot collide with this section's own anchor. ?>
+		<?php
+		// Jump target for the hero's CTA: the id is on the heading, so it cannot collide with this section's own anchor.
+		?>
 		<h2 id="feeling-peckish" class="diner-menu-heading" data-aos="fade-up"><?php echo esc_html( $heading ); ?></h2>
 	<?php endif; ?>
 
@@ -78,7 +80,9 @@ $bleed_end   = is_array( $fields['bleed_end'] ?? null ) ? $fields['bleed_end'] :
 
 	<?php if ( $button ) : ?>
 		<div class="diner-menu-cta" data-aos="fade-up">
-			<?php // No stars on this one: the design's pill is label plus insets only. ?>
+			<?php
+			// No stars on this one: the design's pill is label plus insets only.
+			?>
 			<?php echo diner_button( $button, 'diner-btn-gradient', false ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		</div>
 	<?php endif; ?>

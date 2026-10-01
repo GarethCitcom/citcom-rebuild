@@ -18,7 +18,7 @@ function citcom_block_names(): array {
 	if ( null === $names ) {
 		$names = array();
 		foreach ( glob( CITCOM_THEME_DIR . '/blocks/*/block.json' ) ?: array() as $block_json ) {
-			$meta = json_decode( (string) file_get_contents( $block_json ), true ); // phpcs:ignore WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown
+			$meta = json_decode( (string) file_get_contents( $block_json ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme file.
 			if ( ! empty( $meta['name'] ) ) {
 				$names[] = $meta['name'];
 			}
@@ -31,7 +31,8 @@ add_action(
 	'init',
 	function () {
 		if ( ! function_exists( 'acf_register_block_type' ) ) {
-			return; // ACF Pro missing: nothing to register.
+			return;
+			// ACF Pro missing: nothing to register.
 		}
 		foreach ( glob( CITCOM_THEME_DIR . '/blocks/*/block.json' ) ?: array() as $block_json ) {
 			register_block_type( dirname( $block_json ) );
@@ -205,7 +206,8 @@ add_filter(
 	function ( $content ) {
 		return has_blocks( $content ) ? $content : wptexturize( $content );
 	},
-	8 // Before do_blocks (9), so has_blocks() still sees the block comments.
+	8
+	// Before do_blocks (9), so has_blocks() still sees the block comments.
 );
 add_filter(
 	'render_block',

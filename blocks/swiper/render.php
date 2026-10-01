@@ -62,7 +62,17 @@ $swiper_id = uniqid();
 			<?php if ( 'images' === $swiper_type ) : ?>
 				<?php foreach ( $image_slides as $img ) : ?>
 					<div class="swiper-slide col-<?php echo esc_attr( (string) $slides_per_view['number_of_slides_sm'] ); ?> col-md-<?php echo esc_attr( (string) $slides_per_view['number_of_slides_md'] ); ?> col-lg-<?php echo esc_attr( (string) $slides_per_view['number_of_slides_lg'] ); ?> col-xl-<?php echo esc_attr( (string) $slides_per_view['number_of_slides_xl'] ); ?>" data-aos="blur-sm">
-						<?php echo wp_get_attachment_image( $img, 'medium', false, array( 'class' => 'img-fluid mx-auto', 'loading' => 'lazy' ) ); ?>
+						<?php
+						echo wp_get_attachment_image(
+							$img,
+							'medium',
+							false,
+							array(
+								'class'   => 'img-fluid mx-auto',
+								'loading' => 'lazy',
+							)
+						);
+						?>
 						<div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
 					</div>
 				<?php endforeach; ?>

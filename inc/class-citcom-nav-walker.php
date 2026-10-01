@@ -115,7 +115,7 @@ class Citcom_Nav_Walker extends Walker_Nav_Menu {
 		}
 
 		if ( $depth > 0 ) {
-			$manual_class = array_values( $classes )[0] . ' ' . 'citcom-dropdown-item btn btn-default rounded-pill nav-link shadow-sm d' . $depth;
+			$manual_class = array_values( $classes )[0] . ' citcom-dropdown-item btn btn-default rounded-pill nav-link shadow-sm d' . $depth;
 			foreach ( $classes as $class ) {
 				$manual_class = $manual_class . ' ' . $class;
 			}

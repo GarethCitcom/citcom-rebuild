@@ -40,7 +40,8 @@ $number_stats = is_array( $fields['number_stats'] ?? null ) ? $fields['number_st
 		<div class="row justify-content-around mt-5 row-gap-4">
 			<?php
 			foreach ( $number_stats as $stat ) :
-				$i     = citcom_counter( 'stat' ); // Unique on the page, also with several stats blocks.
+				$i = citcom_counter( 'stat' );
+				// Unique on the page, also with several stats blocks.
 				$value = (int) ( $stat['stat'] ?? 0 );
 				$color = citcom_choice_label( 'stat_color', $stat['stat_color'] ?? 'secondary' );
 				?>

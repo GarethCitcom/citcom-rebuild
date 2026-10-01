@@ -208,45 +208,49 @@ function citcom_fixture_page( string $title, string $slug, string $content ): in
  */
 function citcom_fixture_page_header( array $fields ): string {
 	$defaults = array(
-		'title'                 => '',
-		'_title'                => 'field_66f9a9b4a42ac',
-		'type'                  => 'pattern',
-		'_type'                 => 'field_66f9b8f3ee6bd',
-		'service'               => 'creative',
-		'_service'              => 'field_66f9b9b0ee6bf',
-		'bg-color'              => '#eff1f3',
-		'_bg-color'             => 'field_66f9b53ba42ae',
-		'pattern'               => 'persian',
-		'_pattern'              => 'field_66f9a9d0a42ad',
-		'header_image'          => array(
+		'title'                  => '',
+		'_title'                 => 'field_66f9a9b4a42ac',
+		'type'                   => 'pattern',
+		'_type'                  => 'field_66f9b8f3ee6bd',
+		'service'                => 'creative',
+		'_service'               => 'field_66f9b9b0ee6bf',
+		'bg-color'               => '#eff1f3',
+		'_bg-color'              => 'field_66f9b53ba42ae',
+		'pattern'                => 'persian',
+		'_pattern'               => 'field_66f9a9d0a42ad',
+		'header_image'           => array(
 			'id'   => '',
 			'top'  => '',
 			'left' => '',
 		),
-		'_header_image'         => 'field_66f9a98fa42ab',
-		'breadcrumb'            => '0',
-		'_breadcrumb'           => 'field_6707d4f898015',
-		'section_padding'       => 'default',
-		'_section_padding'      => 'field_6604094e9b92e',
-		'background_colour'     => 'default',
-		'_background_colour'    => 'field_66f9ca9dd01a6',
-		'background_color'      => '#FFFFFF',
-		'_background_color'     => 'field_65f89df411402',
-		'shape_pattern'         => '0',
-		'_shape_pattern'        => 'field_670ac988ea441',
-		'gradient_with_pattern' => 'none',
+		'_header_image'          => 'field_66f9a98fa42ab',
+		'breadcrumb'             => '0',
+		'_breadcrumb'            => 'field_6707d4f898015',
+		'section_padding'        => 'default',
+		'_section_padding'       => 'field_6604094e9b92e',
+		'background_colour'      => 'default',
+		'_background_colour'     => 'field_66f9ca9dd01a6',
+		'background_color'       => '#FFFFFF',
+		'_background_color'      => 'field_65f89df411402',
+		'shape_pattern'          => '0',
+		'_shape_pattern'         => 'field_670ac988ea441',
+		'gradient_with_pattern'  => 'none',
 		'_gradient_with_pattern' => 'field_670aca45ea442',
-		'text_colour'           => 'default',
-		'_text_colour'          => 'field_66f9cb01b4db8',
-		'text_color'            => '#1C0221',
-		'_text_color'           => 'field_65f89f5b11403',
-		'anchor_name'           => '',
-		'_anchor_name'          => 'field_6616e84d4614e',
+		'text_colour'            => 'default',
+		'_text_colour'           => 'field_66f9cb01b4db8',
+		'text_color'             => '#1C0221',
+		'_text_color'            => 'field_65f89f5b11403',
+		'anchor_name'            => '',
+		'_anchor_name'           => 'field_6616e84d4614e',
 	);
-	$data = array_merge( $defaults, $fields );
+	$data     = array_merge( $defaults, $fields );
 	// Fields hidden by conditional logic are not stored, as the editor would not store them.
 	$type = $data['type'] ?? 'pattern';
-	foreach ( array( 'image' => array( 'header_image' ), 'pattern' => array( 'bg-color', 'pattern' ), 'services' => array( 'service' ) ) as $for_type => $names ) {
+	foreach ( array(
+		'image'    => array( 'header_image' ),
+		'pattern'  => array( 'bg-color', 'pattern' ),
+		'services' => array( 'service' ),
+	) as $for_type => $names ) {
 		if ( $for_type === $type ) {
 			continue;
 		}
@@ -269,7 +273,7 @@ function citcom_fixture_page_header( array $fields ): string {
  * @return array<string,string>
  */
 function citcom_fixture_section_settings( string $classes ): array {
-	$hex = array(
+	$hex  = array(
 		'primary'         => '#1C0221',
 		'secondary'       => '#9AD14D',
 		'default_darker'  => '#a2a4aa',
@@ -281,22 +285,22 @@ function citcom_fixture_section_settings( string $classes ): array {
 		'white'           => '#FFFFFF',
 	);
 	$data = array(
-		'section_padding'       => 'default',
-		'_section_padding'      => 'field_6604094e9b92e',
-		'background_colour'     => 'default',
-		'_background_colour'    => 'field_66f9ca9dd01a6',
-		'background_color'      => '#FFFFFF',
-		'_background_color'     => 'field_65f89df411402',
-		'shape_pattern'         => '0',
-		'_shape_pattern'        => 'field_670ac988ea441',
-		'gradient_with_pattern' => 'none',
+		'section_padding'        => 'default',
+		'_section_padding'       => 'field_6604094e9b92e',
+		'background_colour'      => 'default',
+		'_background_colour'     => 'field_66f9ca9dd01a6',
+		'background_color'       => '#FFFFFF',
+		'_background_color'      => 'field_65f89df411402',
+		'shape_pattern'          => '0',
+		'_shape_pattern'         => 'field_670ac988ea441',
+		'gradient_with_pattern'  => 'none',
 		'_gradient_with_pattern' => 'field_670aca45ea442',
-		'text_colour'           => 'default',
-		'_text_colour'          => 'field_66f9cb01b4db8',
-		'text_color'            => '#1C0221',
-		'_text_color'           => 'field_65f89f5b11403',
-		'anchor_name'           => '',
-		'_anchor_name'          => 'field_6616e84d4614e',
+		'text_colour'            => 'default',
+		'_text_colour'           => 'field_66f9cb01b4db8',
+		'text_color'             => '#1C0221',
+		'_text_color'            => 'field_65f89f5b11403',
+		'anchor_name'            => '',
+		'_anchor_name'           => 'field_6616e84d4614e',
 	);
 	foreach ( preg_split( '/\s+/', $classes ) as $class ) {
 		if ( in_array( $class, array( 'pt-0', 'pb-0', 'py-0' ), true ) ) {
@@ -384,7 +388,7 @@ function citcom_fixture_about_sections( string $fixture = 'about-sections.json' 
 					$top  = $m[2];
 				}
 			}
-			$data  = array_merge(
+			$data = array_merge(
 				array(
 					'media_type'     => 'image',
 					'_media_type'    => 'field_66fabf8c203c8',
@@ -414,7 +418,7 @@ function citcom_fixture_about_sections( string $fixture = 'about-sections.json' 
 				),
 				$settings
 			);
-			$attrs = array(
+			$attrs    = array(
 				'name' => 'citcom/media-text',
 				'data' => $data,
 				'mode' => 'preview',
@@ -462,11 +466,13 @@ function citcom_fixture_extra_sections(): string {
 	$blocks = array();
 
 	$serialise = static function ( string $name, array $data ): string {
-		return '<!-- wp:' . $name . ' ' . serialize_block_attributes( array(
+		return '<!-- wp:' . $name . ' ' . serialize_block_attributes(
+			array(
 				'name' => $name,
 				'data' => $data,
 				'mode' => 'preview',
-			) ) . ' /-->';
+			)
+		) . ' /-->';
 	};
 
 	if ( ! empty( $extra['icons']['columns'] ) ) {
@@ -570,13 +576,13 @@ update_field( 'logo_light', $logo_light, 'option' );
 update_field( 'logo_light_default', $logo_light_default, 'option' );
 update_field( 'logo_dark_default', $logo_dark, 'option' );
 
-$accreditations = array(
-	'2024/09/google-partner.png'               => 'Google Partner',
-	'2024/09/cyber-essentials-plus.png'        => 'Cyber Essentials Plus',
+$accreditations    = array(
+	'2024/09/google-partner.png'                 => 'Google Partner',
+	'2024/09/cyber-essentials-plus.png'          => 'Cyber Essentials Plus',
 	'2024/09/worcestershire-apprenticeships.png' => 'Worcestershire Apprenticeships',
-	'2024/10/Chamber-logo.png'                 => 'Chamber Logo',
-	'2024/09/nw-business-awards.png'           => 'Nw Business Awards',
-	'2024/09/the-drum-rose-awards.png'         => 'The Drum Rose Awards',
+	'2024/10/Chamber-logo.png'                   => 'Chamber Logo',
+	'2024/09/nw-business-awards.png'             => 'Nw Business Awards',
+	'2024/09/the-drum-rose-awards.png'           => 'The Drum Rose Awards',
 );
 $accreditation_ids = array();
 foreach ( $accreditations as $path => $title ) {
@@ -757,16 +763,17 @@ if ( file_exists( $cs_file ) ) {
 	}
 }
 
-$cs_template = get_page_by_path( 'case-studies-archive', OBJECT, 'template' );
+$cs_template         = get_page_by_path( 'case-studies-archive', OBJECT, 'template' );
 $cs_template_content = citcom_fixture_page_header(
 	array(
-		'title'    => 'Case Studies',
-		'type'     => 'pattern',
-		'bg-color' => '#eff1f3',
-		'pattern'  => 'persian',
+		'title'      => 'Case Studies',
+		'type'       => 'pattern',
+		'bg-color'   => '#eff1f3',
+		'pattern'    => 'persian',
 		'breadcrumb' => '1',
 	)
-) . "\n\n" . '<!-- wp:citcom/display-posts ' . serialize_block_attributes( array(
+) . "\n\n" . '<!-- wp:citcom/display-posts ' . serialize_block_attributes(
+	array(
 		'name' => 'citcom/display-posts',
 		'data' => array_merge(
 			array(
@@ -780,8 +787,9 @@ $cs_template_content = citcom_fixture_page_header(
 			citcom_fixture_section_settings( '' )
 		),
 		'mode' => 'preview',
-	) ) . ' /-->';
-$cs_template_args = array(
+	)
+) . ' /-->';
+$cs_template_args    = array(
 	'post_type'    => 'template',
 	'post_title'   => 'Case Studies archive',
 	'post_name'    => 'case-studies-archive',
@@ -810,34 +818,76 @@ citcom_fixture_menu(
 			'title'    => 'Services',
 			'url'      => $home . '/services/',
 			'children' => array(
-				array( 'title' => 'Creative', 'url' => $home . '/services/creative/' ),
-				array( 'title' => 'Development', 'url' => $home . '/services/development/' ),
-				array( 'title' => 'Events', 'url' => $home . '/services/events/' ),
-				array( 'title' => 'Marketing', 'url' => $home . '/services/marketing/' ),
-				array( 'title' => 'Print', 'url' => $home . '/services/print/' ),
-				array( 'title' => 'Video Production', 'url' => $home . '/services/video/' ),
-				array( 'title' => 'ChatCom – AI Support', 'url' => $home . '/services/chatcom-ai-support/' ),
+				array(
+					'title' => 'Creative',
+					'url'   => $home . '/services/creative/',
+				),
+				array(
+					'title' => 'Development',
+					'url'   => $home . '/services/development/',
+				),
+				array(
+					'title' => 'Events',
+					'url'   => $home . '/services/events/',
+				),
+				array(
+					'title' => 'Marketing',
+					'url'   => $home . '/services/marketing/',
+				),
+				array(
+					'title' => 'Print',
+					'url'   => $home . '/services/print/',
+				),
+				array(
+					'title' => 'Video Production',
+					'url'   => $home . '/services/video/',
+				),
+				array(
+					'title' => 'ChatCom – AI Support',
+					'url'   => $home . '/services/chatcom-ai-support/',
+				),
 			),
 		),
-		array( 'title' => 'Our Work', 'url' => $home . '/case-studies/' ),
+		array(
+			'title' => 'Our Work',
+			'url'   => $home . '/case-studies/',
+		),
 		array(
 			'title'    => 'Packages',
 			'url'      => $home . '/packages/',
 			'children' => array(
-				array( 'title' => 'Branding Packages', 'url' => $home . '/packages/branding-packages/' ),
-				array( 'title' => 'Website Packages', 'url' => $home . '/packages/website-packages/' ),
-				array( 'title' => 'Creative Retainers', 'url' => $home . '/packages/creative-retainers/' ),
-				array( 'title' => 'Hosting & Management', 'url' => $home . '/packages/hosting-management/' ),
+				array(
+					'title' => 'Branding Packages',
+					'url'   => $home . '/packages/branding-packages/',
+				),
+				array(
+					'title' => 'Website Packages',
+					'url'   => $home . '/packages/website-packages/',
+				),
+				array(
+					'title' => 'Creative Retainers',
+					'url'   => $home . '/packages/creative-retainers/',
+				),
+				array(
+					'title' => 'Hosting & Management',
+					'url'   => $home . '/packages/hosting-management/',
+				),
 			),
 		),
 		array(
 			'title'    => 'About Us',
 			'page'     => $about_id,
 			'children' => array(
-				array( 'title' => 'Blog', 'url' => $home . '/blog/' ),
+				array(
+					'title' => 'Blog',
+					'url'   => $home . '/blog/',
+				),
 			),
 		),
-		array( 'title' => 'Contact', 'page' => $contact_id ),
+		array(
+			'title' => 'Contact',
+			'page'  => $contact_id,
+		),
 	)
 );
 
@@ -845,11 +895,26 @@ citcom_fixture_menu(
 	'Footer 1',
 	'footer_menu_1',
 	array(
-		array( 'title' => 'Services', 'url' => $home . '/services/' ),
-		array( 'title' => 'Our Work', 'url' => $home . '/case-studies/' ),
-		array( 'title' => 'Blog', 'url' => $home . '/blog/' ),
-		array( 'title' => 'About Us', 'page' => $about_id ),
-		array( 'title' => 'Contact Us', 'page' => $contact_id ),
+		array(
+			'title' => 'Services',
+			'url'   => $home . '/services/',
+		),
+		array(
+			'title' => 'Our Work',
+			'url'   => $home . '/case-studies/',
+		),
+		array(
+			'title' => 'Blog',
+			'url'   => $home . '/blog/',
+		),
+		array(
+			'title' => 'About Us',
+			'page'  => $about_id,
+		),
+		array(
+			'title' => 'Contact Us',
+			'page'  => $contact_id,
+		),
 	)
 );
 
@@ -857,12 +922,31 @@ citcom_fixture_menu(
 	'Footer 2',
 	'footer_menu_2',
 	array(
-		array( 'title' => 'AI Usage Policy', 'url' => $home . '/ai-usage-policy/' ),
-		array( 'title' => 'Terms of Use', 'url' => $home . '/terms-of-use/' ),
-		array( 'title' => 'Marketing Agreement', 'url' => $home . '/marketing-agreement/' ),
-		array( 'title' => 'DEO Policy', 'url' => $home . '/edipolicy/' ),
-		array( 'title' => 'Environmental Policy', 'url' => $home . '/environmentalpolicy/' ),
-		array( 'title' => 'Cookie Preferences', 'url' => '#', 'menu_id' => 'open_preferences_center' ),
+		array(
+			'title' => 'AI Usage Policy',
+			'url'   => $home . '/ai-usage-policy/',
+		),
+		array(
+			'title' => 'Terms of Use',
+			'url'   => $home . '/terms-of-use/',
+		),
+		array(
+			'title' => 'Marketing Agreement',
+			'url'   => $home . '/marketing-agreement/',
+		),
+		array(
+			'title' => 'DEO Policy',
+			'url'   => $home . '/edipolicy/',
+		),
+		array(
+			'title' => 'Environmental Policy',
+			'url'   => $home . '/environmentalpolicy/',
+		),
+		array(
+			'title'   => 'Cookie Preferences',
+			'url'     => '#',
+			'menu_id' => 'open_preferences_center',
+		),
 	)
 );
 

@@ -75,7 +75,7 @@ $i = 1;
 					</div>
 					<div class="shape"><?php echo $service['shape']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- inline SVG from the theme ?></div>
 				</div>
-				<?php $i++; ?>
+				<?php ++$i; ?>
 			<?php endforeach; ?>
 		</div>
 	</div>

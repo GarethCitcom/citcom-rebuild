@@ -31,7 +31,8 @@ $citcom_card_flex      = 'post' === $citcom_post_type ? 'd-flex flex-column just
 $citcom_featured_image = get_post_thumbnail_id() ? get_post_thumbnail_id() : false;
 if ( ! $citcom_featured_image ) {
 	$citcom_post_img       = get_field( 'page_header_image' );
-	$citcom_featured_image = ! empty( $citcom_post_img['id'] ) ? (int) $citcom_post_img['id'] : (int) apply_filters( 'citcom_card_fallback_image', 439 ); // Media library fallback, as before.
+	$citcom_featured_image = ! empty( $citcom_post_img['id'] ) ? (int) $citcom_post_img['id'] : (int) apply_filters( 'citcom_card_fallback_image', 439 );
+	// Media library fallback, as before.
 }
 
 if ( 'post' === $citcom_post_type ) {

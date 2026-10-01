@@ -26,8 +26,9 @@ $heading      = (string) ( $fields['heading'] ?? '' );
 $card_heading = (string) ( $fields['card_heading'] ?? '' );
 $card_content = (string) ( $fields['card_content'] ?? '' );
 $card_image   = is_array( $fields['card_image'] ?? null ) ? $fields['card_image'] : null;
-$form         = is_scalar( $fields['form'] ?? null ) ? (string) $fields['form'] : ''; // Theme form slug, or a legacy Forminator id.
-$stamp        = is_array( $fields['stamp'] ?? null ) ? $fields['stamp'] : array();
+$form         = is_scalar( $fields['form'] ?? null ) ? (string) $fields['form'] : '';
+// Theme form slug, or a legacy Forminator id.
+$stamp = is_array( $fields['stamp'] ?? null ) ? $fields['stamp'] : array();
 
 // Ships with the theme so the section renders before anything is uploaded.
 $card_fallback = CITCOM_THEME_URI . '/assets/img/diner/guest-check.webp';

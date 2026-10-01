@@ -1,3 +1,11 @@
+<?php
+/**
+ * Site header: document head, skip link, header bar and navigation.
+ *
+ * @package citcom
+ */
+
+?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?> class="no-js no-animation">
 

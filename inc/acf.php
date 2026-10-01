@@ -35,7 +35,7 @@ function citcom_block_field_dirs(): array {
  * @return string
  */
 function citcom_block_field_group_key( string $dir ): string {
-	$json = json_decode( (string) file_get_contents( $dir . '/fields.json' ), true ); // phpcs:ignore WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown
+	$json = json_decode( (string) file_get_contents( $dir . '/fields.json' ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme file.
 	return (string) ( $json['key'] ?? '' );
 }
 
@@ -71,7 +71,7 @@ add_filter(
 // ... under the name fields.json.
 add_filter(
 	'acf/json/save_file_name',
-	function ( $filename, $post, $load_path ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundBeforeLastUsed
+	function ( $filename, $post, $load_path ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		$key = $post['key'] ?? '';
 		foreach ( citcom_block_field_dirs() as $dir ) {
 			if ( citcom_block_field_group_key( $dir ) === $key ) {

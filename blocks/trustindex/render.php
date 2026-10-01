@@ -34,7 +34,9 @@ $kind = citcom_trustindex_kind( $code );
 	<div class="container-xl">
 		<div data-aos="blur-sm">
 			<?php if ( $is_preview ) : ?>
-				<?php // The widget is drawn by Trustindex's loader script, which does not run in the editor canvas. ?>
+				<?php
+				// The widget is drawn by Trustindex's loader script, which does not run in the editor canvas.
+				?>
 				<div class="text-center p-4 border rounded-3">
 					<p class="mb-1"><strong><?php esc_html_e( 'Trustindex widget', 'citcom' ); ?></strong></p>
 					<p class="mb-0"><code><?php echo esc_html( $code ); ?></code></p>

@@ -63,7 +63,9 @@ $image_fallback = CITCOM_THEME_URI . '/assets/img/diner/diner-story-photo.jpg';
 
 	</div>
 
-	<?php // Single chequer strip below the grid, reserved in the section's own padding-bottom. ?>
+	<?php
+	// Single chequer strip below the grid, reserved in the section's own padding-bottom.
+	?>
 	<span class="diner-story-light-edge" aria-hidden="true"></span>
 
 </section>

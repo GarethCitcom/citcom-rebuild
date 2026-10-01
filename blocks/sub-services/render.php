@@ -51,7 +51,7 @@ $citcom_previous_post = $post;
 
 					<?php
 					wp_reset_postdata();
-					$i++;
+					++$i;
 				endforeach;
 				?>
 

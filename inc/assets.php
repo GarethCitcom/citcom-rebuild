@@ -63,8 +63,10 @@ add_filter(
 add_action(
 	'wp_head',
 	function () {
+		// phpcs:disable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- preload with a stylesheet fallback, which wp_enqueue_style() cannot print.
 		echo '<link rel="preload" href="https://use.typekit.net/dom1odt.css" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">';
 		echo '<noscript><link rel="stylesheet" href="https://use.typekit.net/dom1odt.css"></noscript>';
+		// phpcs:enable
 	},
 	5
 );
@@ -97,14 +99,26 @@ add_action(
 		wp_deregister_script( 'jquery' );
 		wp_enqueue_script( 'jquery', 'https://code.jquery.com/jquery-3.7.1.min.js', array(), null, array( 'in_footer' => true ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 
-		wp_enqueue_script( 'outdated', CITCOM_THEME_URI . '/assets/vendor/outdatedbrowser.min.js', array( 'jquery' ), null, array( 'in_footer' => true, 'strategy' => 'defer' ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		wp_enqueue_script(
+			'outdated',
+			CITCOM_THEME_URI . '/assets/vendor/outdatedbrowser.min.js',
+			array( 'jquery' ),
+			CITCOM_THEME_VERSION,
+			array(
+				'in_footer' => true,
+				'strategy'  => 'defer',
+			)
+		);
 
 		wp_enqueue_script(
 			'theme-script-main',
 			CITCOM_THEME_URI . '/build/theme.js',
 			array( 'jquery' ),
 			citcom_asset_version( 'theme' ),
-			array( 'in_footer' => true, 'strategy' => 'defer' )
+			array(
+				'in_footer' => true,
+				'strategy'  => 'defer',
+			)
 		);
 		wp_localize_script(
 			'theme-script-main',
@@ -127,7 +141,8 @@ add_action(
 	function () {
 		$file = CITCOM_THEME_DIR . '/build/diner.css';
 		wp_register_style( 'citcom-diner', CITCOM_THEME_URI . '/build/diner.css', array(), file_exists( $file ) ? (string) filemtime( $file ) : CITCOM_THEME_VERSION );
-		wp_style_add_data( 'citcom-diner', 'path', $file ); // Lets WordPress inline it like the block styles.
+		wp_style_add_data( 'citcom-diner', 'path', $file );
+		// Lets WordPress inline it like the block styles.
 	},
 	5
 );
@@ -163,7 +178,7 @@ add_action(
 add_action(
 	'wp_footer',
 	function () {
-		echo '<script src="https://kit.fontawesome.com/4a7ba1b0a5.js" crossorigin="anonymous" async></script>';
+		echo '<script src="https://kit.fontawesome.com/4a7ba1b0a5.js" crossorigin="anonymous" async></script>'; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- the kit loader needs crossorigin and async, printed as the old theme did.
 	},
 	1
 );
@@ -226,11 +241,11 @@ if ( ! is_admin() ) {
 				return $tag;
 			}
 			if ( false !== strpos( $tag, 'build/theme.css' ) ) {
-				return str_replace( " rel='stylesheet'", ' rel="preload" as="style"', $tag ) . $tag;
+				return str_replace( " rel='stylesheet'", ' rel="preload" as="style"', $tag ) . $tag; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- rewrites an enqueued tag.
 			}
-			return str_replace( " rel='stylesheet'", ' rel="preload" as="style" onload="this.onload=null;this.rel=\'stylesheet\'"', $tag );
+			return str_replace( " rel='stylesheet'", ' rel="preload" as="style" onload="this.onload=null;this.rel=\'stylesheet\'"', $tag ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- rewrites an enqueued tag.
 		},
 		10,
 		2
 	);
-}
+}//end if

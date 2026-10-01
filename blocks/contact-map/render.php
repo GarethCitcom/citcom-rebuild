@@ -19,7 +19,8 @@ $attrs  = citcom_section_attrs( $block, $fields );
 $index  = citcom_block_index();
 
 $show_socials = ! empty( $fields['show_socials'] );
-$form_id      = is_scalar( $fields['form'] ?? null ) ? (string) $fields['form'] : ''; // Theme form slug, or a legacy Forminator id.
+$form_id      = is_scalar( $fields['form'] ?? null ) ? (string) $fields['form'] : '';
+// Theme form slug, or a legacy Forminator id.
 $desktop_map  = ! empty( $fields['snazzy_map'] ) ? html_entity_decode( (string) $fields['snazzy_map'] ) : '<iframe src="https://snazzymaps.com/embed/650882" width="100%" height="100%" style="border:none;"></iframe>';
 $mobile_map   = ! empty( $fields['mobile_snazzy_map'] ) ? html_entity_decode( (string) $fields['mobile_snazzy_map'] ) : '<iframe src="https://snazzymaps.com/embed/650914" width="100%" height="100%" style="border:none;"></iframe>';
 $social_icons = (array) citcom_get_option( 'social_icon_links' );
@@ -72,8 +73,8 @@ citcom_preview_clip_paths( (bool) $is_preview );
 
 <?php if ( ! $is_preview ) : ?>
 <script>
-	var mapDesktop = '<?php echo str_replace( array( "\\", "'", "\n", "\r" ), array( '\\\\', "\\'", '', '' ), $desktop_map ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- embed HTML from the code editor field, as before ?>';
-	var mapMobile = '<?php echo str_replace( array( "\\", "'", "\n", "\r" ), array( '\\\\', "\\'", '', '' ), $mobile_map ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>';
+	var mapDesktop = '<?php echo str_replace( array( '\\', "'", "\n", "\r" ), array( '\\\\', "\\'", '', '' ), $desktop_map ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- embed HTML from the code editor field, as before ?>';
+	var mapMobile = '<?php echo str_replace( array( '\\', "'", "\n", "\r" ), array( '\\\\', "\\'", '', '' ), $mobile_map ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>';
 	if (window.innerWidth < 768) {
 		document.getElementById("snazzy-map").innerHTML = mapMobile;
 	} else {

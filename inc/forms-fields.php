@@ -200,7 +200,9 @@ function citcom_render_form( $id, array $args = array() ): string {
 					<div class="<?php echo esc_attr( $col ); ?>" data-field="<?php echo esc_attr( $name ); ?>"<?php echo $hidden; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 						<label for="<?php echo esc_attr( $field_id ); ?>" class="<?php echo esc_attr( $class( 'citcom-form-label', 'form-label rounded-label' ) ); ?>"><?php echo esc_html( $label ) . $star; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
 						<?php if ( '' !== $description ) : ?>
-							<?php // Bootstrap forms had the description on its own line under the label. ?>
+							<?php
+							// Bootstrap forms had the description on its own line under the label.
+							?>
 							<?php echo $bootstrap ? '<div>' : ''; ?><span class="citcom-form-description" id="<?php echo esc_attr( $field_id ); ?>-description"><?php echo esc_html( $description ); ?></span><?php echo $bootstrap ? '</div>' : ''; ?>
 						<?php endif; ?>
 						<?php if ( 'textarea' === $type ) : ?>
@@ -320,7 +322,7 @@ function citcom_form_validate( array $form, array $raw ): array {
 				break;
 			default:
 				$value = mb_substr( sanitize_text_field( $value ), 0, 200 );
-		}
+		}//end switch
 		$values[ $name ] = $shown ? $value : '';
 
 		if ( ! $shown ) {
@@ -332,7 +334,7 @@ function citcom_form_validate( array $form, array $raw ): array {
 			/* translators: %s: field label */
 			$errors[ $name ] = (string) ( $field['required_message'] ?? sprintf( __( '%s is required', 'citcom' ), $label ) );
 		}
-	}
+	}//end foreach
 
 	return array( $values, $errors );
 }
@@ -364,6 +366,6 @@ function citcom_form_summary( array $form, array $values ): array {
 			$value = $options[ (string) $value ] ?? '';
 		}
 		$summary[ (string) ( $field['label'] ?? $name ) ] = (string) $value;
-	}
+	}//end foreach
 	return $summary;
 }

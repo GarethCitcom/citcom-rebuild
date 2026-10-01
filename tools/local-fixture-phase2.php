@@ -240,25 +240,25 @@ if ( ! empty( $citcom_p2['contact_map'] ) ) {
  */
 $home_blocks = array();
 if ( ! empty( $citcom_p2['video'] ) ) {
-	$v         = $citcom_p2['video'];
-	$video_id  = citcom_fixture_sideload( $v['src'], 'Citcom show reel Dec 2025 v3' );
-	$poster_id = ! empty( $v['poster'] ) ? citcom_fixture_sideload( $v['poster'], 'CitCom showreel poster' ) : 0;
+	$v             = $citcom_p2['video'];
+	$video_id      = citcom_fixture_sideload( $v['src'], 'Citcom show reel Dec 2025 v3' );
+	$poster_id     = ! empty( $v['poster'] ) ? citcom_fixture_sideload( $v['poster'], 'CitCom showreel poster' ) : 0;
 	$home_blocks[] = citcom_fixture_block(
 		'citcom/video',
 		array_merge(
 			array(
-				'source'                      => 'wp',
-				'_source'                     => 'field_66fa65fe8f982',
-				'video'                       => (string) $video_id,
-				'_video'                      => 'field_66fa66258f983',
-				'player_options'              => '',
-				'_player_options'             => 'field_66fa6d66a64b9',
-				'player_options_options'      => $v['options'],
-				'_player_options_options'     => 'field_66fa6d7ba64ba',
-				'player_options_video_poster' => (string) $poster_id,
+				'source'                       => 'wp',
+				'_source'                      => 'field_66fa65fe8f982',
+				'video'                        => (string) $video_id,
+				'_video'                       => 'field_66fa66258f983',
+				'player_options'               => '',
+				'_player_options'              => 'field_66fa6d66a64b9',
+				'player_options_options'       => $v['options'],
+				'_player_options_options'      => 'field_66fa6d7ba64ba',
+				'player_options_video_poster'  => (string) $poster_id,
 				'_player_options_video_poster' => 'field_66fa7565c4741',
-				'citdot_container'            => ! empty( $v['citdot'] ) ? '1' : '0',
-				'_citdot_container'           => 'field_66faa4c98bc5d',
+				'citdot_container'             => ! empty( $v['citdot'] ) ? '1' : '0',
+				'_citdot_container'            => 'field_66faa4c98bc5d',
 			),
 			citcom_fixture_section_settings( $v['classes'] )
 		)
@@ -281,14 +281,14 @@ if ( ! empty( $citcom_p2['services_showcase'] ) ) {
 		// Links point at the local service pages.
 		$link['url'] = home_url( wp_parse_url( $link['url'] ?? '/services/' . $service . '/', PHP_URL_PATH ) );
 
-		$data[ $service ]                       = '';
-		$data[ '_' . $service ]                 = $group_key;
-		$data[ $service . '_showcase_image' ]   = citcom_fixture_focus( $img_id, $s['image']['top'] ?? 50, $s['image']['left'] ?? 50 );
+		$data[ $service ]                           = '';
+		$data[ '_' . $service ]                     = $group_key;
+		$data[ $service . '_showcase_image' ]       = citcom_fixture_focus( $img_id, $s['image']['top'] ?? 50, $s['image']['left'] ?? 50 );
 		$data[ '_' . $service . '_showcase_image' ] = $image_key;
-		$data[ $service . '_card_text' ]        = $s['text'] ?? '';
-		$data[ '_' . $service . '_card_text' ]  = $text_key;
-		$data[ $service . '_card_link' ]        = $link;
-		$data[ '_' . $service . '_card_link' ]  = $link_key;
+		$data[ $service . '_card_text' ]            = $s['text'] ?? '';
+		$data[ '_' . $service . '_card_text' ]      = $text_key;
+		$data[ $service . '_card_link' ]            = $link;
+		$data[ '_' . $service . '_card_link' ]      = $link_key;
 	}
 	$home_blocks[] = citcom_fixture_block( 'citcom/services-showcase', array_merge( $data, citcom_fixture_section_settings( $citcom_p2['services_showcase']['classes'] ) ) );
 }
@@ -399,12 +399,12 @@ if ( ! empty( $citcom_p2['sub_services'] ) ) {
 		$by_slug[ $row['slug'] ] = $row;
 	}
 	foreach ( $ss['nav'] as $slug ) {
-		$row = $by_slug[ $slug ] ?? array(
-			'slug'     => $slug,
-			'title'    => ucwords( str_replace( '-', ' ', $slug ) ),
-			'excerpt'  => '',
-			'cs_tags'  => array(),
-			'gallery'  => array(),
+		$row   = $by_slug[ $slug ] ?? array(
+			'slug'    => $slug,
+			'title'   => ucwords( str_replace( '-', ' ', $slug ) ),
+			'excerpt' => '',
+			'cs_tags' => array(),
+			'gallery' => array(),
 		);
 		$found = get_page_by_path( 'creative/' . $slug, OBJECT, 'service' );
 		$id    = $found ? (int) $found->ID : (int) wp_insert_post(
@@ -694,7 +694,7 @@ if ( ! empty( $citcom_p2['diner'] ) ) {
 			),
 		);
 	}
-	$extras = array(
+	$extras    = array(
 		citcom_fixture_block(
 			'citcom/diner-intro',
 			array_merge(
@@ -899,7 +899,7 @@ if ( ! empty( $citcom_p2['services_archive'] ) ) {
 		$core_ids[] = $id;
 	}
 
-	$services_content = citcom_fixture_page_header(
+	$services_content  = citcom_fixture_page_header(
 		array(
 			'title'    => $sa['title'],
 			'type'     => 'pattern',
@@ -936,7 +936,12 @@ if ( ! empty( $citcom_p2['services_archive'] ) ) {
 
 // Service pages with no content yet get a header and a note, so the "Find out more"
 // links from the service rows do not land on an empty page.
-foreach ( get_posts( array( 'post_type' => 'service', 'posts_per_page' => -1 ) ) as $service_post ) {
+foreach ( get_posts(
+	array(
+		'post_type'      => 'service',
+		'posts_per_page' => -1,
+	)
+) as $service_post ) {
 	if ( '' !== trim( $service_post->post_content ) ) {
 		continue;
 	}
@@ -951,9 +956,9 @@ foreach ( get_posts( array( 'post_type' => 'service', 'posts_per_page' => -1 ) )
 						'bg-color' => '#eff1f3',
 						'pattern'  => 'persian',
 					)
-				) . "
+				) . '
 
-" . citcom_fixture_editor_block( '<!-- wp:paragraph --><p>Placeholder for the local fixture. The real content of this service page arrives with the Phase 3 migration.</p><!-- /wp:paragraph -->' )
+' . citcom_fixture_editor_block( '<!-- wp:paragraph --><p>Placeholder for the local fixture. The real content of this service page arrives with the Phase 3 migration.</p><!-- /wp:paragraph -->' )
 			),
 		)
 	);
@@ -1030,7 +1035,7 @@ if ( ! empty( $citcom_p2['packages'] ) ) {
 			'_anchor_name' => 'field_6790f3345a787',
 		)
 	);
-	$packages_id = citcom_fixture_page( 'CitCom Packages', 'packages', $packages_content );
+	$packages_id       = citcom_fixture_page( 'CitCom Packages', 'packages', $packages_content );
 	WP_CLI::log( "Packages page: $packages_id" );
 }
 
@@ -1049,7 +1054,7 @@ $forms_shortcode = static function ( string $shortcode, string $classes ): strin
 		)
 	);
 };
-$forms_test = citcom_fixture_page_header(
+$forms_test      = citcom_fixture_page_header(
 	array(
 		'title'    => 'Forms test',
 		'type'     => 'pattern',
@@ -1071,7 +1076,7 @@ $forms_test = citcom_fixture_page_header(
 			'_anchor_name' => 'field_6790f3345a787',
 		)
 	);
-$forms_test_id = citcom_fixture_page( 'Forms test', 'forms-test', $forms_test );
+$forms_test_id   = citcom_fixture_page( 'Forms test', 'forms-test', $forms_test );
 WP_CLI::log( "Forms test page: $forms_test_id" );
 // Any other menu link that still has no local content (policies, package sub-pages)
 // gets a placeholder, so nothing in the menus leads to a 404.
@@ -1110,9 +1115,9 @@ foreach ( wp_get_nav_menus() as $nav_menu ) {
 							'bg-color' => '#eff1f3',
 							'pattern'  => 'persian',
 						)
-					) . "
+					) . '
 
-" . citcom_fixture_editor_block( '<!-- wp:paragraph --><p>Placeholder for the local fixture. The real content of this page arrives with the Phase 3 migration.</p><!-- /wp:paragraph -->' )
+' . citcom_fixture_editor_block( '<!-- wp:paragraph --><p>Placeholder for the local fixture. The real content of this page arrives with the Phase 3 migration.</p><!-- /wp:paragraph -->' )
 				),
 			)
 		);

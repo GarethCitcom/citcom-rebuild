@@ -89,7 +89,9 @@ $initials = static function ( $name ) {
 
 				<div class="diner-reviews-trustindex">
 					<?php if ( $is_preview ) : ?>
-						<?php // Trustindex's loader script does not run in the editor canvas. ?>
+						<?php
+						// Trustindex's loader script does not run in the editor canvas.
+						?>
 						<p class="text-center text-light mb-0"><strong><?php esc_html_e( 'Trustindex widget', 'citcom' ); ?></strong> <code><?php echo esc_html( $trustindex ); ?></code><?php echo '' === citcom_trustindex_embed( $trustindex ) ? ' ' . esc_html__( '(nothing will show: not Trustindex code, or the Trustindex plugin is not active)', 'citcom' ) : ''; ?></p>
 					<?php else : ?>
 						<?php echo citcom_trustindex_embed( $trustindex ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trustindex shortcode output or a rebuilt loader script ?>

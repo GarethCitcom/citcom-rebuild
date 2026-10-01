@@ -25,12 +25,12 @@ class Citcom_Field_Focuspoint extends acf_field {
 	 * Field type setup.
 	 */
 	public function initialize() {
-		$this->name          = 'citcom_focuspoint';
-		$this->label         = __( 'Image with focal point', 'citcom' );
-		$this->category      = 'content';
-		$this->description   = __( 'An image and the point, as percentages, that stays in view when it is cropped.', 'citcom' );
-		$this->show_in_rest  = false;
-		$this->defaults      = array(
+		$this->name         = 'citcom_focuspoint';
+		$this->label        = __( 'Image with focal point', 'citcom' );
+		$this->category     = 'content';
+		$this->description  = __( 'An image and the point, as percentages, that stays in view when it is cropped.', 'citcom' );
+		$this->show_in_rest = false;
+		$this->defaults     = array(
 			'preview_size' => 'large',
 			'library'      => 'all',
 			'min_width'    => 0,
@@ -326,6 +326,7 @@ class Citcom_Field_Focuspoint extends acf_field {
 			// and ACF's own rule is not to enforce required on fields that carry
 			// conditional logic (see acf_validate_block_from_local_meta). Same here.
 			if ( ! empty( $field['required'] ) && empty( $field['conditional_logic'] ) ) {
+				/* translators: %s: field label */
 				return sprintf( __( '%s value is required', 'acf' ), $field['label'] );
 			}
 			return $valid;
@@ -344,27 +345,34 @@ class Citcom_Field_Focuspoint extends acf_field {
 
 		$errors = array();
 		if ( ! empty( $field['min_width'] ) && $width && $width < (int) $field['min_width'] ) {
+			/* translators: %d: minimum width in pixels */
 			$errors[] = sprintf( __( 'Image width must not be less than %dpx.', 'acf' ), (int) $field['min_width'] );
 		}
 		if ( ! empty( $field['min_height'] ) && $height && $height < (int) $field['min_height'] ) {
+			/* translators: %d: minimum height in pixels */
 			$errors[] = sprintf( __( 'Image height must not be less than %dpx.', 'acf' ), (int) $field['min_height'] );
 		}
 		if ( ! empty( $field['max_width'] ) && $width > (int) $field['max_width'] ) {
+			/* translators: %d: maximum width in pixels */
 			$errors[] = sprintf( __( 'Image width must not exceed %dpx.', 'acf' ), (int) $field['max_width'] );
 		}
 		if ( ! empty( $field['max_height'] ) && $height > (int) $field['max_height'] ) {
+			/* translators: %d: maximum height in pixels */
 			$errors[] = sprintf( __( 'Image height must not exceed %dpx.', 'acf' ), (int) $field['max_height'] );
 		}
 		if ( ! empty( $field['min_size'] ) && $size && $size < (float) $field['min_size'] ) {
+			/* translators: %s: minimum size with unit */
 			$errors[] = sprintf( __( 'File size must be at least %s.', 'acf' ), $field['min_size'] . 'MB' );
 		}
 		if ( ! empty( $field['max_size'] ) && $size > (float) $field['max_size'] ) {
+			/* translators: %s: maximum size with unit */
 			$errors[] = sprintf( __( 'File size must not exceed %s.', 'acf' ), $field['max_size'] . 'MB' );
 		}
 		if ( ! empty( $field['mime_types'] ) ) {
 			$allowed = array_filter( array_map( 'trim', explode( ',', strtolower( $field['mime_types'] ) ) ) );
 			$ext     = strtolower( pathinfo( (string) $file, PATHINFO_EXTENSION ) );
 			if ( $allowed && ! in_array( $ext, $allowed, true ) ) {
+				/* translators: %s: list of allowed file types */
 				$errors[] = sprintf( __( 'File type must be %s.', 'acf' ), implode( ', ', $allowed ) );
 			}
 		}

@@ -119,8 +119,8 @@ function citcom_form_choices(): array {
  * @return string[]
  */
 function citcom_form_recipients( array $form, array $values ): array {
-	$split = static function ( $list ): array {
-		return array_values( array_filter( (array) preg_split( '/[\s,;]+/', (string) $list ), 'is_email' ) );
+	$split = static function ( $text ): array {
+		return array_values( array_filter( (array) preg_split( '/[\s,;]+/', (string) $text ), 'is_email' ) );
 	};
 	$group = static function ( string $name ) use ( $split ): array {
 		return $split( 'marketing' === $name ? get_field( 'forms_marketing_recipient', 'option' ) : get_field( 'forms_recipient', 'option' ) );
@@ -180,7 +180,8 @@ add_action(
 			array(
 				'methods'             => 'POST',
 				'callback'            => 'citcom_form_handle',
-				'permission_callback' => '__return_true', // Public forms.
+				'permission_callback' => '__return_true',
+			// Public forms.
 			)
 		);
 	}
@@ -379,7 +380,7 @@ add_action(
 			array(
 				'post_type'      => 'citcom_submission',
 				'post_status'    => 'any',
-				'posts_per_page' => 200,
+				'posts_per_page' => 200, // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page -- a daily batch of ids from a small private post type.
 				'fields'         => 'ids',
 				'date_query'     => array(
 					array(

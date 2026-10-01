@@ -3,10 +3,13 @@
  * Template helpers ported from the original theme (functions/helpers.php,
  * functions/acf-options-cache.php, functions/lib/*, functions/theme_content/*).
  *
- * Only what the templates and blocks actually call is here.
+ * Only what the templates and blocks actually call is here. The functions keep
+ * the old theme's names, so the ported templates read as they did.
  *
  * @package citcom
  */
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- the old theme's helper names, kept on purpose.
 
 defined( 'ABSPATH' ) || exit;
 
@@ -90,7 +93,7 @@ function custom_excerpt( $content, $length, $suffix = '' ) {
 	$words = is_int( $length ) ? $length : 20;
 
 	$text = strip_shortcodes( $content );
-	$text = apply_filters( 'the_content', $text );
+	$text = apply_filters( 'the_content', $text ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core filter.
 	$text = str_replace( ']]>', ']]&gt;', $text );
 
 	return wp_trim_words( $text, $words, $suffix );
@@ -177,7 +180,7 @@ function citcom_inline_svg( $attachment_id ): string {
 	$svg  = '';
 	$file = get_attached_file( $attachment_id );
 	if ( $file && 'image/svg+xml' === get_post_mime_type( $attachment_id ) && is_readable( $file ) ) {
-		$svg = (string) file_get_contents( $file ); // phpcs:ignore WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown
+		$svg = (string) file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme file.
 	}
 
 	$cache[ $attachment_id ] = $svg;
@@ -468,7 +471,7 @@ function thousandsCurrencyFormat( $num ) { // phpcs:ignore WordPress.NamingConve
 		$x_array         = explode( ',', $x_number_format );
 		$x_parts         = array( 'k', 'm', 'b', 't' );
 		$x_count_parts   = count( $x_array ) - 1;
-		$x_display       = $x_array[0] . ( (int) $x_array[1][0] !== 0 ? '.' . $x_array[1][0] : '' );
+		$x_display       = $x_array[0] . ( 0 !== (int) $x_array[1][0] ? '.' . $x_array[1][0] : '' );
 		$x_display      .= $x_parts[ $x_count_parts - 1 ];
 		return $x_display;
 	}
@@ -484,7 +487,7 @@ function thousandsCurrencyFormat( $num ) { // phpcs:ignore WordPress.NamingConve
  * @return int 1 on the first call, then 2, 3 ...
  */
 function citcom_counter( string $key ): int {
-	static $counters = array();
+	static $counters  = array();
 	$counters[ $key ] = ( $counters[ $key ] ?? 0 ) + 1;
 	return $counters[ $key ];
 }

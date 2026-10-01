@@ -10,10 +10,10 @@
 // resolves to the block's own data (ACF local meta), not the service.
 global $post;
 
-$citcom_gallery          = get_field( 'gallery', $post->ID );
-$citcom_excerpt          = get_field( 'service_excerpt', $post->ID );
-$citcom_case_study_tags  = get_field( 'linked_case_studies', $post->ID );
-$citcom_cs_archive_url   = get_post_type_archive_link( 'case-study' );
+$citcom_gallery         = get_field( 'gallery', $post->ID );
+$citcom_excerpt         = get_field( 'service_excerpt', $post->ID );
+$citcom_case_study_tags = get_field( 'linked_case_studies', $post->ID );
+$citcom_cs_archive_url  = get_post_type_archive_link( 'case-study' );
 
 $citcom_cs_btn      = false;
 $citcom_cs_tag_link = '';
@@ -25,7 +25,7 @@ if ( $citcom_case_study_tags ) {
 		$citcom_slug         = is_object( $citcom_tag ) ? $citcom_tag->slug : (string) $citcom_tag;
 		$citcom_cs_tag_link .= $citcom_i > 0 ? ',' : '';
 		$citcom_cs_tag_link .= $citcom_slug;
-		$citcom_i++;
+		++$citcom_i;
 	}
 }
 

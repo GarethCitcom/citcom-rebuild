@@ -133,7 +133,7 @@ $max        = $max_images[ $style ] ?? 6;
 					if ( 3 === $i && ( 'style4' === $style || 'style5' === $style ) ) {
 						echo '</div></div>';
 					}
-					$i++;
+					++$i;
 				endforeach;
 				?>
 				<?php if ( ! $gallery && $is_preview ) : ?>

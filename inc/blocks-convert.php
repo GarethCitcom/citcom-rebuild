@@ -141,7 +141,13 @@ function citcom_html_node_to_block( DOMElement $el, DOMDocument $doc ): string {
 				if ( $id ) {
 					$attrs[] = '"id":' . $id;
 				}
-				foreach ( array( 'aligncenter' => 'center', 'alignleft' => 'left', 'alignright' => 'right', 'alignwide' => 'wide', 'alignfull' => 'full' ) as $class => $value ) {
+				foreach ( array(
+					'aligncenter' => 'center',
+					'alignleft'   => 'left',
+					'alignright'  => 'right',
+					'alignwide'   => 'wide',
+					'alignfull'   => 'full',
+				) as $class => $value ) {
 					if ( in_array( $class, $classes, true ) ) {
 						$attrs[] = '"align":"' . $value . '"';
 					}
@@ -165,11 +171,11 @@ function citcom_html_node_to_block( DOMElement $el, DOMDocument $doc ): string {
 						$figure_classes[] = $class;
 					}
 				}
-				$src = $img ? $img->getAttribute( 'src' ) : '';
-				$alt = $img ? $img->getAttribute( 'alt' ) : '';
+				$src      = $img ? $img->getAttribute( 'src' ) : '';
+				$alt      = $img ? $img->getAttribute( 'alt' ) : '';
 				$img_html = '<img src="' . esc_url( $src ) . '" alt="' . esc_attr( $alt ) . '"' . ( $id ? ' class="wp-image-' . $id . '"' : '' ) . '/>';
 				return '<!-- wp:image' . $attr_json . ' --><figure class="' . esc_attr( implode( ' ', $figure_classes ) ) . '">' . $img_html . '</figure><!-- /wp:image -->';
-			}
+			}//end if
 			if ( in_array( 'wp-block-video', $classes, true ) ) {
 				return '<!-- wp:video -->' . $outer . '<!-- /wp:video -->';
 			}
@@ -203,5 +209,5 @@ function citcom_html_node_to_block( DOMElement $el, DOMDocument $doc ): string {
 
 		default:
 			return '<!-- wp:html -->' . $outer . '<!-- /wp:html -->';
-	}
+	}//end switch
 }

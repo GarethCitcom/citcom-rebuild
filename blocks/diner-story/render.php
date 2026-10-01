@@ -36,7 +36,9 @@ $image_fallback = CITCOM_THEME_URI . '/assets/img/diner/diner-story-photo.jpg';
 
 	<div class="diner-story-grid">
 
-		<?php // Absolutely positioned, so the chequer band overlays both columns. ?>
+		<?php
+		// Absolutely positioned, so the chequer band overlays both columns.
+		?>
 		<span class="diner-story-edge diner-story-edge-top" aria-hidden="true"></span>
 
 		<div class="diner-story-copy" data-aos="fade-up">

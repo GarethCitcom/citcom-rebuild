@@ -27,7 +27,8 @@ $cta_content  = wp_kses_post( (string) ( $fields['content'] ?? '' ) );
 $social_icons = (array) citcom_get_option( 'social_icon_links' );
 $button       = is_array( $fields['button'] ?? null ) ? $fields['button'] : array();
 $button_2     = is_array( $fields['button_2'] ?? null ) ? $fields['button_2'] : array();
-$form_id      = is_scalar( $fields['form'] ?? null ) ? (string) $fields['form'] : ''; // Theme form slug, or a legacy Forminator id.
+$form_id      = is_scalar( $fields['form'] ?? null ) ? (string) $fields['form'] : '';
+// Theme form slug, or a legacy Forminator id.
 
 /**
  * One social icon link, as the footer and the old template print it.
