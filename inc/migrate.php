@@ -361,20 +361,171 @@ function citcom_migrate_inner( string $content, array &$warnings ): string {
 		return '';
 	}
 	if ( has_blocks( $content ) ) {
-		return $content;
+		return citcom_migrate_restore_attrs( $content );
 	}
 	$warnings[] = 'note: classic HTML in an editor field converted to blocks';
 	return citcom_html_to_blocks( wpautop( $content ) );
 }
 
 /**
+ * Put back the block attributes the old block editor field left out.
+ *
+ * The field stored its blocks with bare comments (`<!-- wp:heading -->` in
+ * front of an h4, `<!-- wp:spacer -->` in front of a 40px spacer), which
+ * rendered correctly but which the block editor rejects: it rebuilds the
+ * markup from the attributes, gets an h2 or a 100px spacer, and marks the
+ * block "unexpected or invalid content". The attributes are all readable
+ * from the saved HTML, so they are restored here for the block types that
+ * need them. The HTML itself is not touched.
+ *
+ * @param string $content Block markup.
+ * @return string
+ */
+function citcom_migrate_restore_attrs( string $content ): string {
+	$blocks = parse_blocks( $content );
+	citcom_migrate_restore_attrs_walk( $blocks );
+	return serialize_blocks( $blocks );
+}
+
+/**
+ * Walk parsed blocks and restore attributes in place.
+ *
+ * @param array<int,array<string,mixed>> $blocks Parsed blocks, by reference.
+ * @return void
+ */
+function citcom_migrate_restore_attrs_walk( array &$blocks ): void {
+	foreach ( $blocks as &$block ) {
+		if ( ! empty( $block['innerBlocks'] ) ) {
+			citcom_migrate_restore_attrs_walk( $block['innerBlocks'] );
+		}
+		if ( ! empty( $block['attrs'] ) || empty( $block['blockName'] ) ) {
+			continue;
+		}
+		$attrs = citcom_migrate_attrs_from_html( (string) $block['blockName'], (string) $block['innerHTML'] );
+		if ( $attrs ) {
+			$block['attrs'] = $attrs;
+		}
+	}
+}
+
+/**
+ * The attributes of a core block, read from its saved HTML.
+ *
+ * @param string $name Block name.
+ * @param string $html The block's inner HTML.
+ * @return array<string,mixed>
+ */
+function citcom_migrate_attrs_from_html( string $name, string $html ): array {
+	$attrs   = array();
+	$classes = array();
+	if ( preg_match( '/^\s*<[a-z0-9]+\b[^>]*?\sclass="([^"]*)"/i', $html, $m ) ) {
+		$classes = preg_split( '/\s+/', trim( $m[1] ) ) ?: array();
+	}
+	$extra = static function ( array $known ) use ( $classes ): string {
+		return implode(
+			' ',
+			array_filter(
+				$classes,
+				static function ( $css_class ) use ( $known ) {
+					foreach ( $known as $pattern ) {
+						if ( preg_match( $pattern, $css_class ) ) {
+							return false;
+						}
+					}
+					return '' !== $css_class;
+				}
+			)
+		);
+	};
+
+	switch ( $name ) {
+		case 'core/heading':
+			if ( preg_match( '/^\s*<h([1-6])\b/i', $html, $m ) && 2 !== (int) $m[1] ) {
+				$attrs['level'] = (int) $m[1];
+			}
+			foreach ( $classes as $css_class ) {
+				if ( preg_match( '/^has-text-align-(left|center|right)$/', $css_class, $m ) ) {
+					$attrs['textAlign'] = $m[1];
+				}
+			}
+			$class_name = $extra( array( '/^wp-block-heading$/', '/^has-text-align-/' ) );
+			if ( '' !== $class_name ) {
+				$attrs['className'] = $class_name;
+			}
+			break;
+
+		case 'core/spacer':
+			if ( preg_match( '/height:\s*([0-9.]+[a-z%]*)/i', $html, $m ) ) {
+				$attrs['height'] = $m[1];
+			}
+			break;
+
+		case 'core/image':
+			if ( preg_match( '/\bwp-image-(\d+)\b/', $html, $m ) ) {
+				$attrs['id'] = (int) $m[1];
+			}
+			if ( preg_match( '/<img\b[^>]*\sstyle="([^"]*)"/i', $html, $m ) ) {
+				foreach ( array(
+					'width'       => '/(?:^|;)\s*width:\s*([^;]+)/',
+					'height'      => '/(?:^|;)\s*height:\s*([^;]+)/',
+					'aspectRatio' => '/aspect-ratio:\s*([^;]+)/',
+					'scale'       => '/object-fit:\s*([^;]+)/',
+				) as $attr => $pattern ) {
+					if ( preg_match( $pattern, $m[1], $v ) ) {
+						$attrs[ $attr ] = trim( $v[1] );
+					}
+				}
+			}
+			foreach ( $classes as $css_class ) {
+				if ( preg_match( '/^size-([\w-]+)$/', $css_class, $m ) ) {
+					$attrs['sizeSlug'] = $m[1];
+				}
+				if ( preg_match( '/^align(left|center|right|wide|full)$/', $css_class, $m ) ) {
+					$attrs['align'] = $m[1];
+				}
+			}
+			if ( preg_match( '/<a\b/i', $html ) ) {
+				$attrs['linkDestination'] = 'custom';
+			}
+			$class_name = $extra( array( '/^wp-block-image$/', '/^size-/', '/^align(left|center|right|wide|full)$/', '/^is-resized$/' ) );
+			if ( '' !== $class_name ) {
+				$attrs['className'] = $class_name;
+			}
+			break;
+
+		case 'core/embed':
+			if ( preg_match( '/<div class="wp-block-embed__wrapper">\s*(\S+)\s*<\/div>/', $html, $m ) ) {
+				$attrs['url'] = html_entity_decode( $m[1] );
+			}
+			foreach ( $classes as $css_class ) {
+				if ( preg_match( '/^is-type-([\w-]+)$/', $css_class, $m ) ) {
+					$attrs['type'] = $m[1];
+				}
+				if ( preg_match( '/^is-provider-([\w-]+)$/', $css_class, $m ) ) {
+					$attrs['providerNameSlug'] = $m[1];
+				}
+			}
+			if ( in_array( 'wp-has-aspect-ratio', $classes, true ) ) {
+				$attrs['responsive'] = true;
+			}
+			$class_name = $extra( array( '/^wp-block-embed/', '/^is-type-/', '/^is-provider-/' ) );
+			if ( '' !== $class_name ) {
+				$attrs['className'] = $class_name;
+			}
+			break;
+	}
+	return $attrs;
+}
+
+/**
  * One row as a serialised block, or null when the layout has no block.
  *
- * @param array<string,mixed> $row      From citcom_migrate_rows().
- * @param string[]            $warnings Warnings, by reference.
+ * @param array<string,mixed>      $row       From citcom_migrate_rows().
+ * @param string[]                 $warnings  Warnings, by reference.
+ * @param array<string,mixed>|null $cache_row The same row in the old theme's front-end cache, when there is one.
  * @return string|null
  */
-function citcom_migrate_row_block( array $row, array &$warnings ): ?string {
+function citcom_migrate_row_block( array $row, array &$warnings, ?array $cache_row = null ): ?string {
 	$layout = (string) $row['layout'];
 	$block  = CITCOM_MIGRATE_LAYOUTS[ $layout ] ?? null;
 	if ( ! $block ) {
@@ -383,7 +534,24 @@ function citcom_migrate_row_block( array $row, array &$warnings ): ?string {
 	}
 	$values = (array) $row['values'];
 	$data   = array();
+	// The old front end read a cache of the fields. A cached row with no section
+	// settings rendered without any, whatever the row itself holds.
+	$settings_unused = null !== $cache_row && empty( $cache_row['layout_settings'] );
 	foreach ( citcom_migrate_block_groups( $block ) as $group ) {
+		if ( '' !== $group['source'] && $settings_unused ) {
+			$unused = array();
+			citcom_migrate_values( $group['fields'], $values, $group['source'], '', $unused );
+			$set = array();
+			foreach ( $unused as $key => $value ) {
+				if ( ! str_starts_with( (string) $key, '_' ) && is_scalar( $value ) && ! in_array( (string) $value, array( '', '0', 'default', 'none' ), true ) && ! preg_match( '/^(background|text)_color$/', (string) $key ) ) {
+					$set[] = $key . '=' . $value;
+				}
+			}
+			if ( $set ) {
+				$warnings[] = sprintf( 'note: row %d: section settings saved but never shown by the old site, left at defaults (%s)', $row['index'], implode( ', ', $set ) );
+			}
+			continue;
+		}
 		citcom_migrate_values( $group['fields'], $values, $group['source'], '', $data );
 	}
 
@@ -427,6 +595,31 @@ function citcom_migrate_row_block( array $row, array &$warnings ): ?string {
 }
 
 /**
+ * The rows of the old theme's front-end cache for a post (the
+ * `acfAllObjects_{id}` option the acf-getallobjects mu-plugin wrote on save),
+ * in the order of the post's enabled rows. Empty when there is no cache or it
+ * does not line up with the rows, in which case the rows alone decide.
+ *
+ * @param int                            $post_id  Post id.
+ * @param array<int,array<string,mixed>> $rows     From citcom_migrate_rows().
+ * @param string[]                       $warnings Warnings, by reference.
+ * @return array<int,array<string,mixed>>
+ */
+function citcom_migrate_cache_rows( int $post_id, array $rows, array &$warnings ): array {
+	$cache = json_decode( (string) get_option( 'acfAllObjects_' . $post_id, '' ), true );
+	if ( ! is_array( $cache ) || empty( $cache[ CITCOM_MIGRATE_FLEX_FIELD ] ) || ! is_array( $cache[ CITCOM_MIGRATE_FLEX_FIELD ] ) ) {
+		return array();
+	}
+	$cached  = array_values( $cache[ CITCOM_MIGRATE_FLEX_FIELD ] );
+	$enabled = array_values( array_filter( $rows, static fn( $row ) => ! $row['disabled'] ) );
+	if ( array_column( $cached, 'acf_fc_layout' ) !== array_column( $enabled, 'layout' ) ) {
+		$warnings[] = 'note: the old front-end cache does not match the rows (the page was not re-saved after an edit), cache ignored';
+		return array();
+	}
+	return $cached;
+}
+
+/**
  * Block content for a post from its flexible content rows, with a report.
  *
  * @param int $post_id Post id.
@@ -437,12 +630,15 @@ function citcom_migrate_build( int $post_id ): array {
 	$blocks   = array();
 	$disabled = 0;
 	$warnings = array();
+	$cache    = citcom_migrate_cache_rows( $post_id, $rows, $warnings );
+	$shown    = 0;
 	foreach ( $rows as $row ) {
 		if ( $row['disabled'] ) {
 			++$disabled;
 			continue;
 		}
-		$block = citcom_migrate_row_block( $row, $warnings );
+		$block = citcom_migrate_row_block( $row, $warnings, $cache[ $shown ] ?? null );
+		++$shown;
 		if ( null !== $block ) {
 			$blocks[] = $block;
 		}
@@ -454,6 +650,33 @@ function citcom_migrate_build( int $post_id ): array {
 		'disabled'  => $disabled,
 		'warnings'  => $warnings,
 	);
+}
+
+/**
+ * Store a post's content without touching its modified date: the migration is
+ * not an edit, and every page "modified today" would mislead sitemaps and
+ * anyone reading the dates.
+ *
+ * @param WP_Post $post    Post.
+ * @param string  $content New post_content.
+ * @return int|WP_Error
+ */
+function citcom_migrate_write_content( WP_Post $post, string $content ) {
+	$keep = static function ( $data ) use ( $post ) {
+		$data['post_modified']     = $post->post_modified;
+		$data['post_modified_gmt'] = $post->post_modified_gmt;
+		return $data;
+	};
+	add_filter( 'wp_insert_post_data', $keep, 99 );
+	$result = wp_update_post(
+		array(
+			'ID'           => $post->ID,
+			'post_content' => wp_slash( $content ),
+		),
+		true
+	);
+	remove_filter( 'wp_insert_post_data', $keep, 99 );
+	return $result;
 }
 
 /**
@@ -502,13 +725,7 @@ function citcom_migrate_post( int $post_id, bool $dry_run = true ): array {
 	if ( ! metadata_exists( 'post', $post_id, '_citcom_legacy_content' ) ) {
 		add_post_meta( $post_id, '_citcom_legacy_content', wp_slash( $post->post_content ), true );
 	}
-	$result = wp_update_post(
-		array(
-			'ID'           => $post_id,
-			'post_content' => wp_slash( $built['content'] ),
-		),
-		true
-	);
+	$result = citcom_migrate_write_content( $post, $built['content'] );
 	if ( is_wp_error( $result ) ) {
 		$report['status']     = 'error';
 		$report['warnings'][] = $result->get_error_message();
@@ -566,13 +783,7 @@ function citcom_migrate_rollback_post( int $post_id ): string {
 		return 'not migrated';
 	}
 	$legacy = (string) get_post_meta( $post_id, '_citcom_legacy_content', true );
-	$result = wp_update_post(
-		array(
-			'ID'           => $post_id,
-			'post_content' => wp_slash( $legacy ),
-		),
-		true
-	);
+	$result = citcom_migrate_write_content( get_post( $post_id ), $legacy );
 	if ( is_wp_error( $result ) ) {
 		return 'error: ' . $result->get_error_message();
 	}
