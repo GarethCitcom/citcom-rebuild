@@ -330,8 +330,10 @@ example):
   plugins provide them (not done; the theme's own `google_reviews`,
   `youtube_gallery` and `chatcom` shortcodes are in `inc/shortcodes.php`, the
   first two no longer Elfsight, see the reviews note above).
-  `wp citcom migrate run --dry-run` lists them as notes in its report
-  (docs/03-phase3-brief.md); read them off the staging dry run.
+  Done 2026-10-02 from a copy of staging's content (docs/03-phase3-brief.md,
+  "Real-content test"): `[forminator_form]` (theme forms), `[trustindex]`
+  (Trustindex plugin), `[pricing_table]` (the package-pricing-table plugin,
+  which stays), and four rows holding a Google Calendar iframe as HTML.
 - Decision on the `template` post type (6 items): it must stay for now, because
   archive.php and single.php render the template posts chosen in Site Settings
   > Templates (case study archive, services archive, tag archives, blog post
