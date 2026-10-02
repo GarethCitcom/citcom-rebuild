@@ -30,7 +30,8 @@ $citcom_card_flex      = 'post' === $citcom_post_type ? 'd-flex flex-column just
 
 $citcom_featured_image = get_post_thumbnail_id() ? get_post_thumbnail_id() : false;
 if ( ! $citcom_featured_image ) {
-	$citcom_post_img       = get_field( 'page_header_image' );
+	// The post id is explicit: inside a block (display-posts) a bare get_field() reads the block's own data.
+	$citcom_post_img       = get_field( 'page_header_image', get_the_ID() );
 	$citcom_featured_image = ! empty( $citcom_post_img['id'] ) ? (int) $citcom_post_img['id'] : (int) apply_filters( 'citcom_card_fallback_image', 439 );
 	// Media library fallback, as before.
 }
