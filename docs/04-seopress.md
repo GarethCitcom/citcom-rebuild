@@ -112,8 +112,10 @@ settings. Run it again after any change of SEO plugin or settings.
 
 Result, 268 URLs (first on the replica, the local copy of staging's content):
 
-- Status and redirects: identical, the ten redirects included. One change:
-  author archives answered 404 and now redirect to the home page.
+- Status and redirects: identical, the ten redirects included. (On the
+  replica author archives redirected to the home page, which is SEOPress
+  with author archives switched off; on staging they still answer 404, as
+  before.)
 - Title: the same on every page that was right before. Different on purpose:
   ten case study tag archives and two paginated archives that used to show the
   first post's title and now show their own (`Print | CitCom`); search results
@@ -133,6 +135,28 @@ Result, 268 URLs (first on the replica, the local copy of staging's content):
   case study filter URLs whose canonical points elsewhere, six old addresses
   of posts that have since moved category, one service page under a second
   spelling, and 14 that the sitemap lists anyway.
+
+## Staging run (2026-10-05)
+
+- Database export first: `~/citcom-backups/pre-seopress-2026-10-05.sql`.
+- Theme deployed (build of `5c7072a`), the changed files checked against the
+  deploy branch by checksum, rewrite rules flushed.
+- SEOPress 10.3 installed and activated, the script dry-run and then run with
+  the same counts as on the replica (98 titles, 76 descriptions, 80 primary
+  categories, six term noindex flags, 10 redirects, the home page business),
+  SmartCrawl Pro deactivated, caches purged.
+- The 268 URLs recorded again and compared with the "before" record: every
+  one answers with the same status and the same redirect target. The
+  differences are the ones listed above and nothing else. The sitemap lists
+  188 URLs; the 29 it no longer lists are the nine retired pages and 20 of
+  the hand-added extras.
+- Structured data: an Article on all 90 blog post addresses checked, the
+  LocalBusiness on the home page next to SEOPress's organisation.
+- Blog addresses probed after the routing change: posts answer 200 without a
+  trailing slash, the body no longer carries the attachment classes, and a
+  real attachment address redirects to its file.
+- Left in place until sign-off: SmartCrawl Pro (inactive) with all its data,
+  one scheduled event of its own, and the WPMU DEV Dashboard.
 
 ## Order of work, staging then live
 
