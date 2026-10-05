@@ -63,6 +63,19 @@ async function capture() {
           const h = document.body.scrollHeight; for (let y = 0; y < h; y += 600) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 60)); }
           window.scrollTo(0, 0);
           document.documentElement.classList.remove('no-js', 'no-animation');
+          // Natively lazy images and videos are not there yet after a quick scroll, and which
+          // ones are missing changes from run to run: load them all and wait (up to 20s).
+          const wait = (ms) => new Promise(r => setTimeout(r, ms));
+          const images = [...document.images];
+          images.forEach(i => { i.loading = 'eager'; });
+          await Promise.race([
+            Promise.all(images.map(i => i.complete ? null : new Promise(r => { i.addEventListener('load', r, { once: true }); i.addEventListener('error', r, { once: true }); }))),
+            wait(20000),
+          ]);
+          await Promise.race([
+            Promise.all([...document.querySelectorAll('video')].map(v => v.readyState >= 2 ? null : new Promise(r => { v.addEventListener('loadeddata', r, { once: true }); v.addEventListener('error', r, { once: true }); if (v.preload === 'none') r(); }))),
+            wait(8000),
+          ]);
         });
         await page.waitForTimeout(800);
         await page.screenshot({ path: file, fullPage: true });
