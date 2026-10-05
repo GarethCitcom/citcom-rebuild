@@ -41,25 +41,32 @@ jobs:
           DEPLOY="$RUNNER_TEMP/deploy"
           rm -rf "$DEPLOY"
           mkdir -p "$DEPLOY/wp-content/themes/citcom-rebuild"
+          # The excludes are anchored to the theme root (leading slash): an
+          # unanchored "vendor" also dropped assets/vendor. The repo's .gitignore
+          # stays out of the tree, because it ignores build/ and the publish step
+          # below would then commit a theme without its compiled assets.
           rsync -a \
-            --exclude '.git' \
+            --exclude '/.git' \
+            --exclude '/.gitignore' \
             --exclude 'node_modules' \
-            --exclude '.baseline' \
-            --exclude 'docs' \
-            --exclude 'tools' \
-            --exclude '.github' \
-            --exclude 'package.json' \
-            --exclude 'package-lock.json' \
-            --exclude 'webpack.config.js' \
-            --exclude '.editorconfig' \
-            --exclude 'vendor' \
-            --exclude 'composer.json' \
-            --exclude 'composer.lock' \
-            --exclude 'phpcs.xml.dist' \
+            --exclude '/.baseline' \
+            --exclude '/docs' \
+            --exclude '/tools' \
+            --exclude '/.github' \
+            --exclude '/package.json' \
+            --exclude '/package-lock.json' \
+            --exclude '/webpack.config.js' \
+            --exclude '/.editorconfig' \
+            --exclude '/vendor' \
+            --exclude '/composer.json' \
+            --exclude '/composer.lock' \
+            --exclude '/phpcs.xml.dist' \
+            --exclude '/CLAUDE.md' \
             --exclude '*.log' \
             ./ "$DEPLOY/wp-content/themes/citcom-rebuild/"
-          test -f "$DEPLOY/wp-content/themes/citcom-rebuild/style.css"
-          test -f "$DEPLOY/wp-content/themes/citcom-rebuild/build/theme.css"
+          for f in style.css build/theme.css build/theme.js build/editor.css build/blocks/page-header/style.css assets/vendor/outdatedbrowser.min.js; do
+            test -f "$DEPLOY/wp-content/themes/citcom-rebuild/$f" || { echo "Missing from the deploy tree: $f"; exit 1; }
+          done
           echo "Deploy tree:"
           find "$DEPLOY" -maxdepth 3 -not -path '*/node_modules*' | sort | head -60
 
@@ -73,6 +80,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
+          # What Pressable receives is what git tracked, not what rsync copied.
+          for f in build/theme.css build/theme.js build/blocks/page-header/style.css assets/vendor/outdatedbrowser.min.js; do
+            git ls-files --error-unmatch "wp-content/themes/citcom-rebuild/$f" > /dev/null || { echo "Not committed to the deploy branch: $f"; exit 1; }
+          done
           git commit -q -m "Build ${GITHUB_SHA::7}"
           git push --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" deploy:deploy
           echo "Published $(git rev-parse --short HEAD) to deploy"

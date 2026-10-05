@@ -6,4 +6,4 @@ build/
 Thumbs.db
 *.asset.php.bak
 .npm-install.log
-vendor/
+/vendor/
