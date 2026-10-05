@@ -77,7 +77,11 @@ get_header();
 										break;
 								}
 
-								$citcom_excerpt = custom_excerpt( get_the_content(), 30, ' ...' );
+								// Posts built from sections showed no excerpt on the old site: their
+								// post_content was empty. It holds the sections now, and an excerpt
+								// made from them would open with the page header and run through form
+								// labels, after rendering every block of every result. Kept as it was.
+								$citcom_excerpt = false !== strpos( (string) get_post()->post_content, '<!-- wp:citcom/' ) ? '' : custom_excerpt( get_the_content(), 30, ' ...' );
 								?>
 
 								<div class="s-result position-relative d-flex align-items-start gap-3 px-2" data-bs-toggle="tooltip" data-bs-title="<?php echo esc_attr( $citcom_result_type ); ?>" data-bs-placement="left">
