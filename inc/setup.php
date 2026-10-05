@@ -118,6 +118,14 @@ add_action(
 /*
  * Blog URL structure (functions/theme_content/url-structure.php).
  * Posts link to /blog/{category}/{slug}; these rewrite rules make /blog/... resolve.
+ *
+ * The original sent /blog/{category}/{slug} to WordPress as an attachment
+ * query (attachment={slug}), which finds the post but flags the request as an
+ * attachment page. Anything that treats attachment pages specially then
+ * treats every blog post that way: SEOPress's defaults would have redirected
+ * them all to the home page and marked them noindex (docs/04-seopress.md).
+ * The rules now ask for the post by name. The two-segment address has no
+ * trailing slash, and that is kept by the redirect_canonical filter below.
  */
 add_action(
 	'generate_rewrite_rules',
@@ -134,7 +142,7 @@ add_action(
 			'blog/[^/]+/attachment/([^/]+)/embed/?$'     => 'index.php?post_type=post&attachment=$matches[1]&embed=true',
 			'blog/[^/]+/embed/([^/]+)/?$'                => 'index.php?post_type=post&attachment=$matches[1]&embed=true',
 			'blog/([^/]+)/embed/?$'                      => 'index.php?post_type=post&name=$matches[1]&embed=true',
-			'blog/[^/]+/([^/]+)/embed/?$'                => 'index.php?post_type=post&attachment=$matches[1]&embed=true',
+			'blog/[^/]+/([^/]+)/embed/?$'                => 'index.php?post_type=post&name=$matches[1]&embed=true',
 			'blog/([^/]+)/trackback/?$'                  => 'index.php?post_type=post&name=$matches[1]&tb=1',
 			'blog/([^/]+)/feed/' . $feed . '/?$'         => 'index.php?post_type=post&name=$matches[1]&feed=$matches[2]',
 			'blog/([^/]+)/' . $feed . '/?$'              => 'index.php?post_type=post&name=$matches[1]&feed=$matches[2]',
@@ -143,11 +151,11 @@ add_action(
 			'blog/([^/]+)/page/?([0-9]{1,})/?$'          => 'index.php?post_type=post&name=$matches[1]&paged=$matches[2]',
 			'blog/([^/]+)/comment-page-([0-9]{1,})/?$'   => 'index.php?post_type=post&name=$matches[1]&cpage=$matches[2]',
 			'blog/([^/]+)(/[0-9]+)?/?$'                  => 'index.php?post_type=post&name=$matches[1]&page=$matches[2]',
-			'blog/[^/]+/([^/]+)/?$'                      => 'index.php?post_type=post&attachment=$matches[1]',
-			'blog/[^/]+/([^/]+)/trackback/?$'            => 'index.php?post_type=post&attachment=$matches[1]&tb=1',
-			'blog/[^/]+/([^/]+)/feed/' . $feed . '/?$'   => 'index.php?post_type=post&attachment=$matches[1]&feed=$matches[2]',
-			'blog/[^/]+/([^/]+)/' . $feed . '/?$'        => 'index.php?post_type=post&attachment=$matches[1]&feed=$matches[2]',
-			'blog/[^/]+/([^/]+)/comment-page-([0-9]{1,})/?$' => 'index.php?post_type=post&attachment=$matches[1]&cpage=$matches[2]',
+			'blog/[^/]+/([^/]+)/?$'                      => 'index.php?post_type=post&name=$matches[1]',
+			'blog/[^/]+/([^/]+)/trackback/?$'            => 'index.php?post_type=post&name=$matches[1]&tb=1',
+			'blog/[^/]+/([^/]+)/feed/' . $feed . '/?$'   => 'index.php?post_type=post&name=$matches[1]&feed=$matches[2]',
+			'blog/[^/]+/([^/]+)/' . $feed . '/?$'        => 'index.php?post_type=post&name=$matches[1]&feed=$matches[2]',
+			'blog/[^/]+/([^/]+)/comment-page-([0-9]{1,})/?$' => 'index.php?post_type=post&name=$matches[1]&cpage=$matches[2]',
 		);
 		$wp_rewrite->rules = $rules + $wp_rewrite->rules;
 	}
@@ -167,6 +175,31 @@ add_filter(
 		return $post_link;
 	},
 	1,
+	2
+);
+
+/*
+ * A post's own address is /blog/{category}/{slug}, without a trailing slash,
+ * while the permalink structure has one. As an attachment query the request
+ * was never given a slash (attachment pages are off, and WordPress leaves
+ * those requests alone); as an ordinary post it would be redirected to
+ * /blog/{category}/{slug}/. Keep the address every link on the site uses.
+ */
+add_filter(
+	'redirect_canonical',
+	function ( $redirect_url, $requested_url ) {
+		if ( ! $redirect_url || ! is_singular( 'post' ) ) {
+			return $redirect_url;
+		}
+		// Compared decoded: a slug with an emoji in it arrives percent-encoded in either case.
+		$requested = rawurldecode( (string) wp_parse_url( (string) $requested_url, PHP_URL_PATH ) );
+		$target    = rawurldecode( (string) wp_parse_url( (string) $redirect_url, PHP_URL_PATH ) );
+		if ( preg_match( '#/blog/[^/]+/[^/]+$#', $requested ) && $requested . '/' === $target ) {
+			return false;
+		}
+		return $redirect_url;
+	},
+	10,
 	2
 );
 
