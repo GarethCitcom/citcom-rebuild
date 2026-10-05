@@ -9,6 +9,10 @@
  * @package citcom
  */
 
+// The page header below is template markup, not the citcom/page-header block,
+// so the block's stylesheet has to be asked for.
+wp_enqueue_style( 'citcom-page-header-style' );
+
 get_header();
 
 global $post;

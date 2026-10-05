@@ -251,6 +251,18 @@ Notes on the tool:
   `.gitignore` and `CLAUDE.md` on staging).
 - `wp edge-cache purge --domain=<host> --yes` purges Pressable's edge cache
   from WP-CLI.
+- Core block styles inside the sections. The old pages carried no core block
+  CSS for their editor content: it came from the cache, so the blocks never
+  rendered during a page view and WordPress never loaded their stylesheets,
+  their block-supports rules (`wp-container-*`) or their per-block global
+  styles. Rendered live, the inner blocks pulled all three in: core/columns
+  went from the 0.5em flex gap to 2em (21px more between stacked columns on
+  mobile) and images shifted on their baseline. inc/blocks.php now removes
+  what the inner blocks of citcom/editor and citcom/media-text enqueue while
+  they render. Blog posts and the sidebar block widgets always rendered live
+  and keep their core styles; the sets of inline styles per page type match
+  the old site's again. Found by the screenshot comparison on staging, not by
+  the markup comparison (the markup was identical).
 - Plugins that filter `the_content` now reach the sections, because blocks
   render inside it. On staging that is the Admin and Site Enhancements
   setting that opens external links in a new tab (and adds nofollow).
