@@ -32,11 +32,12 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   inc/forms.php, fields in inc/forms-fields.php, Mailchimp in
   inc/mailchimp.php, submissions kept 30 days. Recipients and the Mailchimp
   key are entered per server in Site Settings > Forms, never committed.
-  SEO is SEOPress (decided 2026-10-05, replacing SmartCrawl Pro; see
-  docs/04-seopress.md): the theme declares `title-tag` and adds its archive
-  titles through SEOPress's filters in inc/seo.php. SEOPress's two attachment
-  settings (redirect, noindex) must stay off: blog posts at /blog/... reach
-  WordPress as attachment queries and would be redirected or noindexed.
+  SEO is the free SEOPress plugin (decided 2026-10-05, replacing SmartCrawl
+  Pro; see docs/04-seopress.md). The theme declares `title-tag` and, in
+  inc/seo.php, adds the archive titles through SEOPress's filters and prints
+  what free SEOPress does not: an Article for blog posts and the home page's
+  LocalBusiness. Redirects are in Site Settings > Redirects
+  (inc/redirects.php).
   PHP 8.5, WP 7.1+.
 - UK English in all copy and comments. No em dashes in prose.
 

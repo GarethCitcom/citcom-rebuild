@@ -23,9 +23,8 @@
  *   wp eval-file tools/seopress-from-smartcrawl.php https://example.com
  *
  * Add "force" to run it again over values edited in SEOPress since.
- * Redirects are copied only when SEOPress PRO is active (its redirections
- * live in a post type the free plugin does not have); otherwise they are
- * listed. See docs/04-seopress.md.
+ * SmartCrawl's redirects go to Site Settings > Redirects (inc/redirects.php),
+ * as free SEOPress has no redirects of its own. See docs/04-seopress.md.
  *
  * @package citcom
  */
@@ -42,8 +41,11 @@ if ( empty( $args[0] ) || untrailingslashit( (string) $args[0] ) !== untrailings
 if ( ! function_exists( 'seopress_get_service' ) ) {
 	WP_CLI::error( 'SEOPress is not active.' );
 }
-if ( ! post_type_exists( 'service' ) ) {
-	WP_CLI::error( 'The theme is not loaded (run without --skip-themes): its post types decide which settings are copied.' );
+if ( ! post_type_exists( 'service' ) || ! function_exists( 'citcom_redirect_path' ) ) {
+	WP_CLI::error( 'The theme is not loaded (run without --skip-themes), or is older than this script: its post types decide which settings are copied and its Site Settings take the redirects.' );
+}
+if ( ! function_exists( 'acf_get_field' ) || ! acf_get_field( 'field_citcom_redirects' ) ) {
+	WP_CLI::error( 'The Redirects field group is not loaded (acf-json/group_citcom_redirects.json).' );
 }
 $dry = in_array( 'dry-run', $args, true );
 if ( ! $dry && get_option( 'citcom_seopress_migrated' ) && ! in_array( 'force', $args, true ) ) {
@@ -326,12 +328,13 @@ if ( ! empty( $social['pinterest-verify'] ) ) {
 	$sp_advanced['seopress_advanced_advanced_pinterest'] = sanitize_text_field( $social['pinterest-verify'] );
 }
 /*
- * Two settings SEOPress switches on when it is first activated must be off on
- * this site: "redirect attachment pages" and "noindex attachment pages". The
- * theme's blog addresses (/blog/{category}/{slug}, inc/setup.php) reach
- * WordPress as an attachment query, so the first sends every blog post to the
- * home page and the second marks every blog post noindex. Real attachment
- * pages are not served at all (wp_attachment_pages_enabled is 0).
+ * Two settings SEOPress switches on when it is first activated stay off:
+ * "redirect attachment pages" and "noindex attachment pages". SmartCrawl did
+ * neither. They were found because the theme's blog addresses used to reach
+ * WordPress as attachment queries, so the first sent every blog post to the
+ * home page and the second marked every blog post noindex. inc/setup.php no
+ * longer routes them that way, and real attachment pages are not served
+ * (wp_attachment_pages_enabled is 0).
  */
 unset( $sp_advanced['seopress_advanced_advanced_attachments'], $sp_advanced['seopress_advanced_advanced_attachments_file'], $sp_titles['seopress_titles_attachments_noindex'] );
 // IndexNow: off until someone turns it on for the live site. A copy of the site must not submit its URLs.
@@ -493,67 +496,90 @@ foreach ( $term_counts as $key => $n ) {
 }
 
 /*
- * 7. Redirects. SEOPress keeps them as posts of a type only its PRO plugin registers.
+ * 7. Redirects go to Site Settings > Redirects (inc/redirects.php): SEOPress
+ * keeps redirects in its paid plugin only. Addresses and types are copied as
+ * they stand. A row whose old address is already listed is left alone.
  */
 $table     = $wpdb->prefix . 'smartcrawl_redirects';
 $redirects = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table ? $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i ORDER BY id', $table ) ) : array();
-$copied    = 0;
+$rows      = get_field( 'redirects', 'option' );
+$rows      = is_array( $rows ) ? $rows : array();
+$known     = array();
+foreach ( $rows as $row ) {
+	$known[ citcom_redirect_path( (string) ( $row['from'] ?? '' ) ) ] = true;
+}
+$copied = 0;
 foreach ( $redirects as $redirect ) {
 	$source  = '' !== (string) $redirect->path ? $redirect->path : $redirect->source;
 	$decoded = json_decode( (string) $redirect->destination, true );
 	if ( is_array( $decoded ) && isset( $decoded['id'] ) ) {
+		// A redirect to a post or a term: its address on this site, as a path.
 		$target = 'term' === ( $decoded['type'] ?? '' ) ? get_term_link( (int) $decoded['id'] ) : get_permalink( (int) $decoded['id'] );
-		$target = is_string( $target ) ? $target : '';
+		$target = is_string( $target ) ? wp_make_link_relative( $target ) : '';
 	} else {
 		$target = is_string( $decoded ) ? $decoded : (string) $redirect->destination;
 	}
-	$type = in_array( (string) $redirect->type, array( '301', '302', '307', '308', '410', '451' ), true ) ? (string) $redirect->type : '301';
-	if ( '' === $source || '' === $target ) {
-		$notes[] = 'redirect ' . $redirect->id . ' has no source or target, skipped';
+	$from = '/' . trim( (string) wp_parse_url( (string) $source, PHP_URL_PATH ), '/' );
+	if ( '/' === $from || '' === $target ) {
+		$notes[] = 'redirect ' . $redirect->id . ' has no old or new address, skipped';
 		continue;
 	}
-	// SEOPress matches on the path without its leading slash.
-	$title = ltrim( (string) wp_parse_url( $source, PHP_URL_PATH ), '/' );
-	if ( ! post_type_exists( 'seopress_404' ) ) {
-		$notes[] = "redirect not copied (needs SEOPress PRO or another home): /$title -> $target ($type)";
+	if ( ! in_array( (string) $redirect->type, array( '301', '302' ), true ) ) {
+		$notes[] = "redirect $from was a {$redirect->type}, copied as a 301";
+	}
+	if ( isset( $known[ citcom_redirect_path( $from ) ] ) ) {
 		continue;
 	}
-	$existing = get_posts(
-		array(
-			'post_type'      => 'seopress_404',
-			'post_status'    => 'any',
-			'title'          => $title,
-			'posts_per_page' => 1,
-			'fields'         => 'ids',
-		)
+	$known[ citcom_redirect_path( $from ) ] = true;
+	$rows[]                                 = array(
+		'from' => $from,
+		'to'   => $target,
+		'type' => '302' === (string) $redirect->type ? '302' : '301',
 	);
 	++$copied;
-	if ( $dry || $existing ) {
-		continue;
-	}
-	$redirect_id = wp_insert_post(
-		array(
-			'post_title'  => $title,
-			'post_type'   => 'seopress_404',
-			'post_status' => 'publish',
-		)
-	);
-	if ( $redirect_id && ! is_wp_error( $redirect_id ) ) {
-		update_post_meta( $redirect_id, '_seopress_redirections_value', esc_url_raw( $target ) );
-		update_post_meta( $redirect_id, '_seopress_redirections_type', $type );
-		update_post_meta( $redirect_id, '_seopress_redirections_enabled', 'yes' );
-	}
 }
-$log[] = 'redirects: ' . count( $redirects ) . ' in SmartCrawl, ' . $copied . ' copied';
+if ( $copied && ! $dry ) {
+	update_field( 'field_citcom_redirects', $rows, 'option' );
+}
+$log[] = 'redirects: ' . count( $redirects ) . ' in SmartCrawl, ' . $copied . ' added to Site Settings > Redirects';
 
 /*
- * 8. What has no counterpart, for the person running this to read.
+ * 8. The business built in SmartCrawl's schema builder. It was three items
+ * side by side (LocalBusiness, PostalAddress, GeoCoordinates); the theme
+ * prints one LocalBusiness with the address and coordinates inside it
+ * (citcom_seo_local_business() in inc/seo.php), from this option. The site
+ * address is left out: the theme adds the address of the site it runs on.
  */
+$business = array();
 foreach ( $custom_types as $values ) {
-	if ( 'PostalAddress' !== ( $values['@type'] ?? '' ) ) {
-		$notes[] = 'custom schema type ' . ( $values['@type'] ?? '?' ) . ' is not copied (the address is, into the organisation): ' . wp_json_encode( array_diff_key( $values, array( '@type' => 1 ) ), JSON_UNESCAPED_SLASHES );
+	$kind = $values['@type'] ?? '';
+	unset( $values['@type'], $values['url'] );
+	$values = array_filter( array_map( 'sanitize_text_field', array_map( 'strval', $values ) ) );
+	if ( 'LocalBusiness' === $kind ) {
+		// SmartCrawl's "id" held the map link.
+		if ( isset( $values['id'] ) ) {
+			$values['hasMap'] = $values['id'];
+			unset( $values['id'] );
+		}
+		$business = array_merge( $business, $values );
+	} elseif ( 'PostalAddress' === $kind && $values ) {
+		$business['address'] = array_merge( array( '@type' => 'PostalAddress' ), $values );
+	} elseif ( 'GeoCoordinates' === $kind && $values ) {
+		$business['geo'] = array_merge( array( '@type' => 'GeoCoordinates' ), $values );
+	} elseif ( '' !== $kind ) {
+		$notes[] = 'custom schema type ' . $kind . ' has no counterpart, not copied: ' . wp_json_encode( $values, JSON_UNESCAPED_SLASHES );
 	}
 }
+if ( ! empty( $business['name'] ) ) {
+	if ( ! $dry ) {
+		update_option( 'citcom_local_business', $business, false );
+	}
+	$log[] = 'home page business: ' . $business['name'] . ( isset( $business['address'] ) ? ', address' : '' ) . ( isset( $business['geo'] ) ? ', coordinates' : '' );
+}
+
+/*
+ * 9. What has no counterpart, for the person running this to read.
+ */
 $extras = (array) get_option( 'wds-sitemap-extras', array() );
 if ( $extras ) {
 	$notes[] = count( $extras ) . ' extra sitemap URLs were added by hand in SmartCrawl; SEOPress lists none (docs/04-seopress.md)';
