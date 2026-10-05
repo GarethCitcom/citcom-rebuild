@@ -79,7 +79,10 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
 - Compiled output goes to `build/` (git-ignored on main). GitHub Actions
   (`.github/workflows/deploy.yml`) builds on every push to main and publishes
   source plus `build/` as one force-pushed commit on the `deploy` branch under
-  `wp-content/themes/citcom-rebuild/`; Pressable deploys that branch.
+  `wp-content/themes/citcom-rebuild/`; Pressable deploys that branch to
+  staging within a minute or so. Its deploy does not delete files removed
+  from the repo: remove those on the server by hand. This file, `docs/`,
+  `tools/` and the Composer and npm files are not deployed.
 
 ## Verification
 

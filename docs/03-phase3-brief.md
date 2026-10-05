@@ -166,18 +166,53 @@ block).
 For the live cutover (Phase 5) the same copy-and-compare should be repeated
 with live's content first: live may hold cases staging does not.
 
-## Staging run
+## Staging run (done 2026-10-05)
 
-Needs WP-CLI on staging (the Pressable connector, or SSH). Staging only; live
-is Phase 5.
+Run over SSH on staging, in the order below; live is Phase 5. Outcome:
 
-1. Pressable backup of staging. The visual baseline is already captured
-   (`.baseline/old`, 2026-09-29).
+- Database backup on the server before anything else:
+  `~/citcom-backups/pre-migration-2026-10-05.sql` (outside the web root).
+- The push showed that CI had never published `build/` to the deploy branch
+  (see docs/00-discovery.md, "Findings added in Phase 3"); fixed in the
+  workflow before the theme was activated. Four files Pressable's deploy had
+  left behind in the theme folder were removed by hand.
+- `acf-to-content-master` deactivated, theme activated, `acf-ui` (8 entries
+  deactivated), `retire` (9 pages binned), dry run, `run` (107 posts, 752
+  blocks, 1 disabled row skipped, no warnings), `widgets` (8 renamed),
+  rewrite and object cache flushed, edge cache purged. Each step reported
+  exactly what it had reported on the copy.
+- The migrated `post_content` of all 107 posts is byte-identical to the
+  copy's, which passed the block editor's validator; modified dates are
+  unchanged.
+- Every page was compared again, section by section, with the HTML captured
+  under the old theme: the only differences are the retired pages, the forms,
+  the six Trustindex sections, and one that the copy could not show: the
+  Admin and Site Enhancements setting "open external links in a new tab" now
+  reaches page content. It works on `the_content`, which the old theme's
+  sections never went through, so external links in sections now get
+  `target="_blank" rel="noopener noreferrer nofollow"` as they already did in
+  blog posts. Nothing changes visually. It is the plugin's setting, left as
+  it is; Gareth to decide whether nofollow on every external link (social
+  profiles and client sites included) is wanted.
+- The footer menu no longer shows "Marketing Agreement": the page is retired,
+  and WordPress hides the menu item of a binned page.
+- Still to do on staging: enter the recipients and the Mailchimp key in Site
+  Settings > Forms and send one test per form; deactivate Forminator once
+  the forms are accepted; `wp citcom migrate cleanup` after sign-off.
+
+The steps, for the record and for the live run:
+
+1. Backup: a Pressable backup, or `wp db export` to a folder outside
+   `htdocs`. The visual baseline is already captured (`.baseline/old`,
+   2026-09-29).
 2. `wp plugin deactivate acf-to-content` (it rewrites post_content from the
    old fields on save, which would wipe migrated content). Leave Forminator
    until the forms are checked, then deactivate it too.
-3. Point the Pressable git deploy at the `deploy` branch and deploy the theme
-   (build included). Push to GitHub first, when Gareth says so.
+3. Push to GitHub, when Gareth says so. The staging site's git deploy
+   already follows the `deploy` branch, so the build arrives a minute or so
+   after CI finishes. Check `build/theme.css` on the server against the
+   branch before activating, and remove any file the repo no longer has:
+   Pressable's deploy adds and updates files but does not delete them.
 4. `wp theme activate citcom-rebuild`, then at once
    `wp citcom migrate acf-ui`: the theme registers the post types, taxonomy
    and options page in PHP, so the ACF UI copies must go inactive in the same
@@ -190,7 +225,8 @@ is Phase 5.
    settings. A "no block for layout" warning means a layout the discovery did
    not see; stop and look.
 7. `wp citcom migrate run`, then `wp citcom migrate widgets`.
-8. `wp rewrite flush`, `wp cache flush`, purge the Pressable edge cache.
+8. `wp rewrite flush`, `wp cache flush`,
+   `wp edge-cache purge --domain=<host> --yes`.
 9. Checks:
    - `node tools/visual-baseline.mjs capture --base https://citcomstaging.mystagingwebsite.com --out .baseline/new`
      then `diff`. Known, intended differences: the six Trustindex sections

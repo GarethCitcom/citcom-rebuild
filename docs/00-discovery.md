@@ -234,6 +234,27 @@ Notes on the tool:
   and logs) for Pressable's wp-content git integration. Point the staging site's
   git deploy at the `deploy` branch; decided 2026-09-28.
 
+## Findings added in Phase 3
+
+- The deploy branch had never contained `build/`. The workflow copied the
+  repo's `.gitignore` into the deploy tree, and that file ignores `build/`,
+  so `git add -A` left the compiled assets out while the job still passed.
+  Staging had five build files from 2026-09-28, put there by hand. Found on
+  the first deploy of 2026-10-05, before the theme was activated. The
+  workflow now keeps `.gitignore` and `CLAUDE.md` out of the tree, anchors
+  every exclude to the theme root (an unanchored `vendor`, added with
+  Composer, had also dropped `assets/vendor/`), and fails if a compiled file
+  is missing from the commit it is about to push.
+- Pressable's git deploy adds and updates files but does not delete the ones
+  removed from the repo. After removing a file, delete it on the server too
+  (done for `templates/wc26.php`, `src/js/forminator-bootstrap.js`,
+  `.gitignore` and `CLAUDE.md` on staging).
+- `wp edge-cache purge --domain=<host> --yes` purges Pressable's edge cache
+  from WP-CLI.
+- Plugins that filter `the_content` now reach the sections, because blocks
+  render inside it. On staging that is the Admin and Site Enhancements
+  setting that opens external links in a new tab (and adds nofollow).
+
 ## Block data format (for the Phase 3 migration)
 
 Learned while building the local fixture (tools/local-fixture.php is a working
