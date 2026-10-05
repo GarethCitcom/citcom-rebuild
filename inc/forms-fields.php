@@ -120,7 +120,11 @@ function citcom_render_form( $id, array $args = array() ): string {
 					$hidden      = $row_level ? '' : $show_attr( $field );
 					$description = (string) ( $field['description'] ?? '' );
 					$describe    = '' !== $description ? ' aria-describedby="' . esc_attr( $field_id ) . '-description"' : '';
-					$col         = $class( 'citcom-form-col citcom-form-field citcom-form-field--' . $type, 'mb-3' );
+					// "grid_margin": the column keeps Forminator's own grid spacing instead of
+					// Bootstrap's mb-3. The old script skipped Forminator's single "name" field
+					// when it added mb-3, which only shows once the columns stack.
+					$grid_margin = ! empty( $field['grid_margin'] );
+					$col         = $class( 'citcom-form-col citcom-form-field citcom-form-field--' . $type . ( $grid_margin ? ' citcom-form-col--grid' : '' ), $grid_margin ? '' : 'mb-3' );
 
 					if ( 'html' === $type ) :
 						?>

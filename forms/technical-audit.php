@@ -25,6 +25,7 @@ return array(
 				'required'         => true,
 				'required_message' => 'This field is required. Please input your name.',
 				'autocomplete'     => 'name',
+				'grid_margin'      => true,
 			),
 			array(
 				'name'             => 'job_title',

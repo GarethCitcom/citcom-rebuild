@@ -74,6 +74,19 @@
     }
 }
 
+// A column that kept Forminator's grid spacing (see "grid_margin" in
+// inc/forms-fields.php): 20px under it while the columns are stacked.
+.citcom-form-col--grid:not(:last-child){
+    margin-bottom: 20px;
+}
+@media (min-width: 783px){
+    @container citcom-form (min-width: 480.02px){
+        .citcom-form-col--grid:not(:last-child){
+            margin-bottom: 0;
+        }
+    }
+}
+
 // The technical audit form had its own custom CSS: bolder labels, red stars.
 .citcom-form--technical-audit{
     .citcom-form-label{
@@ -350,6 +363,15 @@
                 margin-bottom: 0;
             }
         }
+    }
+}
+
+// Forminator's default design below 783px: the button fills the row and has
+// 10px under it.
+@media (max-width: 782px){
+    .citcom-form--classic .citcom-form-submit{
+        width: 100%;
+        margin: 0 0 10px;
     }
 }
 
