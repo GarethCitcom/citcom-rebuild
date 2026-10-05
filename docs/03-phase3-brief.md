@@ -195,7 +195,29 @@ Run over SSH on staging, in the order below; live is Phase 5. Outcome:
   it is; Gareth to decide whether nofollow on every external link (social
   profiles and client sites included) is wanted.
 - The footer menu no longer shows "Marketing Agreement": the page is retired,
-  and WordPress hides the menu item of a binned page.
+  and WordPress hides the menu item of a binned page. The footer is 45px
+  shorter on desktop and about 40px on mobile on every page because of it.
+- Screenshots. All of docs/urls.csv was captured again on staging and
+  compared with `.baseline/old` by `tools/visual-align.mjs` (a plain pixel
+  diff fails every page on the footer change alone). The first comparison
+  found what the markup comparison could not, all fixed and redeployed the
+  same day (docs/00-discovery.md, "Findings added in Phase 3"): core block
+  styles loading inside the sections, the collapsed page header on blog posts
+  and search results, two form spacings on small screens, and a capture tool
+  that caught lazy images half loaded. Final run, 227 shots of pages that
+  were kept (18 belong to the retired pages; /info/zero-click-era/ on mobile
+  timed out waiting for the network to go idle and was checked by measuring
+  its form instead):
+  - Layout: in 211 shots every content row lines up with the baseline. The
+    other 16 are the five packages pages and /info/free-seo-audit/ (Trustindex
+    in place of Elfsight, theme form in place of Forminator), the search
+    results (more matches now) and two shots that differ by one CSS pixel
+    over the whole page.
+  - Pixels inside the aligned rows: 213 shots within 0.5%, 12 between 0.5%
+    and 2%, 2 above (video pages, where the new capture shows the video's
+    first frame and the baseline a black player). What is left is images:
+    the browser picks from srcset differently now that they are lazy, so a
+    photo can be resampled or cropped a pixel or two differently.
 - Still to do on staging: enter the recipients and the Mailchimp key in Site
   Settings > Forms and send one test per form; deactivate Forminator once
   the forms are accepted; `wp citcom migrate cleanup` after sign-off.
