@@ -217,3 +217,78 @@ add_filter(
 	10,
 	2
 );
+
+/*
+ * Core block styles inside the sections.
+ *
+ * The old site printed its editor content from a cache built when the page was
+ * saved, so its core blocks never rendered during a page view and WordPress
+ * never loaded their stylesheets, their block-supports rules (the
+ * wp-container-* layout classes) or their per-block global styles (the 2em
+ * gap of core/columns). The theme stylesheet styles those blocks itself.
+ * The inner blocks of citcom/editor and citcom/media-text render during the
+ * page view now, and WordPress would add all three: columns gain 1.5em of gap,
+ * images sit differently on their baseline. So what those inner blocks enqueue
+ * while they render is taken out again. Blog posts and the sidebar widgets
+ * keep their core styles, as they had them before.
+ */
+if ( ! is_admin() ) {
+	add_filter(
+		'pre_render_block',
+		function ( $pre_render, $parsed_block ) {
+			if ( in_array( $parsed_block['blockName'] ?? '', array( 'citcom/editor', 'citcom/media-text' ), true ) ) {
+				citcom_core_block_styles_snapshot(
+					array(
+						'styles' => wp_styles()->queue,
+						'rules'  => array_keys( WP_Style_Engine_CSS_Rules_Store::get_store( 'block-supports' )->get_all_rules() ),
+					)
+				);
+			}
+			return $pre_render;
+		},
+		10,
+		2
+	);
+	add_filter(
+		'render_block',
+		function ( $html, $block ) {
+			if ( ! in_array( $block['blockName'] ?? '', array( 'citcom/editor', 'citcom/media-text' ), true ) ) {
+				return $html;
+			}
+			$before = citcom_core_block_styles_snapshot();
+			if ( null === $before ) {
+				return $html;
+			}
+			foreach ( array_diff( wp_styles()->queue, $before['styles'] ) as $handle ) {
+				if ( str_starts_with( (string) $handle, 'wp-block-' ) ) {
+					wp_dequeue_style( $handle );
+				}
+			}
+			$store = WP_Style_Engine_CSS_Rules_Store::get_store( 'block-supports' );
+			foreach ( array_diff( array_keys( $store->get_all_rules() ), $before['rules'] ) as $selector ) {
+				$store->remove_rule( $selector );
+			}
+			return $html;
+		},
+		10,
+		2
+	);
+}
+
+/**
+ * Hold, then hand back, what was enqueued before a section's inner blocks
+ * rendered. Sections do not nest, so one slot is enough.
+ *
+ * @param array<string,array>|null $snapshot Pass to store; omit to take it back.
+ * @return array<string,array>|null
+ */
+function citcom_core_block_styles_snapshot( ?array $snapshot = null ): ?array {
+	static $held = null;
+	if ( null !== $snapshot ) {
+		$held = $snapshot;
+		return null;
+	}
+	$taken = $held;
+	$held  = null;
+	return $taken;
+}
