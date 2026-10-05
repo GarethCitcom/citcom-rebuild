@@ -263,6 +263,35 @@ Notes on the tool:
   and keep their core styles; the sets of inline styles per page type match
   the old site's again. Found by the screenshot comparison on staging, not by
   the markup comparison (the markup was identical).
+- Templates that print a section's markup themselves need its stylesheet.
+  single.php and search.php print the page header (`flex-page_header`), whose
+  styles are the citcom/page-header block's stylesheet and only load with the
+  block: the banner collapsed from 352px to 144px on blog posts and search
+  results. Both templates now enqueue `citcom-page-header-style`.
+- Search. The old `post_content` of pages, services and case studies was
+  empty (acf-to-content was active but copied nothing), so search matched
+  their titles only and listed them without an excerpt. Their content is
+  searchable now ("marketing": 21 pages of results, 12 before). search.php
+  shows no excerpt for a post built from sections, as before: an excerpt
+  made from the blocks opened with the page header and form labels. Whether
+  section content should be searchable is Gareth's call; it is left on.
+- The SEO plugin now writes a meta description from the content for pages
+  that have none set by hand (it had no content to read before).
+- Images in sections are natively lazy now. `wp_filter_content_tags()` adds
+  `loading="lazy"` to images in the_content after the first few; the old
+  templates called `wp_get_attachment_image()` outside the loop, which adds
+  none (36 of 41 images lazy on /services/creative/, 6 before). Pages look
+  the same once loaded; left as it is, as a performance gain.
+- Theme forms on small screens: Forminator's default design makes the submit
+  button full width below 783px with 10px under it (client survey, packages),
+  and its single "name" field kept the grid's 20px spacing when columns stack
+  because the old script skipped it when adding `mb-3` (technical audit;
+  `grid_margin` in the form definition). Desktop sizes were already equal.
+- Screenshots: `tools/visual-baseline.mjs` now waits for the images on screen
+  at each scroll step and decodes them before the shot (lazy images made
+  every run different), and `tools/visual-align.mjs` compares two capture
+  sets row by row, so one changed band (the footer link) does not fail every
+  page below it.
 - Plugins that filter `the_content` now reach the sections, because blocks
   render inside it. On staging that is the Admin and Site Enhancements
   setting that opens external links in a new tab (and adds nofollow).

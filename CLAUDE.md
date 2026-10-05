@@ -86,8 +86,11 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
 
 ## Verification
 
-- Visual: `node tools/visual-baseline.mjs capture|diff` (see
-  `docs/00-discovery.md`). Pixel-identical is the bar; any diff is a bug.
+- Visual: `node tools/visual-baseline.mjs capture` then
+  `node tools/visual-align.mjs --a .baseline/old --b <new>` (see
+  `docs/00-discovery.md`). Pixel-identical is the bar; any band that changes
+  height, or a page over about 0.5% in aligned pixels, needs explaining.
+  Compare markup as well: the two methods find different things.
 - PHP: `composer install` once, then `composer phpcs` (WordPress-Extra,
   WordPress-Docs and PHPCompatibilityWP; ruleset in `phpcs.xml.dist`) must
   pass before a commit; `composer phpcbf` fixes formatting. Composer is
