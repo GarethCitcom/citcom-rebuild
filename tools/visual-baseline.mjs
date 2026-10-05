@@ -60,20 +60,37 @@ async function capture() {
         await page.evaluate(async () => {
           document.querySelectorAll('img[data-src]').forEach(i => { i.src = i.dataset.src; i.removeAttribute('data-src'); });
           document.querySelectorAll('[data-background-image]').forEach(e => { e.style.backgroundImage = `url(${e.dataset.backgroundImage})`; });
-          const h = document.body.scrollHeight; for (let y = 0; y < h; y += 600) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 60)); }
+          // Walk the page so IntersectionObservers fire. Natively lazy images only start loading
+          // near the viewport, and a quick pass leaves a different set of them empty on every
+          // run, so each step waits (up to 3s) for the images on screen to finish. The loading
+          // attribute is left alone: switching a sizes="auto" image to eager makes the browser
+          // pick its source again, and the shot then catches it empty.
+          const wait = (ms) => new Promise(r => setTimeout(r, ms));
+          const pending = () => [...document.images].filter(i => {
+            if (i.complete && i.naturalWidth > 0) return false;
+            if (/\.svg(\?|$)/.test(i.currentSrc || i.src)) return false;
+            const r = i.getBoundingClientRect();
+            return r.width > 0 && r.height > 0 && r.right > 0 && r.left < window.innerWidth && r.bottom > -200 && r.top < window.innerHeight + 400;
+          });
+          const h = document.body.scrollHeight;
+          for (let y = 0; y < h; y += 600) {
+            window.scrollTo(0, y);
+            await wait(80);
+            for (let t = 0; t < 30 && pending().length; t++) await wait(100);
+          }
           window.scrollTo(0, 0);
           document.documentElement.classList.remove('no-js', 'no-animation');
-          // Natively lazy images and videos are not there yet after a quick scroll, and which
-          // ones are missing changes from run to run: load them all and wait (up to 20s).
-          const wait = (ms) => new Promise(r => setTimeout(r, ms));
-          const images = [...document.images];
-          images.forEach(i => { i.loading = 'eager'; });
+          await wait(200);
+          for (let t = 0; t < 30 && pending().length; t++) await wait(100);
+          // A loaded image is not always a painted one: decoding is asynchronous, and a
+          // full-page shot can catch a lazy image below the fold before it is decoded.
           await Promise.race([
-            Promise.all(images.map(i => i.complete ? null : new Promise(r => { i.addEventListener('load', r, { once: true }); i.addEventListener('error', r, { once: true }); }))),
-            wait(20000),
+            Promise.all([...document.images].filter(i => i.complete && i.naturalWidth > 0).map(i => { i.decoding = 'sync'; return i.decode().catch(() => {}); })),
+            wait(10000),
           ]);
+          // First frame of videos that preload (up to 8s).
           await Promise.race([
-            Promise.all([...document.querySelectorAll('video')].map(v => v.readyState >= 2 ? null : new Promise(r => { v.addEventListener('loadeddata', r, { once: true }); v.addEventListener('error', r, { once: true }); if (v.preload === 'none') r(); }))),
+            Promise.all([...document.querySelectorAll('video')].map(v => v.readyState >= 2 || v.preload === 'none' ? null : new Promise(r => { v.addEventListener('loadeddata', r, { once: true }); v.addEventListener('error', r, { once: true }); }))),
             wait(8000),
           ]);
         });
