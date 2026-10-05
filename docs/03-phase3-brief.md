@@ -218,9 +218,36 @@ Run over SSH on staging, in the order below; live is Phase 5. Outcome:
     first frame and the baseline a black player). What is left is images:
     the browser picks from srcset differently now that they are lazy, so a
     photo can be resampled or cropped a pixel or two differently.
+- Clean-up, same day, after Gareth removed the plugins the rebuild no longer
+  needs (Forminator, Defender, Smush, Hummingbird, Branda, Hustle, WP All
+  Import and others). What they left behind was removed with
+  `tools/cleanup-removed-plugins.php`, after a second database export and an
+  archive of every folder deleted (`~/citcom-backups/`, to be deleted once
+  the site is signed off):
+  - 45 tables dropped: 30 of Defender, Hustle and WP All Import by hand
+    first, then 15 by the script (Action Scheduler, Admin Columns, the
+    desktop mode plugin, Forminator, an old SmartCrawl redirects table,
+    Smush). Also 20 posts (Forminator forms and quizzes, binned customiser
+    drafts), 5,450 post meta rows, 40 user meta rows, 320 options and 7
+    scheduled events. The database has 30 tables now and went from 82 MB to
+    42 MB.
+  - Folders: `wp-content/smush-avif` (6,773 files, 370 MB), the Defender,
+    Hummingbird, UpdraftPlus and All-in-One Migration folders in
+    `wp-content`, and the Smush, Defender, WP All Import, Forminator, WP
+    Migrate and WP-Optimize folders in `uploads`.
+  - `mu-plugins/mu-plugins-load.php` still included acf-getallobjects and
+    acf-focuspoint after their folders were deleted, which raised a PHP
+    warning on every request; the two includes are commented out. The same
+    edit is needed on live when those folders go.
+  - Left alone: everything `wp citcom migrate cleanup` covers (below), the
+    old theme, the binned pages, revisions, `uploads/ShortpixelBackups`
+    (1.1 GB, ShortPixel is still installed), the maintenance and db-error
+    drop-ins, and a handful of small options whose owner is not certain.
+  - Afterwards `wp citcom migrate status` still reports every post migrated
+    and the section comparison gives the same result as before.
 - Still to do on staging: enter the recipients and the Mailchimp key in Site
-  Settings > Forms and send one test per form; deactivate Forminator once
-  the forms are accepted; `wp citcom migrate cleanup` after sign-off.
+  Settings > Forms and send one test per form; `wp citcom migrate cleanup`
+  after sign-off.
 
 The steps, for the record and for the live run:
 
@@ -261,9 +288,14 @@ The steps, for the record and for the live run:
      now holds the block markup with the text inside).
 10. Sign-off, then `wp citcom migrate cleanup` (deletes the 368
     `acfAllObjects_*` options, the raw rows and the rollback copies) and
-    `wp plugin deactivate forminator`. The account-level mu-plugins
-    acf-focuspoint and acf-getallobjects can then be removed by Gareth; the
-    theme no longer needs them.
+    `wp plugin deactivate forminator`. The mu-plugins acf-focuspoint and
+    acf-getallobjects can then be removed by Gareth; the theme no longer
+    needs them. Take their two includes out of `mu-plugins-load.php` in the
+    same step.
+11. Once the plugins the rebuild replaces are deleted, their leftovers go
+    with `tools/cleanup-removed-plugins.php` (read its header first: it
+    assumes the plugins are gone, and on live Akismet and Jetpack stay).
+    Export the Forminator entries beforehand if they are wanted.
 
 Rollback at any point before the cleanup: `wp citcom migrate rollback`,
 `wp citcom migrate acf-ui --undo`, `wp theme activate citcom`, restore the
