@@ -32,6 +32,11 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   inc/forms.php, fields in inc/forms-fields.php, Mailchimp in
   inc/mailchimp.php, submissions kept 30 days. Recipients and the Mailchimp
   key are entered per server in Site Settings > Forms, never committed.
+  SEO is SEOPress (decided 2026-10-05, replacing SmartCrawl Pro; see
+  docs/04-seopress.md): the theme declares `title-tag` and adds its archive
+  titles through SEOPress's filters in inc/seo.php. SEOPress's two attachment
+  settings (redirect, noindex) must stay off: blog posts at /blog/... reach
+  WordPress as attachment queries and would be redirected or noindexed.
   PHP 8.5, WP 7.1+.
 - UK English in all copy and comments. No em dashes in prose.
 
@@ -91,6 +96,8 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   `docs/00-discovery.md`). Pixel-identical is the bar; any band that changes
   height, or a page over about 0.5% in aligned pixels, needs explaining.
   Compare markup as well: the two methods find different things.
+- SEO tags: `node tools/seo-snapshot.mjs capture` before and after anything
+  that touches `<head>` or the SEO plugin, then `diff` (docs/04-seopress.md).
 - PHP: `composer install` once, then `composer phpcs` (WordPress-Extra,
   WordPress-Docs and PHPCompatibilityWP; ruleset in `phpcs.xml.dist`) must
   pass before a commit; `composer phpcbf` fixes formatting. Composer is

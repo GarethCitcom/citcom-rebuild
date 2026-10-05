@@ -14,45 +14,9 @@
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1">
 
-	<title>
-		<?php
-
-		$citcom_post_type = get_query_var( 'post_type' );
-		$citcom_post_id   = get_the_ID();
-		$citcom_options   = citcom_get_cached_options();
-
-		// Archives take their SEO title from the template post that renders them.
-		if ( is_post_type_archive( 'case-study' ) ) {
-			$citcom_post_id = $citcom_options['case_study_archive'];
-		}
-		if ( is_post_type_archive( 'service' ) ) {
-			$citcom_post_id = $citcom_options['services_archive'];
-		}
-		if ( is_tax( 'cs-tag' ) && 'case-study' === $citcom_post_type ) {
-			$citcom_post_id = $citcom_options['case_studies_tag_archive'];
-		}
-		if ( is_category() ) {
-			$citcom_post_id = $citcom_options['category_archive'];
-		}
-		if ( is_tag() ) {
-			$citcom_post_id = $citcom_options['tag_archive'];
-		}
-
-		$citcom_seo_title = false;
-		if ( function_exists( 'smartcrawl_get_value' ) ) {
-			$citcom_seo_title = smartcrawl_get_value( 'title', $citcom_post_id );
-		}
-
-		if ( $citcom_seo_title ) {
-			echo esc_html( $citcom_seo_title );
-		} elseif ( is_front_page() ) {
-			echo 'CitCom.';
-		} else {
-			wp_title( '| CitCom.', true, 'right' );
-		}
-
-		?>
-	</title>
+	<?php
+	// <title> is printed by wp_head(): title-tag support, inc/seo.php.
+	?>
 
 	<!-- Preconnect to external domains for faster loading -->
 	<link rel="preconnect" href="https://code.jquery.com" crossorigin>
