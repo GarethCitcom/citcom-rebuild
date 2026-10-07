@@ -42,14 +42,25 @@ Read from staging, 2026-10-05:
 - Redirects: Site Settings > Redirects (`acf-json/group_citcom_redirects.json`,
   `inc/redirects.php`). Old address, new address, permanent or temporary. A
   row matches with or without the trailing slash and whatever the capitals.
-- Structured data (`inc/seo.php`): an Article on every blog post, and on the
-  home page one LocalBusiness with its address and coordinates, read from the
-  `citcom_local_business` option. In SmartCrawl those were three unconnected
-  items; the address now sits inside the business. Both step aside when
-  SEOPress PRO is active. Not rebuilt: VideoObject on four service pages
-  (SmartCrawl's had no thumbnail, so they earned nothing in search), the
-  WebPage and navigation items, and Organization on inner pages. SEOPress
-  prints the organisation, with the address, on the home page.
+- Structured data (`inc/schema.php`, 2026-10-07): one JSON-LD graph on every
+  page except 404 and search results. The theme owns the whole graph;
+  SEOPress's own WebSite and home page Organization are switched off (their
+  `#website` id would clash) and its Knowledge Graph settings are read
+  instead, so the organisation is still edited in SEO > Social Networks.
+  Every page: Organization (`#organization`, on the home page also the
+  LocalBusiness from SmartCrawl's schema builder with address and
+  coordinates, held in the `citcom_local_business` option), WebSite
+  (`#website`, name `CitCom.`, no SearchAction), one page node (`#webpage`:
+  AboutPage on /about-us/, ContactPage on /contact-us/, CollectionPage on
+  every archive with an ItemList of the posts shown, WebPage elsewhere; the
+  SEOPress description, dates and featured image where they exist) and a
+  BreadcrumbList (`#breadcrumb`) from the same trail as the visible
+  breadcrumb (`inc/breadcrumb.php`), left out on the home page and where the
+  trail is the home link alone (landing pages, date archives). Blog posts add
+  an Article pointing at the page and the organisation, with the author as a
+  Person by name. `citcom_schema_graph` filters the graph. Not ported from
+  SmartCrawl: SiteNavigationElement, and VideoObject on four service pages
+  (SmartCrawl's had no thumbnail, so they earned nothing in search).
 - Blog routing (`inc/setup.php`). The original theme sent
   `/blog/{category}/{slug}` to WordPress as an attachment query. It found the
   post, but every blog post counted as an attachment page, and anything that

@@ -34,10 +34,10 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   key are entered per server in Site Settings > Forms, never committed.
   SEO is the free SEOPress plugin (decided 2026-10-05, replacing SmartCrawl
   Pro; see docs/04-seopress.md). The theme declares `title-tag` and, in
-  inc/seo.php, adds the archive titles through SEOPress's filters and prints
-  what free SEOPress does not: an Article for blog posts and the home page's
-  LocalBusiness. Redirects are in Site Settings > Redirects
-  (inc/redirects.php).
+  inc/seo.php, adds the archive titles through SEOPress's filters. The
+  theme owns all structured data (inc/schema.php: one JSON-LD graph per
+  page; SEOPress's own schema output is switched off there). Redirects are
+  in Site Settings > Redirects (inc/redirects.php).
   PHP 8.5, WP 7.1+.
 - UK English in all copy and comments. No em dashes in prose.
 

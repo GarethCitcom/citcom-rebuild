@@ -6,12 +6,15 @@
  * through core's document title filter. The original header.php asked
  * SmartCrawl for the title itself; what it added on top is kept here: the
  * fallback when no SEO plugin is active, and the archives that take their
- * title from a template post.
+ * title from a template post. Structured data is inc/schema.php.
  *
  * @package citcom
  */
 
 defined( 'ABSPATH' ) || exit;
+
+// The site's name as it is written: the front page title, and the WebSite in inc/schema.php.
+const CITCOM_SEO_SITE_NAME = 'CitCom.';
 
 add_action(
 	'after_setup_theme',
@@ -35,10 +38,10 @@ add_filter(
 	'document_title_parts',
 	function ( $parts ) {
 		if ( is_front_page() ) {
-			return array( 'title' => 'CitCom.' );
+			return array( 'title' => CITCOM_SEO_SITE_NAME );
 		}
 		unset( $parts['tagline'] );
-		$parts['site'] = 'CitCom.';
+		$parts['site'] = CITCOM_SEO_SITE_NAME;
 		return $parts;
 	}
 );
@@ -138,114 +141,4 @@ add_filter(
 		}
 		return '<link rel="canonical" href="' . esc_url( $url ) . '">';
 	}
-);
-
-/*
- * Structured data the free SEOPress plugin does not print. SmartCrawl gave
- * blog posts an Article and the home page a LocalBusiness; SEOPress keeps
- * both in its paid plugin and prints only the organisation, on the home page.
- * With SEOPress PRO active this steps aside.
- */
-
-/**
- * Article for a blog post.
- *
- * @param WP_Post $post The post.
- * @return array<string,mixed>
- */
-function citcom_seo_article( WP_Post $post ): array {
-	$url     = (string) get_permalink( $post );
-	$author  = (string) get_the_author_meta( 'display_name', (int) $post->post_author );
-	$article = array(
-		'@type'            => 'Article',
-		'@id'              => $url . '#article',
-		'mainEntityOfPage' => $url,
-		'headline'         => wp_strip_all_tags( get_the_title( $post ) ),
-		'datePublished'    => get_post_time( 'c', false, $post ),
-		'dateModified'     => get_post_modified_time( 'c', false, $post ),
-		'publisher'        => array(
-			'@type' => 'Organization',
-			'name'  => get_bloginfo( 'name' ),
-			'url'   => home_url( '/' ),
-		),
-	);
-
-	// A display name that is an email address is an account nobody named; the site stands in.
-	$article['author'] = '' === $author || is_email( $author )
-		? $article['publisher']
-		: array(
-			'@type' => 'Person',
-			'name'  => $author,
-		);
-
-	$image = get_post_thumbnail_id( $post ) ? wp_get_attachment_image_src( get_post_thumbnail_id( $post ), 'full' ) : false;
-	if ( $image ) {
-		$article['image'] = array(
-			'@type'  => 'ImageObject',
-			'url'    => $image[0],
-			'width'  => (int) $image[1],
-			'height' => (int) $image[2],
-		);
-	}
-
-	return $article;
-}
-
-/**
- * LocalBusiness for the home page, from the `citcom_local_business` option.
- *
- * The option holds what was entered in SmartCrawl's schema builder (name,
- * telephone, image, map link, address, coordinates) and is written by
- * tools/seopress-from-smartcrawl.php. There it was three unconnected items;
- * here the address and coordinates sit inside the business, which is what
- * search engines read.
- *
- * @return array<string,mixed> Empty when the option is not set.
- */
-function citcom_seo_local_business(): array {
-	$business = get_option( 'citcom_local_business' );
-	if ( ! is_array( $business ) || empty( $business['name'] ) ) {
-		return array();
-	}
-	if ( ! empty( $business['image'] ) && is_numeric( $business['image'] ) ) {
-		$business['image'] = (string) wp_get_attachment_url( (int) $business['image'] );
-	}
-
-	return array_filter(
-		array_merge(
-			array(
-				'@type' => 'LocalBusiness',
-				'@id'   => home_url( '/#local-business' ),
-				'url'   => home_url( '/' ),
-			),
-			$business
-		)
-	);
-}
-
-add_action(
-	'wp_head',
-	function () {
-		if ( defined( 'SEOPRESS_PRO_VERSION' ) ) {
-			return;
-		}
-		$graph = array();
-		if ( is_singular( 'post' ) && get_queried_object() instanceof WP_Post ) {
-			$graph[] = citcom_seo_article( get_queried_object() );
-		}
-		if ( is_front_page() && ! is_paged() ) {
-			$graph[] = citcom_seo_local_business();
-		}
-		$graph = array_values( array_filter( $graph ) );
-		if ( ! $graph ) {
-			return;
-		}
-		$data = array(
-			'@context' => 'https://schema.org',
-			'@graph'   => $graph,
-		);
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON, with "<" and ">" encoded by JSON_HEX_TAG.
-		echo '<script type="application/ld+json">' . wp_json_encode( $data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG ) . "</script>\n";
-	},
-	20
 );
