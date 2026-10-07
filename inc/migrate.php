@@ -64,9 +64,9 @@ const CITCOM_MIGRATE_SETTINGS_GROUPS = array( 'group_65f8774c86a9d', 'group_6790
 const CITCOM_MIGRATE_INNER_LAYOUTS = array( 'editor', 'media_text' );
 
 // Pages retired in the review (docs/pages-and-forms-review.xlsx): id => slug.
+// Marketing Agreement (219133) was on the list, restored by Gareth on 2026-10-07 and migrated on its own.
 const CITCOM_MIGRATE_RETIRED = array(
 	218753 => 'comp',
-	219133 => 'marketing-agreement',
 	218516 => 'suite',
 	219465 => 'test-about-us-updates',
 	218718 => 'citcom-autumn-event',

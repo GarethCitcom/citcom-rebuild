@@ -448,7 +448,8 @@ decisions" below). Read with `wp --skip-themes` on staging 1771004.
   219265, 219262, 219273). Their shortcodes print nothing.
 - Pages retired (every other page, landing page and service is kept). The
   Phase 3 migration deletes them (decided 2026-10-01, no redirects):
-  /comp/ (218753), /marketing-agreement/ (219133), /suite/ (218516),
+  /comp/ (218753), /suite/ (218516), /marketing-agreement/ (219133, restored
+  2026-10-07: retired by mistake),
   /test-about-us-updates/ (219465), /info/citcom-autumn-event/ (218718),
   /info/ihd-ojdiudsa/ (219758), /info/junior-developer-quiz/ (219260),
   /info/thank-you-rsvp/ (218743), /info/wc2026/ (219935).

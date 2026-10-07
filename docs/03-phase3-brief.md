@@ -245,6 +245,10 @@ Run over SSH on staging, in the order below; live is Phase 5. Outcome:
     drop-ins, and a handful of small options whose owner is not certain.
   - Afterwards `wp citcom migrate status` still reports every post migrated
     and the section comparison gives the same result as before.
+- 2026-10-07: /marketing-agreement/ (219133) had been retired by mistake. Gareth
+  restored it from the bin on staging, it came off `CITCOM_MIGRATE_RETIRED`,
+  and `wp citcom migrate run --post=219133` migrated it on its own. Eight
+  pages stay retired; its footer menu link is back once it is published.
 - Still to do on staging: enter the recipients and the Mailchimp key in Site
   Settings > Forms and send one test per form; `wp citcom migrate cleanup`
   after sign-off.
