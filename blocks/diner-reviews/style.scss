@@ -51,6 +51,7 @@
         // pitch was showing a mechanical, obviously-repeating pattern rather than
         // reading as one organic texture across the section.
         background-image: url('../../assets/img/diner/texture.webp');
+        background-image: image-set(url('../../assets/img/diner/texture.avif') type('image/avif'), url('../../assets/img/diner/texture.webp') type('image/webp'));
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
@@ -94,6 +95,7 @@
         aspect-ratio: 1;
         background-color: var(--brand-primary-lighter);
         background-image: url('../../assets/img/diner/texture.webp');
+        background-image: image-set(url('../../assets/img/diner/texture.avif') type('image/avif'), url('../../assets/img/diner/texture.webp') type('image/webp'));
         // Fixed at the same 1520px scale the section's own ::before grain uses,
         // not `cover` — `cover` was squeezing the whole texture image down to fit
         // a ~50-95px box, shrinking the dot pitch far below its natural size and

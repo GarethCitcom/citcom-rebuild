@@ -333,6 +333,7 @@ function citcom_critical_css(): string {
 	if ( null === $css ) {
 		$file = CITCOM_THEME_DIR . '/assets/critical/' . citcom_critical_template() . '.css';
 		$css  = file_exists( $file ) ? trim( (string) file_get_contents( $file ) ) : ''; // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme file.
+		$css  = str_replace( '__THEME__', CITCOM_THEME_URI, $css );
 	}
 	return $css;
 }

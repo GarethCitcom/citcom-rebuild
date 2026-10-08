@@ -57,7 +57,7 @@ const rules = defaultConfig.module.rules.map( ( rule ) => {
 		String( rule.test ).includes( 'webp' )
 	) {
 		return {
-			test: rule.test,
+			test: new RegExp( String( rule.test ).replace( /^\/|\/i?$/g, '' ).replace( 'webp', 'webp|avif' ), 'i' ),
 			oneOf: [
 				{ resourceQuery: /inline/, type: 'asset/inline' },
 				{ type: rule.type, generator: rule.generator },

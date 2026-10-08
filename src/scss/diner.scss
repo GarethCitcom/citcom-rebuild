@@ -93,6 +93,8 @@
     // Figma fills the section with one copy of the texture, so no tiling. The file
     // is 1920 wide so cover puts it at the same scale Figma renders it.
     background-image: url('../../assets/img/diner/texture-multiply.jpg');
+    // The same texture at a quarter of the bytes where AVIF is understood (the hero grain is the mobile LCP).
+    background-image: image-set(url('../../assets/img/diner/texture-multiply.avif') type('image/avif'), url('../../assets/img/diner/texture-multiply.jpg') type('image/jpeg'));
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

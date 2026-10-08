@@ -149,8 +149,10 @@ for (const template of Object.keys(kept)) {
     dropped += rules.length - small.length;
     css += `/* ${sheet} */\n` + small.map(([, c]) => c).join('\n') + '\n';
   }
-  // Image paths in the built CSS are relative to build/; inlined in the page they must point at the theme.
-  css = css.replace(/url\("?\.\.\/build\//g, 'url("../build/').replace(/url\("?images\//g, 'url("../build/images/');
+  // Image paths in the built CSS are relative to the stylesheet (build/ or build/blocks/x/);
+  // inlined in the page they resolve against the page, so they get a placeholder that
+  // citcom_critical_css() swaps for the theme's address.
+  css = css.replace(/url\((['"]?)(?:\.\.\/)*(?:build\/)?images\//g, 'url($1__THEME__/build/images/');
   const file = path.join(args.out, template + '.css');
   fs.writeFileSync(file, css);
   console.log(`${template}: ${(css.length / 1024).toFixed(1)}KB, ${dropped} rules over ${maxRule} bytes left out -> ${file}`);
