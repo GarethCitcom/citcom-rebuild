@@ -131,11 +131,39 @@ The baseline was one run each; these are medians of three, and single runs
 on staging swing by a second or more on mobile.
 
 What is left on mobile is bytes on a simulated 1.6Mbps connection, and the
-theme no longer owns most of them: the ChatCom widget (288KB of script and
-two fonts on every page), the home page video (1.5MB), the Adobe fonts
-(150KB; `font-display` is set in the Adobe Fonts project), Trustindex and
-the Font Awesome kit. Those are items 2 and 3 of the plan, waiting for
+theme no longer owns most of them: the home page video (1.5MB), the Adobe
+fonts (150KB; `font-display` is set in the Adobe Fonts project), Trustindex
+and the Font Awesome kit. Those are items 2 and 3 of the plan, waiting for
 Gareth's decision. Theme-side follow-ups, smaller: a metric-matched fallback
 font (`size-adjust`) would remove the last of the home page's layout shift
 (0.08, from the body copy reflowing when the web font arrives); the texture
 images could go through the image CDN like the photos.
+
+## ChatCom widget (2026-10-08)
+
+The in-house ChatCom plugin (its own repository, GarethCitcom/chatcom)
+printed the chat app's iframe into the hidden popup on every page: 15 to 18
+requests, 288KB of script and two fonts before anyone asked for it. From
+plugin version 1.2.0 the embed sits in a `<template>`, where an iframe does
+not navigate, and is moved into the popup when the visitor hovers over,
+touches or focuses the button or greeting, or opens it. Nothing from the
+chat host is fetched at load. Deployed to staging by Gareth; the edge cache
+had to be purged before browsers saw the new markup (curl got a fresh copy,
+Chrome a cached one).
+
+Medians of three, staging, after the change (before, from the table above):
+
+| Page | Desktop LCP | Mobile LCP | Mobile score |
+|---|---|---|---|
+| Home | 1.83s (2.30s) | 9.38s (12.03s) | 46 (55) |
+| /services/creative/ | 1.20s (1.66s) | 5.36s (8.55s) | 75 (69) |
+| /case-studies/ | 1.12s (1.43s) | 5.15s (7.51s) | 73 (67) |
+| Blog post | 1.03s (1.36s) | 4.75s (7.10s) | 74 (65) |
+
+The home page's mobile score fell while every timing improved because its
+Total Blocking Time is now 760 to 870ms in every run (88 to 553ms before):
+a long task of about 400ms in `theme.js` on the simulated phone CPU, and
+Trustindex's loader at 250 to 320ms, which the chat iframe's own work used
+to spread out. The `theme.js` task is the next theme-side item to look at:
+it is the DOMContentLoaded work (Bootstrap set-up, header, equal heights,
+carousel chunk request) running in one go.
