@@ -217,8 +217,10 @@ function citcom_image_sizes( string $columns, int $container = 1320 ): string {
  *
  * `loading="lazy"` does not help inside a carousel: Chrome treats images
  * clipped by an overflow:hidden parent as visible and fetches every slide.
- * The real sources move to data-src and data-srcset; src/js/swiper.js
- * restores them for the slides next to the one in view.
+ * The real sources move to data-citcom-src and data-citcom-srcset (not
+ * data-src: ShortPixel's script treats that as a lazy-load convention and
+ * fetches the file itself); src/js/swiper.js restores them for the slides
+ * next to the one in view.
  *
  * @param string $html An <img> tag.
  * @return string
@@ -227,8 +229,8 @@ function citcom_defer_image( string $html ): string {
 	if ( false === strpos( $html, ' src="' ) ) {
 		return $html;
 	}
-	$html = str_replace( ' srcset="', ' data-srcset="', $html );
-	$html = str_replace( ' src="', ' src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 3 2%27%3E%3C/svg%3E" data-src="', $html );
+	$html = str_replace( ' srcset="', ' data-citcom-srcset="', $html );
+	$html = str_replace( ' src="', ' src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 3 2%27%3E%3C/svg%3E" data-citcom-src="', $html );
 	$html = preg_replace( '/ loading="[^"]*"/', '', $html );
 	return preg_replace( '/ class="/', ' class="citcom-deferred ', $html, 1 );
 }

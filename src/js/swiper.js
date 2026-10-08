@@ -18,11 +18,11 @@ import {
 
 function loadDeferred( slide ) {
 	slide.querySelectorAll( 'img.citcom-deferred' ).forEach( ( img ) => {
-		if ( img.dataset.srcset ) {
-			img.srcset = img.dataset.srcset;
+		if ( img.dataset.citcomSrcset ) {
+			img.srcset = img.dataset.citcomSrcset;
 		}
-		if ( img.dataset.src ) {
-			img.src = img.dataset.src;
+		if ( img.dataset.citcomSrc ) {
+			img.src = img.dataset.citcomSrc;
 		}
 		img.classList.remove( 'citcom-deferred' );
 	} );
