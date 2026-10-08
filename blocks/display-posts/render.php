@@ -139,7 +139,8 @@ citcom_preview_clip_paths( (bool) $is_preview );
 							<?php
 							while ( $the_query->have_posts() ) :
 								$the_query->the_post();
-								get_template_part( 'template-parts/card-post', null, array( 'data' => $card_data ) );
+								// The first cards are in the first screen: fetched at once, the first with priority.
+								get_template_part( 'template-parts/card-post', null, array( 'data' => $card_data + array( 'index' => (int) $the_query->current_post ) ) );
 							endwhile;
 							?>
 

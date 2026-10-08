@@ -62,12 +62,38 @@ add_action(
 	'wp_head',
 	function () {
 		// phpcs:disable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- preload with a stylesheet fallback, which wp_enqueue_style() cannot print.
+		foreach ( citcom_typekit_font_urls() as $url ) {
+			echo '<link rel="preload" href="' . esc_url( $url ) . '" as="font" type="font/woff2" crossorigin>';
+		}
 		echo '<link rel="preload" href="https://use.typekit.net/dom1odt.css" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">';
 		echo '<noscript><link rel="stylesheet" href="https://use.typekit.net/dom1odt.css"></noscript>';
 		// phpcs:enable
 	},
 	5
 );
+
+/**
+ * The kit's woff2 files, for preloading: the kit CSS loads without blocking,
+ * so without this the fonts are only discovered once it has arrived and the
+ * text repaints late, a layout shift on every page. Read from the kit CSS
+ * and kept for a day, so a republished kit is picked up by itself.
+ *
+ * @return string[] Empty when the kit CSS cannot be read.
+ */
+function citcom_typekit_font_urls(): array {
+	$urls = get_transient( 'citcom_typekit_fonts' );
+	if ( is_array( $urls ) ) {
+		return $urls;
+	}
+	$urls     = array();
+	$response = wp_remote_get( 'https://use.typekit.net/dom1odt.css', array( 'timeout' => 5 ) );
+	if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
+		preg_match_all( '#url\("(https://use\.typekit\.net/af/[^"]+)"\)\s*format\("woff2"\)#', wp_remote_retrieve_body( $response ), $matches );
+		$urls = array_values( array_unique( $matches[1] ) );
+	}
+	set_transient( 'citcom_typekit_fonts', $urls, $urls ? DAY_IN_SECONDS : HOUR_IN_SECONDS );
+	return $urls;
+}
 
 add_action(
 	'wp_head',

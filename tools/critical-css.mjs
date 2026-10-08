@@ -34,6 +34,16 @@ function collect() {
   const fold = window.innerHeight;
   // A hidden element has no box; it counts as wherever its nearest sized ancestor is,
   // so the rule that hides it (a closed menu in the header) is kept.
+  const intersects = (r) => r.bottom > -fold && r.top < fold;
+  // A flex or grid item is sized by the minimum width of everything inside it, however far
+  // down, so what starts in the first screen keeps the rules of all its contents.
+  const inSizedItem = (el) => {
+    for (let node = el.parentElement; node && node !== document.body; node = node.parentElement) {
+      const parent = node.parentElement;
+      if (parent && /^(flex|grid|inline-flex|inline-grid)$/.test(getComputedStyle(parent).display) && intersects(node.getBoundingClientRect())) return true;
+    }
+    return false;
+  };
   const inFold = (el) => {
     let node = el;
     let r = node.getBoundingClientRect();
@@ -42,7 +52,7 @@ function collect() {
       if (!node) return true;
       r = node.getBoundingClientRect();
     }
-    return r.bottom > -fold && r.top < fold;
+    return intersects(r) || inSizedItem(el);
   };
   const strip = (sel) => sel
     .replace(/::?(before|after|first-line|first-letter|placeholder|selection|marker|backdrop)/g, '')
@@ -124,7 +134,7 @@ for (const [label, vp] of [['mobile', { width: 412, height: 915 }], ['desktop', 
 }
 await browser.close();
 
-// A rule over --max-rule bytes is an inlined image, left for the stylesheet.
+// A rule over --max-rule bytes with an inlined image is left for the stylesheet.
 const maxRule = Number(args['max-rule'] || 2048);
 fs.mkdirSync(args.out, { recursive: true });
 for (const template of Object.keys(kept)) {
@@ -134,7 +144,8 @@ for (const template of Object.keys(kept)) {
   let dropped = 0;
   for (const sheet of sheets) {
     const rules = [...kept[template].get(sheet).entries()].sort((a, b) => a[0].localeCompare(b[0], undefined, { numeric: true }));
-    const small = rules.filter(([, c]) => c.length <= maxRule);
+    // Only an inlined image makes a rule that big; variable blocks (:root) stay whatever their size.
+    const small = rules.filter(([, c]) => c.length <= maxRule || !/url\("?data:/.test(c));
     dropped += rules.length - small.length;
     css += `/* ${sheet} */\n` + small.map(([, c]) => c).join('\n') + '\n';
   }
