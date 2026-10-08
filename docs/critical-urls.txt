@@ -1,0 +1,21 @@
+# Pages whose first screen the critical CSS must cover, as "template  url" (tools/critical-css.mjs).
+# The template names are the ones citcom_critical_template() in inc/assets.php returns.
+home	/
+page	/about-us/
+page	/contact-us/
+page	/packages/
+page	/packages/website-packages/
+page	/send-us-a-brief/
+page	/terms-of-use/
+page	/this-page-does-not-exist/
+service-archive	/services/
+service	/services/creative/
+service	/services/marketing/seo/
+case-study-archive	/case-studies/
+case-study	/case-studies/lextox-pop-up-events/
+blog	/blog/
+blog	/blog-category/marketing/
+blog	/?s=marketing
+post	/blog/events/exhibition-stand-guide
+landing-page	/info/free-seo-audit/
+landing-page	/info/citcom-creative-diner/

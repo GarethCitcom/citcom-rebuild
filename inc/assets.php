@@ -225,23 +225,88 @@ if ( ! is_admin() ) {
 		2
 	);
 
-	// Non-theme stylesheets load as preload + onload swap; the theme stylesheet is
-	// emitted as preload followed by the real link so it stays render-blocking.
-	// Block stylesheets (citcom-*) are normally inlined by WordPress; when a page
-	// goes over the inline limit and one is linked instead, it stays render-blocking
-	// too, so a section never paints unstyled.
+	/*
+	 * Stylesheets. With a critical CSS file for the template (assets/critical/,
+	 * tools/critical-css.mjs: the rules its first screen needs), it is inlined and
+	 * every stylesheet of the theme loads without blocking the first paint:
+	 * preload, then a swap to a stylesheet when it arrives, with a noscript
+	 * fallback. Without it the theme stylesheet stays render-blocking and only
+	 * other plugins' stylesheets are deferred.
+	 */
+	add_action(
+		'wp_head',
+		function () {
+			$css = citcom_critical_css();
+			if ( '' !== $css ) {
+				echo '<style id="citcom-critical">' . $css . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the theme's own built CSS.
+			}
+		},
+		1
+	);
+
 	add_filter(
 		'style_loader_tag',
 		function ( $tag, $handle = '' ) {
-			if ( str_starts_with( (string) $handle, 'citcom-' ) ) {
-				return $tag;
+			$theme = str_starts_with( (string) $handle, 'citcom-' ) || false !== strpos( $tag, 'build/theme.css' );
+			$async = str_replace( " rel='stylesheet'", " rel=\"preload\" as=\"style\" onload=\"this.onload=null;this.rel='stylesheet'\"", $tag ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- rewrites an enqueued tag.
+			if ( $theme ) {
+				if ( '' === citcom_critical_css() ) {
+					return false !== strpos( $tag, 'build/theme.css' ) ? str_replace( " rel='stylesheet'", ' rel="preload" as="style"', $tag ) . $tag : $tag; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- rewrites an enqueued tag.
+				}
+				return $async . '<noscript>' . $tag . '</noscript>'; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- rewrites an enqueued tag.
 			}
-			if ( false !== strpos( $tag, 'build/theme.css' ) ) {
-				return str_replace( " rel='stylesheet'", ' rel="preload" as="style"', $tag ) . $tag; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- rewrites an enqueued tag.
-			}
-			return str_replace( " rel='stylesheet'", ' rel="preload" as="style" onload="this.onload=null;this.rel=\'stylesheet\'"', $tag ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- rewrites an enqueued tag.
+			return $async; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- rewrites an enqueued tag.
 		},
 		10,
 		2
 	);
+}
+
+/**
+ * The template type of the current request, for the critical CSS file name
+ * (assets/critical/<template>.css, docs/critical-urls.txt).
+ *
+ * @return string
+ */
+function citcom_critical_template(): string {
+	if ( is_front_page() ) {
+		return 'home';
+	}
+	if ( is_post_type_archive( 'service' ) ) {
+		return 'service-archive';
+	}
+	if ( is_singular( 'service' ) ) {
+		return 'service';
+	}
+	if ( is_post_type_archive( 'case-study' ) || is_tax( 'cs-tag' ) ) {
+		return 'case-study-archive';
+	}
+	if ( is_singular( 'case-study' ) ) {
+		return 'case-study';
+	}
+	if ( is_home() || is_category() || is_tag() || is_search() || is_date() || is_author() ) {
+		return 'blog';
+	}
+	if ( is_singular( 'post' ) ) {
+		return 'post';
+	}
+	if ( is_singular( 'landing-page' ) ) {
+		return 'landing-page';
+	}
+	return 'page';
+}
+
+/**
+ * The critical CSS for this request, read once. Empty when there is no file
+ * for the template, in which case the stylesheets stay render-blocking.
+ *
+ * @return string
+ */
+function citcom_critical_css(): string {
+	static $css = null;
+	if ( null === $css ) {
+		$file = CITCOM_THEME_DIR . '/assets/critical/' . citcom_critical_template() . '.css';
+		$css  = file_exists( $file ) ? trim( (string) file_get_contents( $file ) ) : ''; // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme file.
+	}
+	return $css;
 }
