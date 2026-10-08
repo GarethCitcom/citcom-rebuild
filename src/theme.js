@@ -13,7 +13,14 @@ import Tooltip from 'bootstrap/js/dist/tooltip';
 
 import './scss/theme.scss';
 
-import { ready, hover, slideDown, slideUp, contentWidth } from './js/fx';
+import {
+	ready,
+	stylesReady,
+	hover,
+	slideDown,
+	slideUp,
+	contentWidth,
+} from './js/fx';
 import { widthEqualHeight, equalHeightsWithReset } from './js/equal-heights';
 import { navAndHeader } from './js/nav-and-header';
 import { cards } from './js/cards';
@@ -56,135 +63,143 @@ window.mobileCheck = function () {
 
 const $$ = ( selector ) => [ ...document.querySelectorAll( selector ) ];
 
-ready( () => {
-	// Services archive: highlight the sub-service link for the row in view.
-	const rows = $$( '.service-row' ).map( ( row ) => {
-		const cs = window.getComputedStyle( row );
-		const rect = row.getBoundingClientRect();
-		const topDist = Math.floor( rect.top + window.scrollY ) - 20;
-		const outer = Math.floor(
-			rect.height +
-				parseFloat( cs.marginTop ) +
-				parseFloat( cs.marginBottom )
-		);
-		return { id: row.id, topDist, bottomDist: topDist + outer };
-	} );
-	const highlightRow = () => {
-		const docTop = window.scrollY;
-		rows.forEach( ( row ) => {
-			if ( docTop > row.topDist && docTop < row.bottomDist ) {
-				$$( '.sub-link' ).forEach( ( link ) =>
-					link.classList.remove( 'active' )
-				);
-				const link = document.getElementById( 'menu-' + row.id );
-				if ( link ) {
-					link.classList.add( 'active' );
-				}
-			}
-		} );
-	};
-	if ( rows.length ) {
-		highlightRow();
-		window.addEventListener( 'scroll', highlightRow, { passive: true } );
-	}
-
-	if ( window.mobileCheck() ) {
-		document.documentElement.classList.add( 'no-animation' );
-	}
-
-	const sizeButtons = () => {
-		widthEqualHeight( '.citcom-btn-bg' );
-		widthEqualHeight( '.icon-btn-bg' );
-		equalHeightsWithReset( '.citdot-card' );
-	};
-	sizeButtons();
-	window.addEventListener( 'resize', sizeButtons );
-
-	$$( '.stretched-link' ).forEach( ( link ) => {
-		hover(
-			link,
-			() => link.parentElement.classList.add( 'stretch-hover' ),
-			() => link.parentElement.classList.remove( 'stretch-hover' )
-		);
-	} );
-
-	$$( '.wp-block-quote' ).forEach( ( quote ) => {
-		const container = document.createElement( 'div' );
-		container.className = 'quote-container';
-		quote.parentNode.insertBefore( container, quote );
-		container.appendChild( quote );
-		quote.insertAdjacentHTML( 'afterend', '<div class="speech"></div>' );
-	} );
-
-	navAndHeader();
-	cards();
-	displayPosts();
-	forms();
-
-	if ( document.querySelector( '.vlite, .wp-block-video' ) ) {
-		import( './js/vlite' ).then( ( m ) => m.videoLite() );
-	}
-	if ( document.querySelector( '.swiper' ) ) {
-		import( './js/swiper' ).then( ( m ) => m.swiperSetup() );
-	}
-	if ( document.querySelector( '.wp-block-categories-list' ) ) {
-		sidebar();
-	}
-
-	AOS.refresh();
-
-	// Services showcase (home page): open the hovered service panel.
-	const showcaseText = $$( '.showcase-service-text' );
-	if ( showcaseText.length ) {
-		const openText = () =>
-			document.querySelector(
-				'.showcase .service.open .showcase-service-text'
+// Layout is measured below (header height, nav pill, equal heights, scroll spy), so wait for the stylesheet.
+ready( () =>
+	stylesReady( () => {
+		// Services archive: highlight the sub-service link for the row in view.
+		const rows = $$( '.service-row' ).map( ( row ) => {
+			const cs = window.getComputedStyle( row );
+			const rect = row.getBoundingClientRect();
+			const topDist = Math.floor( rect.top + window.scrollY ) - 20;
+			const outer = Math.floor(
+				rect.height +
+					parseFloat( cs.marginTop ) +
+					parseFloat( cs.marginBottom )
 			);
-		const setWidth = () => {
-			const open = openText();
-			const width = open ? contentWidth( open ) : 0;
-			showcaseText.forEach( ( el ) => {
-				el.style.width = width + 'px';
+			return { id: row.id, topDist, bottomDist: topDist + outer };
+		} );
+		const highlightRow = () => {
+			const docTop = window.scrollY;
+			rows.forEach( ( row ) => {
+				if ( docTop > row.topDist && docTop < row.bottomDist ) {
+					$$( '.sub-link' ).forEach( ( link ) =>
+						link.classList.remove( 'active' )
+					);
+					const link = document.getElementById( 'menu-' + row.id );
+					if ( link ) {
+						link.classList.add( 'active' );
+					}
+				}
 			} );
 		};
-		setWidth();
-		window.addEventListener( 'resize', () => {
-			showcaseText.forEach( ( el ) => {
-				el.style.width = 'auto';
+		if ( rows.length ) {
+			highlightRow();
+			window.addEventListener( 'scroll', highlightRow, {
+				passive: true,
 			} );
-			setWidth();
-		} );
-		let timeOut;
-		$$( '.showcase .service' ).forEach( ( el ) => {
-			// jQuery .hover() with one handler ran it on leave as well.
-			hover( el, () => {
-				if ( ! el.classList.contains( 'active' ) ) {
-					clearTimeout( timeOut );
-					$$( '.service' ).forEach( ( s ) =>
-						s.classList.remove( 'open', 'active' )
-					);
-					el.classList.add( 'open' );
-					timeOut = setTimeout(
-						() => el.classList.add( 'active' ),
-						300
-					);
-				}
-			} );
-		} );
-	}
+		}
 
-	// Staff cards (about page): reveal the description on hover.
-	$$( '.citdot-card.staff' ).forEach( ( card ) => {
-		const descriptions = [
-			...card.querySelectorAll( '.profile-info .description' ),
-		];
-		card.addEventListener( 'mouseenter', () =>
-			descriptions.forEach( ( d ) => slideDown( d ) )
-		);
-		card.addEventListener( 'mouseleave', () =>
-			descriptions.forEach( ( d ) => slideUp( d ) )
-		);
-	} );
-} );
+		if ( window.mobileCheck() ) {
+			document.documentElement.classList.add( 'no-animation' );
+		}
+
+		const sizeButtons = () => {
+			widthEqualHeight( '.citcom-btn-bg' );
+			widthEqualHeight( '.icon-btn-bg' );
+			equalHeightsWithReset( '.citdot-card' );
+		};
+		sizeButtons();
+		window.addEventListener( 'resize', sizeButtons );
+
+		$$( '.stretched-link' ).forEach( ( link ) => {
+			hover(
+				link,
+				() => link.parentElement.classList.add( 'stretch-hover' ),
+				() => link.parentElement.classList.remove( 'stretch-hover' )
+			);
+		} );
+
+		$$( '.wp-block-quote' ).forEach( ( quote ) => {
+			const container = document.createElement( 'div' );
+			container.className = 'quote-container';
+			quote.parentNode.insertBefore( container, quote );
+			container.appendChild( quote );
+			quote.insertAdjacentHTML(
+				'afterend',
+				'<div class="speech"></div>'
+			);
+		} );
+
+		navAndHeader();
+		cards();
+		displayPosts();
+		forms();
+
+		if ( document.querySelector( '.vlite, .wp-block-video' ) ) {
+			import( './js/vlite' ).then( ( m ) => m.videoLite() );
+		}
+		if ( document.querySelector( '.swiper' ) ) {
+			import( './js/swiper' ).then( ( m ) => m.swiperSetup() );
+		}
+		if ( document.querySelector( '.wp-block-categories-list' ) ) {
+			sidebar();
+		}
+
+		AOS.refresh();
+
+		// Services showcase (home page): open the hovered service panel.
+		const showcaseText = $$( '.showcase-service-text' );
+		if ( showcaseText.length ) {
+			const openText = () =>
+				document.querySelector(
+					'.showcase .service.open .showcase-service-text'
+				);
+			const setWidth = () => {
+				const open = openText();
+				const width = open ? contentWidth( open ) : 0;
+				showcaseText.forEach( ( el ) => {
+					el.style.width = width + 'px';
+				} );
+			};
+			setWidth();
+			window.addEventListener( 'resize', () => {
+				showcaseText.forEach( ( el ) => {
+					el.style.width = 'auto';
+				} );
+				setWidth();
+			} );
+			let timeOut;
+			$$( '.showcase .service' ).forEach( ( el ) => {
+				// jQuery .hover() with one handler ran it on leave as well.
+				hover( el, () => {
+					if ( ! el.classList.contains( 'active' ) ) {
+						clearTimeout( timeOut );
+						$$( '.service' ).forEach( ( s ) =>
+							s.classList.remove( 'open', 'active' )
+						);
+						el.classList.add( 'open' );
+						timeOut = setTimeout(
+							() => el.classList.add( 'active' ),
+							300
+						);
+					}
+				} );
+			} );
+		}
+
+		// Staff cards (about page): reveal the description on hover.
+		$$( '.citdot-card.staff' ).forEach( ( card ) => {
+			const descriptions = [
+				...card.querySelectorAll( '.profile-info .description' ),
+			];
+			card.addEventListener( 'mouseenter', () =>
+				descriptions.forEach( ( d ) => slideDown( d ) )
+			);
+			card.addEventListener( 'mouseleave', () =>
+				descriptions.forEach( ( d ) => slideUp( d ) )
+			);
+		} );
+	} )
+);
 
 $$( '[data-bs-toggle="tooltip"]' ).forEach( ( el ) => new Tooltip( el ) );

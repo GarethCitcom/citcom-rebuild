@@ -183,3 +183,29 @@ export function ready( fn ) {
 		document.addEventListener( 'DOMContentLoaded', fn );
 	}
 }
+
+/**
+ * Runs once the theme stylesheet applies. It loads without blocking (inlined
+ * critical CSS first, inc/assets.php), so anything that measures layout at
+ * DOMContentLoaded would measure an unstyled page.
+ *
+ * @param {Function} fn Callback.
+ */
+export function stylesReady( fn ) {
+	const link = document.getElementById( 'theme-style-css' );
+	if ( ! link || ( 'stylesheet' === link.rel && link.sheet ) ) {
+		fn();
+		return;
+	}
+	let done = false;
+	const run = () => {
+		if ( ! done ) {
+			done = true;
+			// The inline onload swaps rel to stylesheet first; one tick lets the sheet apply.
+			setTimeout( fn, 0 );
+		}
+	};
+	link.addEventListener( 'load', run, { once: true } );
+	link.addEventListener( 'error', run, { once: true } );
+	setTimeout( run, 4000 );
+}

@@ -32,9 +32,17 @@ const templateOf = Object.fromEntries(pairs.map(([template, url]) => [url, templ
 // Runs in the page: returns [{ sheet, index, css }] for the rules in use above the fold.
 function collect() {
   const fold = window.innerHeight;
+  // A hidden element has no box; it counts as wherever its nearest sized ancestor is,
+  // so the rule that hides it (a closed menu in the header) is kept.
   const inFold = (el) => {
-    const r = el.getBoundingClientRect();
-    return r.bottom > -fold && r.top < fold && (r.width || r.height || el === document.documentElement || el === document.body);
+    let node = el;
+    let r = node.getBoundingClientRect();
+    while (node && node !== document.documentElement && !(r.width || r.height)) {
+      node = node.parentElement;
+      if (!node) return true;
+      r = node.getBoundingClientRect();
+    }
+    return r.bottom > -fold && r.top < fold;
   };
   const strip = (sel) => sel
     .replace(/::?(before|after|first-line|first-letter|placeholder|selection|marker|backdrop)/g, '')
