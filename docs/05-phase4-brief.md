@@ -101,10 +101,19 @@ Trustindex, Font Awesome) wait for Gareth's decision.
   carousel, header shrink, nav pill, offcanvas and its sub-menu slide, load
   more, services scroll spy, staff card hover and the video players all
   behave as before; the screenshot comparison of staging with `.baseline/old`
-  after the first deploy: 246 pairs, every difference either the known ones
-  (footer link, retired pages, Trustindex and forms on the packages pages)
-  or content that changed since the baseline (the new M&S post in the blog
-  listings and on the home page).
+  at the end of the pass: 246 pairs, 221 within 0.5% of pixels in aligned
+  rows (213 of 227 before Phase 4), every height change either the known
+  ones (footer link, retired pages, Trustindex and forms on the packages
+  pages), content that changed since the baseline (the new M&S post in the
+  blog listings and on the home page) or a 2px footer logo row; the pixel
+  differences above 0.5% are the blog listings (the new post), the video
+  pages (first frames) and photos resampling from a different srcset file.
+- The in-house Package Pricing Table plugin enqueues its script (which needs
+  jQuery, so WordPress's copy and jquery-migrate came back on every page) and
+  23KB of CSS everywhere; the theme drops them where the `[pricing_table]`
+  shortcode is absent. The plugin should enqueue from its shortcode.
+- The deferred stylesheets are preloaded with `fetchpriority="low"`, so the
+  LCP image is not queued behind them.
 
 ## Results
 
