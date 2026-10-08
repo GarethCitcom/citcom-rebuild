@@ -274,7 +274,7 @@ if ( ! is_admin() ) {
 		'style_loader_tag',
 		function ( $tag, $handle = '' ) {
 			$theme = str_starts_with( (string) $handle, 'citcom-' ) || false !== strpos( $tag, 'build/theme.css' );
-			$async = str_replace( " rel='stylesheet'", " rel=\"preload\" as=\"style\" onload=\"this.onload=null;this.rel='stylesheet'\"", $tag ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- rewrites an enqueued tag.
+			$async = str_replace( " rel='stylesheet'", " rel=\"preload\" as=\"style\" fetchpriority=\"low\" onload=\"this.onload=null;this.rel='stylesheet'\"", $tag ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- rewrites an enqueued tag.
 			if ( $theme ) {
 				if ( '' === citcom_critical_css() ) {
 					return false !== strpos( $tag, 'build/theme.css' ) ? str_replace( " rel='stylesheet'", ' rel="preload" as="style"', $tag ) . $tag : $tag; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- rewrites an enqueued tag.
