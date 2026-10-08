@@ -215,6 +215,24 @@ add_action(
 );
 
 if ( ! is_admin() ) {
+	/*
+	 * The Package Pricing Table plugin (in-house) enqueues its script, which
+	 * needs jQuery, and 23KB of CSS on every page; its shortcode is on the
+	 * four packages pages. Until the plugin enqueues from its shortcode, the
+	 * theme drops them where the shortcode is absent, and with them jQuery.
+	 */
+	add_action(
+		'wp_enqueue_scripts',
+		function () {
+			$content = is_singular() ? (string) get_post()->post_content : '';
+			if ( false === strpos( $content, '[pricing_table' ) ) {
+				wp_dequeue_script( 'package-pricing-table' );
+				wp_dequeue_style( 'package-pricing-table' );
+			}
+		},
+		20
+	);
+
 	// Core block CSS and theme.json global styles are not used on the front end:
 	// the theme stylesheet styles core blocks itself.
 	add_action(
