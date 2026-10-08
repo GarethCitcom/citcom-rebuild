@@ -51,10 +51,14 @@ $citcom_slug      = $post->post_name;
 		<!-- Swiper -->
 		<div id="swiper-<?php echo esc_attr( $citcom_swiper_id ); ?>" class="swiper swiper-gallery h-100">
 			<div class="swiper-wrapper">
-				<?php foreach ( (array) $citcom_gallery as $citcom_gallery_id ) : ?>
+				<?php foreach ( array_values( (array) $citcom_gallery ) as $citcom_slide => $citcom_gallery_id ) : ?>
 					<div class="swiper-slide">
 						<div class="gallery-img h-100 w-100 position-relative">
-							<?php echo the_image( is_array( $citcom_gallery_id ) ? ( $citcom_gallery_id['ID'] ?? $citcom_gallery_id['id'] ?? 0 ) : $citcom_gallery_id, 'img-bg z-n1 object-fit-cover position-absolute top-0 start-0 w-100 h-100', 'style="object-position: 50% 50%;"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<?php
+							// The slide in view and the next are fetched at once; the rest wait for the carousel (citcom_defer_image()).
+							$citcom_slide_img = the_image( is_array( $citcom_gallery_id ) ? ( $citcom_gallery_id['ID'] ?? $citcom_gallery_id['id'] ?? 0 ) : $citcom_gallery_id, 'img-bg z-n1 object-fit-cover position-absolute top-0 start-0 w-100 h-100', 'style="object-position: 50% 50%;" sizes="' . esc_attr( citcom_image_sizes( 'col-12 col-md-6' ) ) . '"' );
+							echo $citcom_slide < 2 ? $citcom_slide_img : citcom_defer_image( $citcom_slide_img ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							?>
 						</div>
 					</div>
 				<?php endforeach; ?>

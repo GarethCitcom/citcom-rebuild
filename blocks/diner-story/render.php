@@ -61,7 +61,7 @@ $image_fallback = CITCOM_THEME_URI . '/assets/img/diner/diner-story-photo.jpg';
 
 		<div class="diner-story-media">
 			<?php if ( $image ) : ?>
-				<?php echo the_image( $image['id'] ?? $image['ID'] ?? 0, 'diner-story-photo' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo the_image( $image['id'] ?? $image['ID'] ?? 0, 'diner-story-photo', 'sizes="(min-width: 768px) 640px, 100vw"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php else : ?>
 				<img src="<?php echo esc_url( $image_fallback ); ?>" class="diner-story-photo" alt="">
 			<?php endif; ?>

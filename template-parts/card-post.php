@@ -65,7 +65,7 @@ $citcom_post_cats_tags = ! $citcom_post_cats_tags || is_wp_error( $citcom_post_c
 				</div>
 			<?php endif; ?>
 			<div class="card-img ratio ratio-<?php echo esc_attr( $citcom_card_img_ratio ); ?>">
-				<?php echo the_image( $citcom_featured_image, 'img-bg z-1 object-fit-cover position-absolute top-0 start-0 w-100 h-100', 'style="object-position: 50% 50%;"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo the_image( $citcom_featured_image, 'img-bg z-1 object-fit-cover position-absolute top-0 start-0 w-100 h-100', 'style="object-position: 50% 50%;" sizes="(min-width: 992px) 25vw, (min-width: 768px) 34vw, 100vw"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</div>
 			<?php if ( 'post' === $citcom_post_type ) : ?>
 				<div class="card-text w-100">

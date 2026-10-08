@@ -104,7 +104,7 @@ if ( is_singular( 'landing-page' ) && ! get_field( 'show_footer' ) ) {
 		<div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
 			<?php
 			foreach ( (array) citcom_get_option( 'footer_logos' ) as $citcom_accreditation_id ) {
-				echo the_image( $citcom_accreditation_id, 'accreditation', '', 'cred' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo the_image( $citcom_accreditation_id, 'accreditation', 'sizes="130px"', 'cred' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 			?>
 		</div>

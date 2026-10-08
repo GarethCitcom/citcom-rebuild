@@ -159,6 +159,81 @@ function the_image( $attachment_id, $classes = '', $attr = '', $parent_class = '
 }
 
 /**
+ * A `sizes` attribute for an image that fills a Bootstrap column.
+ *
+ * Without it the browser assumes 100vw and fetches a 1400px file for a
+ * 370px slot. The column classes give the share of the row at each
+ * breakpoint; the container is fluid below xl and fixed above it.
+ *
+ * @param string $columns   Column classes, e.g. 'col-12 col-sm-6 col-md-4'.
+ * @param int    $container Max width of the container at xxl, in px (container-xl: 1320).
+ * @return string
+ */
+function citcom_image_sizes( string $columns, int $container = 1320 ): string {
+	$spans = array();
+	foreach ( preg_split( '/\s+/', trim( $columns ) ) as $class ) {
+		if ( preg_match( '/^col-(?:(sm|md|lg|xl|xxl)-)?(\d{1,2})$/', $class, $m ) ) {
+			$spans[ '' === $m[1] ? 'xs' : $m[1] ] = (int) $m[2];
+		}
+	}
+	$span      = 12;
+	$effective = array();
+	foreach ( array( 'xs', 'sm', 'md', 'lg', 'xl', 'xxl' ) as $breakpoint ) {
+		$span                     = $spans[ $breakpoint ] ?? $span;
+		$effective[ $breakpoint ] = $span;
+	}
+	$fixed = array(
+		'xxl' => array( 1400, $container ),
+		'xl'  => array( 1200, min( 1140, $container ) ),
+	);
+	$fluid = array(
+		'lg' => 992,
+		'md' => 768,
+		'sm' => 576,
+	);
+	$parts = array();
+	foreach ( $fixed as $breakpoint => list( $min, $width ) ) {
+		$parts[] = sprintf( '(min-width: %dpx) %dpx', $min, (int) ceil( $width * $effective[ $breakpoint ] / 12 ) );
+	}
+	foreach ( $fluid as $breakpoint => $min ) {
+		$parts[] = sprintf( '(min-width: %dpx) %dvw', $min, (int) ceil( 100 * $effective[ $breakpoint ] / 12 ) );
+	}
+	$parts[] = sprintf( '%dvw', (int) ceil( 100 * $effective['xs'] / 12 ) );
+
+	// Consecutive equal widths collapse into the wider condition.
+	$out = array();
+	foreach ( $parts as $part ) {
+		$value = preg_replace( '/^\(.*?\) /', '', $part );
+		if ( $out && preg_replace( '/^\(.*?\) /', '', end( $out ) ) === $value ) {
+			array_pop( $out );
+		}
+		$out[] = $part;
+	}
+	return implode( ', ', $out );
+}
+
+/**
+ * Holds an image back until a script asks for it.
+ *
+ * `loading="lazy"` does not help inside a carousel: Chrome treats images
+ * clipped by an overflow:hidden parent as visible and fetches every slide.
+ * The real sources move to data-src and data-srcset; src/js/swiper.js
+ * restores them for the slides next to the one in view.
+ *
+ * @param string $html An <img> tag.
+ * @return string
+ */
+function citcom_defer_image( string $html ): string {
+	if ( false === strpos( $html, ' src="' ) ) {
+		return $html;
+	}
+	$html = str_replace( ' srcset="', ' data-srcset="', $html );
+	$html = str_replace( ' src="', ' src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 3 2%27%3E%3C/svg%3E" data-src="', $html );
+	$html = preg_replace( '/ loading="[^"]*"/', '', $html );
+	return preg_replace( '/ class="/', ' class="citcom-deferred ', $html, 1 );
+}
+
+/**
  * Inline SVG markup for an attachment, read from the uploads directory.
  *
  * Fixes the original get-logos.php, which built the path from DOCUMENT_ROOT.

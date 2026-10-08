@@ -81,9 +81,9 @@ citcom_preview_clip_paths( (bool) $is_preview );
 	<div class="media position-absolute <?php echo esc_attr( $setting_citdot ); ?> <?php echo esc_attr( $extra_padding_media ); ?>" data-aos="grayscale">
 		<div class="media-container">
 			<?php if ( 'image' === $media_type && $img_1 ) : ?>
-				<?php echo the_image( $img_1['id'], 'img-bg z-n1 object-fit-cover position-absolute top-0 h-100 ' . $double, 'style="object-position: ' . esc_attr( $img_1['left'] ) . '% ' . esc_attr( $img_1['top'] ) . '%; transform: scale(' . esc_attr( $img_1_scale ) . '%);"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo the_image( $img_1['id'], 'img-bg z-n1 object-fit-cover position-absolute top-0 h-100 ' . $double, 'style="object-position: ' . esc_attr( $img_1['left'] ) . '% ' . esc_attr( $img_1['top'] ) . '%; transform: scale(' . esc_attr( $img_1_scale ) . '%);" sizes="' . esc_attr( citcom_image_sizes( 'col-12 col-md-6' ) ) . '"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php if ( $img_2 ) : ?>
-					<?php echo the_image( $img_2['id'], 'img-bg double z-n1 object-fit-cover position-absolute top-0 h-100 end-0', 'style="object-position: ' . esc_attr( $img_2['left'] ) . '% ' . esc_attr( $img_2['top'] ) . '%; transform: scale(' . esc_attr( $img_2_scale ) . '%);"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php echo the_image( $img_2['id'], 'img-bg double z-n1 object-fit-cover position-absolute top-0 h-100 end-0', 'style="object-position: ' . esc_attr( $img_2['left'] ) . '% ' . esc_attr( $img_2['top'] ) . '%; transform: scale(' . esc_attr( $img_2_scale ) . '%);" sizes="' . esc_attr( citcom_image_sizes( 'col-12 col-md-6' ) ) . '"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php endif; ?>
 			<?php endif; ?>
 		</div>

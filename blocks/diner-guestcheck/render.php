@@ -48,7 +48,7 @@ $card_fallback = CITCOM_THEME_URI . '/assets/img/diner/guest-check.webp';
 		<div class="diner-guestcheck-card-aos" data-aos="fade-up">
 			<div class="diner-guestcheck-card">
 				<?php if ( $card_image ) : ?>
-					<?php echo the_image( $card_image['id'] ?? $card_image['ID'] ?? 0, 'diner-guestcheck-card-img' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php echo the_image( $card_image['id'] ?? $card_image['ID'] ?? 0, 'diner-guestcheck-card-img', 'sizes="(min-width: 768px) 480px, 90vw"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php else : ?>
 					<img src="<?php echo esc_url( $card_fallback ); ?>" class="diner-guestcheck-card-img" alt="">
 				<?php endif; ?>

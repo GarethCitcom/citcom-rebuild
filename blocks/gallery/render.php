@@ -126,7 +126,7 @@ $max        = $max_images[ $style ] ?? 6;
 					?>
 					<div class="col-12 <?php echo esc_attr( $layout[ 'col_' . $i ] ?? '' ); ?>">
 						<div class="img-container bg-default rounded-3 overflow-hidden position-relative h-100 w-100">
-							<?php echo the_image( $id, 'img-bg z-1 object-fit-cover  w-100 h-100', 'style="object-position: ' . esc_attr( $top ) . '% ' . esc_attr( $left ) . '%;"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<?php echo the_image( $id, 'img-bg z-1 object-fit-cover  w-100 h-100', 'style="object-position: ' . esc_attr( $top ) . '% ' . esc_attr( $left ) . '%;" sizes="' . esc_attr( citcom_image_sizes( $layout[ 'col_' . $i ] ?? 'col-12' ) ) . '"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</div>
 					</div>
 					<?php

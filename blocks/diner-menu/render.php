@@ -31,10 +31,10 @@ $bleed_end   = is_array( $fields['bleed_end'] ?? null ) ? $fields['bleed_end'] :
 <section <?php echo $attrs['anchor_attr']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> class="flex-diner_menu diner-dots <?php echo esc_attr( $attrs['classes'] ); ?>" data-index="<?php echo (int) $index; ?>">
 
 	<?php if ( $bleed_start ) : ?>
-		<?php echo the_image( $bleed_start['id'] ?? $bleed_start['ID'] ?? 0, 'diner-menu-bleed diner-menu-bleed-start', 'aria-hidden="true"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php echo the_image( $bleed_start['id'] ?? $bleed_start['ID'] ?? 0, 'diner-menu-bleed diner-menu-bleed-start', 'aria-hidden="true" sizes="200px"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	<?php endif; ?>
 	<?php if ( $bleed_end ) : ?>
-		<?php echo the_image( $bleed_end['id'] ?? $bleed_end['ID'] ?? 0, 'diner-menu-bleed diner-menu-bleed-end', 'aria-hidden="true"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php echo the_image( $bleed_end['id'] ?? $bleed_end['ID'] ?? 0, 'diner-menu-bleed diner-menu-bleed-end', 'aria-hidden="true" sizes="200px"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	<?php endif; ?>
 
 	<?php if ( $heading ) : ?>
@@ -68,7 +68,7 @@ $bleed_end   = is_array( $fields['bleed_end'] ?? null ) ? $fields['bleed_end'] :
 				?>
 				<<?php echo $card_tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php echo $card_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 					<?php if ( $card_image ) : ?>
-						<?php echo the_image( $card_image['id'] ?? $card_image['ID'] ?? 0, 'diner-menu-shot', $style ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<?php echo the_image( $card_image['id'] ?? $card_image['ID'] ?? 0, 'diner-menu-shot', $style . ' sizes="(min-width: 768px) 450px, 350px"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 					<?php if ( ! empty( $card['label'] ) ) : ?>
 						<p class="diner-menu-label fw-same"><?php echo esc_html( $card['label'] ); ?></p>

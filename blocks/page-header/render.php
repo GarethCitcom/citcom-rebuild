@@ -75,7 +75,7 @@ $index      = citcom_block_index();
 	<div class="page-header w-100">
 		<?php if ( 'image' === $type ) : ?>
 			<div class="header-bg position-absolute z-0 start-0 top-0 end-0 bottom-0">
-				<?php echo the_image( $bg_image_id, 'img-bg z-n1 object-fit-cover position-absolute top-0 start-0 w-100 h-100', 'style="object-position: ' . esc_attr( $bg_image_left ) . '% ' . esc_attr( $bg_image_top ) . '%;"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo the_image( $bg_image_id, 'img-bg z-n1 object-fit-cover position-absolute top-0 start-0 w-100 h-100', 'style="object-position: ' . esc_attr( $bg_image_left ) . '% ' . esc_attr( $bg_image_top ) . '%;" sizes="100vw"' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</div>
 			<div class="pattern position-absolute z-1 start-0 top-0 end-0 bottom-0" data-aos="zoom-out"></div>
 		<?php endif; ?>
