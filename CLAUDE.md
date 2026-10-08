@@ -92,6 +92,11 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   classes); carousel slides past the second go through `citcom_defer_image()`
   because Chrome fetches lazy images inside an overflow:hidden carousel
   anyway (docs/05-phase4-brief.md).
+- Critical CSS: `assets/critical/<template>.css` is inlined and the theme's
+  stylesheets load without blocking. After changing styles, regenerate with
+  `node tools/critical-css.mjs --base http://127.0.0.1:8899 --out assets/critical`
+  (against a site with real content) and commit the files. Scripts that
+  measure layout must run inside `stylesReady()` (src/js/fx.js).
 - Compiled output goes to `build/` (git-ignored on main). GitHub Actions
   (`.github/workflows/deploy.yml`) builds on every push to main and publishes
   source plus `build/` as one force-pushed commit on the `deploy` branch under
@@ -107,6 +112,10 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   `docs/00-discovery.md`). Pixel-identical is the bar; any band that changes
   height, or a page over about 0.5% in aligned pixels, needs explaining.
   Compare markup as well: the two methods find different things.
+- Speed: `bash tools/lighthouse.sh <out> <urls>` (one run) or
+  `bash tools/lighthouse-median.sh <out> <urls>` then
+  `node tools/lighthouse-median.mjs <out>` (three runs, medians). Run them
+  with nothing else using the CPU: Lighthouse scales observed CPU time.
 - SEO tags: `node tools/seo-snapshot.mjs capture` before and after anything
   that touches `<head>` or the SEO plugin, then `diff` (docs/04-seopress.md).
 - PHP: `composer install` once, then `composer phpcs` (WordPress-Extra,

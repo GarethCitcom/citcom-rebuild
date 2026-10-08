@@ -71,13 +71,62 @@ Trustindex, Font Awesome) wait for Gareth's decision.
 - Theme photos re-encoded at the sizes they are shown: the diner story photo
   499KB to 263KB, the guest check 288KB to 125KB, the two sign fallbacks
   139KB and 162KB to about 70KB. The two grain textures compress no further
-  and were left alone.
+  as JPEG and WebP, so they get an AVIF copy through `image-set()` (87KB and
+  107KB in place of 206KB and 362KB) where the browser understands it.
+- Critical CSS (`tools/critical-css.mjs`, `assets/critical/<template>.css`,
+  `docs/critical-urls.txt`): the rules each page type's first screen needs,
+  8 to 13KB gzipped, inlined by `citcom_critical_css()`; every theme
+  stylesheet then loads as preload + swap with a noscript fallback. The
+  matcher keeps, besides what is in the first screen: hidden elements (their
+  hiding rule), `:root` whatever its size, and everything inside a flex or
+  grid item that starts in the first screen (its contents set the item's
+  minimum width, so a missing rule far down the sidebar moved the first
+  screen). Each of those was a layout shift found by Lighthouse before it was
+  a rule. Regenerate after changing styles: `node tools/critical-css.mjs
+  --base http://127.0.0.1:8899 --out assets/critical`.
+- Scripts that measure layout at DOMContentLoaded (header height, nav pill,
+  equal heights, scroll spy) wait for the deferred stylesheet
+  (`stylesReady()` in `src/js/fx.js`).
+- The kit's five woff2 files are preloaded, the list read from the kit CSS
+  and cached for a day (`citcom_typekit_font_urls()`), so text is set in the
+  right font at first paint.
+- The first three listing cards load eagerly, the first with
+  `fetchpriority="high"`: it is the archive pages' LCP element.
+- The diner hero video carries its dimensions; without them it laid out at
+  300x150 until its metadata arrived and pushed the page down 82px on a
+  phone.
+- Held-back carousel slides use `data-citcom-src`: ShortPixel's script reads
+  `data-src` as a lazy-load convention and fetched every slide at full size.
 - Checked: every page type on the local copy with no console errors; the
   carousel, header shrink, nav pill, offcanvas and its sub-menu slide, load
   more, services scroll spy, staff card hover and the video players all
-  behave as before; the screenshot comparison with `.baseline/old` (results
-  below).
+  behave as before; the screenshot comparison of staging with `.baseline/old`
+  after the first deploy: 246 pairs, every difference either the known ones
+  (footer link, retired pages, Trustindex and forms on the packages pages)
+  or content that changed since the baseline (the new M&S post in the blog
+  listings and on the home page).
 
 ## Results
 
-Filled in after the deploy to staging.
+Lighthouse 13, three runs each, medians (`tools/lighthouse-median.sh` and
+`tools/lighthouse-median.mjs`), staging, 2026-10-08:
+
+| Page | Desktop LCP (was) | Mobile LCP (was) | Mobile score (was) | Desktop CLS | Mobile CLS |
+|---|---|---|---|---|---|
+| Home | 2.30s (2.2s) | 12.03s (11.1s) | 55 (58) | 0.000 | 0.000 |
+| /services/creative/ | 1.66s (2.5s) | 8.55s (11.0s) | 69 (67) | 0.000 | 0.000 |
+| /case-studies/ | 1.43s (1.6s) | 7.51s (7.8s) | 67 (72) | 0.001 | 0.000 |
+| Blog post | 1.36s (1.8s) | 7.10s (3.6s) | 65 (89) | 0.052 | 0.000 |
+
+The baseline was one run each; these are medians of three, and single runs
+on staging swing by a second or more on mobile.
+
+What is left on mobile is bytes on a simulated 1.6Mbps connection, and the
+theme no longer owns most of them: the ChatCom widget (288KB of script and
+two fonts on every page), the home page video (1.5MB), the Adobe fonts
+(150KB; `font-display` is set in the Adobe Fonts project), Trustindex and
+the Font Awesome kit. Those are items 2 and 3 of the plan, waiting for
+Gareth's decision. Theme-side follow-ups, smaller: a metric-matched fallback
+font (`size-adjust`) would remove the last of the home page's layout shift
+(0.08, from the body copy reflowing when the web font arrives); the texture
+images could go through the image CDN like the photos.
