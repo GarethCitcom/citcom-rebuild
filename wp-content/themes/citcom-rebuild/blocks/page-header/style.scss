@@ -1,0 +1,43 @@
+// citcom/page-header: port of assets/_dev/scss/flexContent/page-header.scss.
+// Loaded only on pages that contain the block (block.json "style").
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+
+.flex-page_header{
+    height: 100%;
+    min-height: 22rem;
+    @include transition(all,0.3s);
+    .page-header{
+        overflow: hidden;
+        .page-header-title{
+            width: fit-content;
+            max-width: calc(2000px + 66.66666%);
+            padding-top: 1.5rem;
+            padding-bottom: 2rem;
+            padding-right: 4rem;
+            margin: 0;
+            margin-left: -2000px;
+            padding-left: 2000px;
+            @include media-breakpoint-down(xl) {
+                padding-left: calc(2000px + #{$page_padding_xl});
+            }
+            @include media-breakpoint-down(lg) {
+                padding-left: calc(2000px + #{$page_padding_lg});
+                max-width: calc(2000px + 86.66666%);
+            }
+            @include media-breakpoint-down(md) {
+                max-width: calc(2000px + 96.66666%);
+            }
+            @include media-breakpoint-down(sm) {
+                padding-left: calc(2000px + #{$page_padding_xl});
+                max-width: calc(2000px + 96.66666%);
+            }
+        }
+    }
+    &.type-image{
+        min-height: calc(95vh - var(--header-height));
+    }
+    @include media-breakpoint-down(xl) {
+        padding-left: 0;
+    }
+}

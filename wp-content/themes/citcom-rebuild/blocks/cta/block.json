@@ -1,0 +1,35 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/cta",
+	"title": "Call To Action",
+	"description": "Gradient call to action: text and buttons, contact form, social links or newsletter sign-up.",
+	"category": "citcom",
+	"icon": "megaphone",
+	"keywords": [ "cta", "call to action", "button", "form", "newsletter", "social" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [ "page", "service", "case-study", "landing-page", "template" ],
+		"usePostMeta": false
+	},
+	"example": {
+		"attributes": {
+			"mode": "preview",
+			"data": {
+				"type_of_cta": "button",
+				"content": "<h2>Got a brief? Contact us today!</h2>",
+				"button": { "title": "Contact Us", "url": "#", "target": "" }
+			}
+		}
+	}
+}

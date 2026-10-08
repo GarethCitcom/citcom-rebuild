@@ -1,0 +1,24 @@
+{
+    "key": "group_citcom_editor",
+    "title": "Block: Editor",
+    "fields": [],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "citcom/editor"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "The old editor layout's only field was a clone of the block editor field (field_66017a69d6a0a); its content is now the block's inner blocks. Section settings come from the shared group.",
+    "show_in_rest": 0,
+    "modified": 1790610000
+}

@@ -1,0 +1,598 @@
+// citcom/diner-guestcheck: port of assets/_dev/scss/flexContent/diner-guestcheck.scss.
+// Shared diner rules come from the "citcom-diner" style (src/scss/diner.scss).
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+@import "../../src/scss/blocks/diner-vars";
+
+// Diner guest check + form — receipt-styled card next to a live contact
+// form, chequer-bordered top and bottom.
+//
+// Built from real Figma screenshots + the guest check artwork extracted at full
+// resolution from the .fig zip's embedded images (see diner_guestcheck.php's own
+// header comment and working-memory.md) — positions/sizes below are still eyeballed
+// off those screenshots, not measured fig values, same caveat as every other diner
+// section. Treat as a first pass to be corrected against the live page.
+.flex-diner_guestcheck{
+    position: relative;
+    // The stamp overhangs the top-right corner, same overhang device as
+    // .diner-story-stamp/.diner-wall's former one.
+    overflow: visible;
+    // Reserves the space the (now absolutely positioned, see below) chequer edges
+    // sit within, so .diner-guestcheck-inner's own flow content still clears them.
+    padding-block: $diner_chequer_strip_height;
+
+    // Chequer band, top and bottom — absolutely positioned against the SECTION
+    // (not in flow, not its own solid-white strip) with transparent gaps, same
+    // "print over what's underneath" device .diner-story-edge uses, except here
+    // what's underneath is this section's own .diner-dots halftone background
+    // rather than a photo/dark panel. Corrected 2026-08-24 from a first pass that
+    // gave the band its own solid $light fill in flow, which read as a separate bar
+    // sitting outside the section rather than part of the same continuous surface —
+    // transparent + absolute lets the halftone dots show through the gaps and
+    // continue underneath, same as they do everywhere else in the section.
+    //
+    // Switched 2026-08-25 to the same real design asset diner_story uses
+    // (chequer-strip.svg, at its native undistorted 1920:100 scale with repeat-x —
+    // see diner-story.scss's .diner-story-edge for the full reasoning) instead of
+    // the hand-built check-starfruit.svg tile this started with. No more md-down
+    // size reduction either, same as diner_story — the asset holds a fixed real
+    // scale at every breakpoint now rather than being distorted down for mobile.
+    //
+    // Switched again 2026-09-01 to chequer-strip-tile.svg (a 200x100 seamless crop
+    // of the same pattern) — the full 1920-wide asset left a visible seam every
+    // 1920px once `repeat-x` needed a second copy, since 1920 isn't a whole
+    // multiple of the checkerboard's own pitch. See diner-shared.scss's
+    // $diner_chequer_strip_height comment for the full story.
+    .diner-guestcheck-edge{
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: 2;
+        height: $diner_chequer_strip_height;
+        background-color: transparent;
+        background-image: url('../../assets/img/diner/chequer-strip-tile.svg');
+        background-repeat: repeat-x;
+        background-position: left top;
+        background-size: ($diner_chequer_strip_height * 2) $diner_chequer_strip_height;
+
+        // Same device as .diner-story-edge::before: the crumpled-paper grain
+        // .diner-grain uses elsewhere, masked with the same strip asset so the
+        // grain only shows inside the green squares themselves, not the white gaps.
+        // (Re-saved 2026-09-01 to force a fresh Prepros compile — see working-memory.md's
+        // "two edits saved in quick succession can lose the second one" gotcha; this
+        // rule's mask-image/mask-size briefly stayed on the stale chequer-strip.svg
+        // reference after the first pass at this fix.)
+        &::before{
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('../../assets/img/diner/texture-multiply.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            mix-blend-mode: multiply;
+            opacity: 0.42;
+            -webkit-mask-image: url('../../assets/img/diner/chequer-strip-tile.svg');
+            mask-image: url('../../assets/img/diner/chequer-strip-tile.svg');
+            -webkit-mask-mode: alpha;
+            mask-mode: alpha;
+            -webkit-mask-repeat: repeat-x;
+            mask-repeat: repeat-x;
+            -webkit-mask-position: left top;
+            mask-position: left top;
+            -webkit-mask-size: ($diner_chequer_strip_height * 2) $diner_chequer_strip_height;
+            mask-size: ($diner_chequer_strip_height * 2) $diner_chequer_strip_height;
+            pointer-events: none;
+        }
+
+        &.diner-guestcheck-edge-top{
+            top: 0;
+        }
+        &.diner-guestcheck-edge-bottom{
+            bottom: 0;
+        }
+    }
+
+    .diner-guestcheck-inner{
+        position: relative;
+        max-width: min(1197px, 92vw);
+        margin-inline: auto;
+        padding-block: clamp(48px, 6vw, 96px);
+        display: grid;
+        grid-template-columns: minmax(240px, 420px) 1fr;
+        align-items: center;
+        // Widened from the original clamp(32px, 6vw, 96px) so the bigger card
+        // (see .diner-guestcheck-card below) still clears the form column
+        // comfortably once its rotation is accounted for.
+        gap: clamp(48px, 10vw, 140px);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+            justify-items: center;
+            // Floor lowered from 48px — on the stacked mobile layout this
+            // padding stacks with the stamp's own margin-bottom below it before
+            // anything else appears, which read as too much empty space between
+            // the chequer band and the stamp on a narrow screen.
+            padding-block: clamp(20px, 6vw, 96px);
+            // Zeroed per direct feedback: on the single-column stack this `gap`
+            // (sized for the desktop card/form COLUMN gap, up to 140px) was
+            // adding on top of .diner-guestcheck-stamp's own margin-bottom,
+            // still leaving a large row gap between the stamp and the card even
+            // after that margin was cut down. Grid `gap` applies uniformly to
+            // every row, so it couldn't be reduced just for that one pair
+            // without also shrinking the card→form gap, which hadn't been
+            // flagged — spacing there is preserved explicitly below instead
+            // (.diner-guestcheck-card-aos's own margin-bottom), so only the
+            // stamp→card gap actually changes.
+            gap: 0;
+        }
+    }
+
+    // The card is a single pre-composited image (guest-check.webp — the "GUEST
+    // CHECK" heading, ruled lines, field boxes, coffee stain and "Thank You!" are all
+    // baked in), tilted and drop-shadowed as one unit so the live text overlay tilts
+    // with it rather than sitting crooked against a straight box.
+    //
+    // Sized off its own width (not the form's height) — an earlier attempt to
+    // stretch this to literally match the form column's height via `height: 100%`
+    // + `aspect-ratio` + `max-width` together produced real distortion (measured
+    // on the live page: the green body area rendered ~993px tall by only ~599px
+    // wide, nowhere near the source image's actual 1240:1486 ratio), not just a
+    // bigger card — that three-way combination doesn't resolve reliably here.
+    // Width-driven sizing can't distort like that (height always follows the
+    // image's own natural ratio), so this trades exact height-matching for
+    // guaranteed-correct proportions, just sized generously (420px, up from the
+    // original 380px) to still read as bigger/closer to the form's height.
+    .diner-guestcheck-card-aos{
+        // Replaces the row-gap .diner-guestcheck-inner's own `gap` used to provide
+        // between this and .diner-guestcheck-form-wrap before that `gap` was
+        // zeroed on the stacked layout (see .diner-guestcheck-inner's
+        // down(lg) block) — same clamp values, so the card→form spacing itself
+        // is unchanged, only the stamp→card gap above it actually shrank.
+        // (Re-saved to force a fresh Prepros compile — see working-memory.md's
+        // "two edits saved in quick succession can lose the second one" gotcha.)
+        @include media-breakpoint-down(lg) {
+            margin-bottom: clamp(48px, 10vw, 140px);
+        }
+    }
+
+    .diner-guestcheck-card{
+        position: relative;
+        width: 100%;
+        max-width: 420px;
+        // Negative, not the Figma panel's literal +6.18 — confirmed against the
+        // reference screenshot that the card tilts the opposite way on screen
+        // (right edge higher, left edge lower), despite Figma reporting a
+        // positive value there.
+        transform: rotate(-6.18deg);
+
+        @include media-breakpoint-down(lg) {
+            max-width: 320px;
+        }
+    }
+
+    .diner-guestcheck-card-img{
+        display: block;
+        width: 100%;
+        height: auto;
+        box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.25);
+    }
+
+    // Positioned against the card's own ruled/green area (roughly the middle third
+    // of the artwork's height) — eyeballed off the reference screenshot, not
+    // measured against the source image's own pixel bounds.
+    .diner-guestcheck-card-overlay{
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        // Centred within the green ruled area specifically, not the whole card —
+        // padding-top/bottom bound this box to exactly that zone, measured
+        // directly off guest-check.webp's own pixels (a vertical scan down the
+        // image's own centre column, requiring a run of consecutive green pixels
+        // to avoid stray coffee-stain/anti-aliasing outliers): the green fill
+        // runs 21.9%–83.6% of the card's height, so padding-bottom is
+        // 100-83.6=16.4%. justify-content: center then splits that exact zone
+        // evenly, rather than guessing at a top offset.
+        justify-content: center;
+        text-align: center;
+        padding: 21.9% 14% 16.4%;
+        pointer-events: none;
+    }
+
+    // "Ready to Order?" — same Chonky display face as .diner-menu-heading/
+    // .diner-wall-script. Purple fill with a white outline (per the Figma layer
+    // panel: fill #1C0221, 3px white stroke), same -webkit-text-stroke technique
+    // as .diner-wall-script/.diner-intro-heading-accent elsewhere on this page —
+    // paint-order keeps the stroke from eating into the letterforms' counters.
+    .diner-guestcheck-card-heading{
+        margin: 0 0 0.35em;
+        // Forces the "Ready to" / "Order?" break the reference shows, via width
+        // rather than a hardcoded <br> — matches how Figma itself achieves it (its
+        // own text box is a fixed 383.906px against a 654.107px-wide card, ~58.7%;
+        // this is that same fraction re-expressed against .diner-guestcheck-card-
+        // overlay's own content box, which is already inset 14% each side by its
+        // padding, i.e. 72% of the card: 58.7/72 ≈ 81.5%). Relies on the default
+        // "Ready to Order?" copy wrapping at the right word at this width — if the
+        // ACF field's text is ever changed, re-check this still breaks sensibly.
+        max-width: 65%;
+        font-family: var(--diner-display, #{'Chonky'}), forma-djr-micro, Arial, Helvetica, sans-serif;
+        font-weight: 400 !important;
+        font-style: normal;
+        line-height: 1;
+        // Floor raised from 1.6rem — below ~753px viewport width the old floor
+        // was already the flat minimum (3.4vw drops under it), and per direct
+        // feedback that was too small to read comfortably from ~999px down.
+        font-size: clamp(2rem, 3.4vw, 2.4rem);
+        color: var(--brand-primary);
+        -webkit-text-stroke-width: max(1.5px, 0.043em);
+        -webkit-text-stroke-color: $light;
+        paint-order: stroke fill;
+    }
+
+    .diner-guestcheck-card-content{
+        margin: 0;
+        // Forces the "...and one" / "of our chefs..." break shown in the
+        // reference, same width-constraint technique as the heading above rather
+        // than a hardcoded <br> — tuned against the live render, not measured off
+        // a Figma text-box value this time.
+        // Widened from 62% — the bigger floor/max font-size below needs a
+        // little more room to keep breaking at "...and one" / "of our
+        // chefs..." on two lines instead of three, even on desktop.
+        max-width: 68%;
+        // Widened further just for the stacked mobile layout (down(lg), where the card
+        // switches to a fixed 320px width instead of scaling with the form) —
+        // the bigger floor font-size above needs more relative room to keep
+        // breaking at "...and one" / "of our chefs..." rather than wrapping to
+        // a third line, which is what 62% alone produced there once the floor
+        // grew.
+        @include media-breakpoint-down(lg) {
+            max-width: 82%;
+        }
+        // Matched to the guest-check artwork's own ruled-line pitch (measured
+        // directly off guest-check.webp: horizontal rules repeat every 70px on a
+        // 1486px-tall/1240px-wide image, ≈5.6% of the card's width) so each of the
+        // two text lines reads as sitting on its own ruled row rather than a
+        // generic paragraph line-height that happens not to match the printed
+        // lines underneath. Unitless (not px/vw) so it stays proportional to
+        // whatever font-size this clamp() resolves to at any viewport, the same
+        // way the artwork's own line-spacing:font-size ratio is fixed.
+        line-height: 1.5;
+        // Floor raised from 0.82rem (and max nudged up slightly too, so there's
+        // still some scaling room left rather than going flat) — the old floor
+        // was already kicking in around ~1009px viewport width (1.3vw drops
+        // under 0.82rem there), right at the "999px and smaller" range flagged
+        // as hard to read.
+        font-size: clamp(1rem, 1.30vw, 1.1rem);
+        color: var(--brand-primary);
+        // The line-height above centres each line within its ruled row by
+        // default (equal leading top and bottom); nudged up slightly so there's
+        // visible clear space between the text and the ruled line directly below
+        // it instead, reading more like handwriting sitting just above a rule
+        // rather than straddling it. em-based so it scales with the font-size.
+        transform: translateY(-0.2em);
+    }
+
+    // Real artwork (working-folder/Arrow.svg, bundled as arrow.svg) rather than
+    // the earlier "&rarr;" text glyph — already exported in --brand-primary, so
+    // no colour work needed, just sizing/spacing as an <img> instead of text.
+    .diner-guestcheck-card-arrow{
+        display: block;
+        margin: 0.5em auto 0;
+        width: 1.6em;
+        height: auto;
+    }
+
+    .diner-guestcheck-form-wrap{
+        position: relative;
+        width: 100%;
+        max-width: 460px;
+    }
+
+    // Unlike .diner-story-stamp/.diner-wall's former one, this instance sits fully
+    // inside the section's own open space (between the chequer band above and the
+    // form below) rather than overhanging a section boundary — matches the
+    // reference screenshot, which shows clear gaps on every side of the stamp.
+    //
+    // Horizontal clearance from the Name field went through two wrong attempts
+    // before this one: a viewport-scaled negative `right` worked at 1400px but
+    // still collided with the field at narrower desktop widths near the lg
+    // breakpoint (confirmed on a real screenshot at 1040px) — the needed push
+    // depends on the card column + gap's own width, which shrinks
+    // unpredictably as the viewport narrows, so no single vw-based formula could
+    // track it. Nesting the stamp inside .diner-guestcheck-form-wrap to anchor it
+    // to the field's own box directly was tried next, but that broke `order: -1`
+    // below (order only reorders DIRECT flex/grid children, and nesting moved the
+    // stamp out from being a direct child of the grid) — order is what puts the
+    // stamp visually first on the stacked mobile layout, so that regressed it.
+    // Landed on: keep the stamp a direct sibling of .diner-guestcheck-form-wrap
+    // (so `order` keeps working), anchor `right` to the GRID's own right edge —
+    // 0, always exactly the same for both the stamp and the field, since the
+    // field can never render past the grid's own edge either.
+    //
+    // **Fixed 2026-08-26**: the clearance push used to be `translateX(52%)` (a
+    // fraction of the STAMP'S OWN width). That cleared the Name field fine at wide
+    // desktop, but pushes the stamp right by a flat 52% of up to 212px (~110px)
+    // regardless of how much room actually exists outside `.diner-guestcheck-inner`
+    // — which is only inset `4vw` from the true viewport edge whenever its own
+    // `min(1197px, 92vw)` cap is being limited by the `92vw` side, i.e. anywhere
+    // below ~1301px wide. Through most of the `lg`-up desktop range that real
+    // inset (well under 110px) is smaller than the push, so the stamp was
+    // overhanging straight off the actual page edge rather than just past the
+    // grid's own edge as intended — confirmed via a user screenshot showing the
+    // star sticking out past the viewport in the form section.
+    // Replaced with a `right` computed as a fraction of `.diner-guestcheck-inner`'s
+    // own real inset from the viewport (`(100vw - min(1197px, 92vw)) / 2`), capped
+    // at 75% of that inset so there's always a safety margin and the push can
+    // never reach, let alone pass, the true viewport edge — and since it's
+    // expressed directly in vw terms, it shrinks smoothly as the viewport narrows
+    // the same way `--diner-stamp` itself does, rather than being a fixed
+    // fraction of a box that only starts shrinking once it drops below the 212px
+    // cap.
+    //
+    // **2026-09-02**: briefly replaced entirely with a top-left placement +
+    // reserved-padding approach after a reported overlap at 1049px wide. Reverted
+    // 2026-09-03 per direct request — the top-right position (this rule) is kept
+    // for lg-and-up; only the already-separate stacked mobile/tablet layout below
+    // (`media-breakpoint-down(lg)`, which never used left/right at all) counts as
+    // "smaller viewports" here, so the 1049px case is knowingly left as-is.
+    .diner-guestcheck-stamp{
+        // Matched to .diner-intro-stamp/.diner-story-stamp's own size — 212px in
+        // the design (confirmed against all three sections' own Figma layer
+        // panels) — per direct feedback that all three stars should render at
+        // the same size. This is bigger than the min(130px, 13vw) this instance
+        // used before (deliberately shrunk earlier to clear the Name field).
+        // See diner-shared.scss's $diner_stamp_size for the shared shrink formula.
+        --diner-stamp: #{$diner_stamp_size};
+
+        position: absolute;
+        // .diner-stamp itself has no intrinsic size — every other caller
+        // (.diner-story-stamp etc) turns --diner-stamp into a real box this way;
+        // missing this made the stamp render at ~0 size, which is what was
+        // actually squashing it into the chequer band, not a position problem.
+        width: var(--diner-stamp);
+        height: var(--diner-stamp);
+        top: clamp(16px, 2.5vw, 32px);
+        // 75% of .diner-guestcheck-inner's own real inset from the viewport edge —
+        // see the comment above this ruleset for the full derivation/reasoning.
+        right: calc((min(1197px, 92vw) - 100vw) * 0.375);
+        transform: rotate(8deg);
+        z-index: 3;
+
+        @include media-breakpoint-down(lg) {
+            position: relative;
+            top: auto;
+            right: auto;
+            // Overrides .diner-guestcheck-inner's own `justify-items: center` (see
+            // that rule above) for just this grid item — per direct request the
+            // stamp should sit left-aligned on the stacked layout, not centred
+            // like the card/form below it.
+            justify-self: start;
+            // Floor lowered from 24px, same reason as .diner-guestcheck-inner's
+            // own padding-block reduction just above — the two stacked was
+            // reading as too much dead space before the card on narrow screens.
+            // Cut further (was clamp(12px, 4vw, 40px)) per direct feedback that
+            // the gap to the card below still read as too much even after that
+            // first pass — no horizontal auto margin now that justify-self
+            // handles alignment instead.
+            margin: 0 0 clamp(8px, 2vw, 20px);
+            transform: none;
+            order: -1;
+        }
+    }
+
+    // The form's markup restyled to the design's pill inputs on a light grey
+    // fill. The form was Forminator's when these rules were written and is now
+    // the theme's "plain" variant (inc/forms-fields.php), which keeps the same
+    // structure under citcom-form-* class names; the notes below that mention
+    // Forminator's base CSS are the old theme's history.
+    .diner-guestcheck-form{
+        .citcom-form-label{
+            margin-bottom: 0.4em;
+            color: var(--brand-primary);
+            @include forma(400);
+        }
+
+        .citcom-form-input{
+            width: 100%;
+            border: none;
+            border-radius: 999px;
+            background-color: var(--brand-default);
+            padding: 0.75em 1.25em;
+        }
+
+        .citcom-form-textarea{
+            width: 100%;
+            border: none;
+            border-radius: 20px;
+            background-color: var(--brand-default);
+            padding: 0.75em 1.25em;
+            min-height: 8em;
+            resize: vertical;
+        }
+
+        // ROOT CAUSE finally confirmed 2026-08-24 via a headless-Chrome screenshot
+        // (this dev environment turned out to have a real Chrome install usable
+        // with --headless=new --screenshot — see working-memory.md, worth
+        // remembering for future sections instead of assuming no visual
+        // verification is possible at all) plus an isolated test fixture: the
+        // white square being reported was never the styled `.citcom-form-checkbox-
+        // box` span at all. It's Forminator's real `<input type="checkbox">`,
+        // which is SUPPOSED to be visually hidden by Forminator's own base CSS but
+        // wasn't rendering hidden in this context — and separately, the decorative
+        // span itself was collapsing to ~0 width because its own `flex:0 0 20px`
+        // (which depends on `.citcom-form-checkbox` actually being `display:flex`)
+        // also wasn't taking effect. Both confirmed by forcing debug outlines/
+        // dimensions in isolation: a red outline on the span showed only a 1px
+        // sliver, and forcing explicit width turned up a SECOND, separate visible
+        // box next to the native input. Never fully root-caused which competing
+        // rule wins that fight (Bootstrap's global `label{display:inline-block}`
+        // was the closest suspect, but it's lower-specificity than
+        // `.citcom-form-checkbox{display:flex}` and shouldn't actually win) — fixed
+        // pragmatically instead by making this section's checkbox entirely
+        // self-sufficient: hide the input and size/colour the box explicitly
+        // ourselves rather than depending on Forminator's own equivalent rules to
+        // cascade correctly. Also fixes the "spacing isn't right" complaint (the
+        // box and label were touching) the same way, via a real flex `gap` instead
+        // of depending on Forminator's `~span{margin-left:10px}` sibling rule,
+        // which wasn't applying for the same underlying reason.
+        .citcom-form-checkbox{
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            // Forminator's own base CSS sets `pointer-events: none` here,
+            // relying on its own `.citcom-form-checkbox span{pointer-events:
+            // all}` to re-enable clicking on the child spans — the same kind
+            // of unscoped base rule that's already been confirmed NOT
+            // reliably applying in this section three separate times (input-
+            // hiding, box-sizing, the checkmark's content/position). Rather
+            // than assume this one is fine, set it back to auto ourselves so
+            // the whole tap target works regardless — cheap insurance,
+            // directly relevant to taps/clicks actually registering.
+            pointer-events: auto !important;
+        }
+
+        .citcom-form-checkbox-box,
+        .citcom-form-checkbox-label{
+            pointer-events: auto !important;
+        }
+
+        .citcom-form-checkbox input[type="checkbox"]{
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            overflow: hidden !important;
+            clip: rect(0 0 0 0) !important;
+            clip-path: inset(50%) !important;
+            white-space: nowrap !important;
+            border: 0 !important;
+            padding: 0 !important;
+            margin: -1px !important;
+        }
+
+        .citcom-form-checkbox-box{
+            display: inline-block !important;
+            flex: 0 0 20px !important;
+            width: 20px !important;
+            height: 20px !important;
+            border: 1px solid var(--brand-default) !important;
+            border-radius: 5px !important;
+            background-color: var(--brand-default) !important;
+            color: var(--brand-primary) !important;
+            // Forminator's own checked-state indicator relies on its
+            // `.citcom-form-checkbox-box:before` ("✓", revealed via `input:
+            // checked + .citcom-form-checkbox-box:before{opacity:1}") — checked
+            // via CDP (getComputedStyle(box, '::before') with the input's own
+            // `checked` property forced true): the opacity:1 reveal rule DOES
+            // fire, but `content` computes to `none` and `position` to `static`
+            // instead of Forminator's own declared "✓"/absolute — something
+            // about this context stops that base rule applying at all, never
+            // fully root-caused (same class of "reasoned-correct CSS not
+            // matching real behaviour" this section has hit before with
+            // mask-image). Needs its own `position: relative` for the reasons
+            // below, which computed as `static` too — one more sign the box
+            // wasn't getting Forminator's base rules at all here.
+            position: relative !important;
+        }
+
+        // Bypasses Forminator's own broken checkmark entirely rather than
+        // chasing why its rule won't apply — draws the tick ourselves, fully
+        // under our own control, same "make it self-sufficient" approach
+        // already used for hiding the native input and sizing this box.
+        .citcom-form-checkbox-box::before{
+            content: "\2713" !important;
+            position: absolute !important;
+            inset: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 14px !important;
+            line-height: 1 !important;
+            color: var(--brand-primary) !important;
+            opacity: 0 !important;
+            transition: opacity 0.2s ease !important;
+        }
+
+        .citcom-form-checkbox input[type="checkbox"]:checked ~ .citcom-form-checkbox-box::before{
+            opacity: 1 !important;
+        }
+
+        .citcom-form-checkbox-label{
+            color: var(--brand-primary);
+        }
+
+        .citcom-form-description{
+            font-size: 0.75rem;
+            color: var(--brand-primary-lighter);
+        }
+
+        // Same texture + gradient treatment as .diner-btn-gradient (primary to
+        // persian), applied directly to Forminator's own submit button rather than
+        // routing it through diner_button() — this is a native <button>, not the
+        // pill CTA anchor component. Hover uses the identical crossfade trick
+        // .diner-btn-gradient's own hover uses: background-image can't be
+        // transitioned by the browser (it just snaps), so the swap to a solid
+        // brand-primary purple crossfades in via this ::before's opacity instead.
+        //
+        // `isolation: isolate` is the part that actually makes this work, copied
+        // from .diner-btn's own base rule after the crossfade was confirmed to
+        // compile correctly but produce literally zero visible change (tested by
+        // forcing the ::before's opacity to 1 directly in an isolated fixture and
+        // screenshotting both states side by side — pixel-identical). Without it,
+        // `position: relative` alone does NOT give this button its own stacking
+        // context, so the `z-index: -1` pseudo below gets scoped to whatever
+        // ANCESTOR context it lands in instead of specifically "behind this
+        // button's own background" — `isolation: isolate` forces a local stacking
+        // context the same way .diner-btn gets one, which is the only reason that
+        // component's identical trick actually works.
+        .citcom-form-submit{
+            position: relative;
+            isolation: isolate;
+            border: none;
+            border-radius: 999px;
+            // Matched to the .diner-btn / "taste the results" pill: same block/inline
+            // padding, label size, weight and tracking so every diner CTA reads as
+            // one button at one size, width left to the label length.
+            padding: 0.86em 1.28em;
+            font-size: 1.25rem;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: normal;
+            background-color: transparent;
+            background-image: url('../../assets/img/diner/texture-stamp.jpg'),
+                              linear-gradient(90deg, var(--brand-primary) 0%, var(--brand-persian) 100%);
+            background-blend-mode: multiply, normal;
+            background-size: cover, 100% 100%;
+            background-position: center, center;
+            color: $light;
+            box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.3);
+            @include forma(extrabold);
+
+            &::before{
+                content: "";
+                position: absolute;
+                inset: 0;
+                z-index: -1;
+                border-radius: inherit;
+                background-image: url('../../assets/img/diner/texture-stamp.jpg'),
+                                  linear-gradient(90deg, var(--brand-primary) 0%, var(--brand-primary) 100%);
+                background-blend-mode: multiply, normal;
+                background-size: cover, 100% 100%;
+                background-position: center, center;
+                opacity: 0;
+                @include transition(opacity, 0.6s);
+            }
+
+            &:hover,
+            &:focus-visible{
+                box-shadow: 7px 7px 6px rgba(0, 0, 0, 0.35);
+            }
+
+            &:hover::before,
+            &:focus-visible::before{
+                opacity: 1;
+            }
+        }
+    }
+}

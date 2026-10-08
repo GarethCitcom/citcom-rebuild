@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/swiper",
+	"title": "Swiper",
+	"description": "Full-width image slider with autoplay, loop, arrows, dots and scrollbar options.",
+	"category": "citcom",
+	"icon": "slides",
+	"keywords": [ "slider", "carousel", "swiper", "images", "logos" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [ "page", "service", "case-study", "landing-page", "template" ],
+		"usePostMeta": false
+	},
+	"style": "file:../../build/blocks/swiper/style.css"
+}

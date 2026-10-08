@@ -1,0 +1,91 @@
+{
+    "key": "group_citcom_diner_hero",
+    "title": "Block: Diner: Hero",
+    "fields": [
+        {
+            "key": "field_diner_hero_heading",
+            "label": "Heading",
+            "name": "heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "For screen readers and search engines. The wording is already drawn into the sign artwork, so this is not shown on screen.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
+            "key": "field_diner_hero_sign",
+            "label": "Sign artwork",
+            "name": "sign_image",
+            "aria-label": "",
+            "type": "file",
+            "instructions": "Leave empty to use the diner sign bundled with the theme. Accepts an image or an MP4 video.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "mime_types": "jpg,jpeg,png,gif,webp,mp4"
+        },
+        {
+            "key": "field_diner_hero_texture",
+            "label": "Grain texture overlay",
+            "name": "show_texture",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "The printed-paper grain the design layers over the sign.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 1,
+            "ui": 1
+        },
+        {
+            "key": "field_diner_hero_button",
+            "label": "Button",
+            "name": "button",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "citcom/diner-hero"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Fields of the old diner_hero layout (functions/acf/diner-layouts.php), same names and keys.",
+    "show_in_rest": 0,
+    "modified": 1790730000
+}

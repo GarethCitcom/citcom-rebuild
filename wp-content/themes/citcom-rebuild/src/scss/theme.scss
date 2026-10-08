@@ -1,0 +1,39 @@
+// Global stylesheet: the old assets/_dev/scss/style.scss in the same order, minus the
+// per-layout flexContent partials, which now live in blocks/<name>/style.scss.
+@import "tokens";
+@import "theme/root";
+@import "bootstrap-subset";
+
+// Theme mixins must come after Bootstrap: transition() overrides Bootstrap's.
+@import "theme/mixin";
+
+// Plugins
+@import "plugins/aos/aos";
+// vlite.css is imported from src/theme.js (the package exports map has no extensionless path).
+
+// Theme
+@import "theme/misc";
+@import "theme/typography";
+@import "theme/scaffolding";
+@import "theme/helpers";
+@import "theme/global";
+@import "theme/editor-styles";
+
+@import "sections/header";
+@import "sections/footer";
+@import "sections/sidebar";
+@import "sections/single";
+
+// Elements
+@import "elements/button";
+@import "elements/card";
+@import "elements/video-js";
+@import "elements/patterns";
+@import "elements/form-fields";
+@import "elements/forms";
+@import "elements/breadcrumb";
+@import "elements/termsfeed";
+
+
+// Last: the old theme's Customizer Additional CSS came after its stylesheet.
+@import "theme/additional-css";

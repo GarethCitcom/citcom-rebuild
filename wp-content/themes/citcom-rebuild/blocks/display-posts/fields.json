@@ -1,0 +1,188 @@
+{
+    "key": "group_citcom_display_posts",
+    "title": "Block: Display Posts",
+    "fields": [
+        {
+            "key": "field_670444d07937b",
+            "label": "Type of display",
+            "name": "type_of_display",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "* Blog listings can only be displayed on an archive page",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "archive": "Blog listing *",
+                "latest": "Latest blogs",
+                "choice": "Select blogs"
+            },
+            "default_value": "archive",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
+        },
+        {
+            "key": "field_670442b079378",
+            "label": "Number of posts to show (latest)",
+            "name": "number_of_posts_to_show",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_670444d07937b",
+                        "operator": "==",
+                        "value": "latest"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 3,
+            "min": 1,
+            "max": 6,
+            "step": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_670444347937a",
+            "label": "Post Type to display",
+            "name": "post_type",
+            "aria-label": "",
+            "type": "acfe_post_types",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "post",
+                "case-study"
+            ],
+            "field_type": "radio",
+            "default_value": "post",
+            "return_format": "name",
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "layout": "horizontal",
+            "placeholder": ""
+        },
+        {
+            "key": "field_6704432279379",
+            "label": "Select posts to show",
+            "name": "posts",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_670444d07937b",
+                        "operator": "==",
+                        "value": "choice"
+                    },
+                    {
+                        "field": "field_670444347937a",
+                        "operator": "==",
+                        "value": "post"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "post"
+            ],
+            "post_status": "",
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 1,
+            "min": 1,
+            "max": 6,
+            "allow_null": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_670973db20a89",
+            "label": "Select posts to show",
+            "name": "posts_cs",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_670444d07937b",
+                        "operator": "==",
+                        "value": "choice"
+                    },
+                    {
+                        "field": "field_670444347937a",
+                        "operator": "==",
+                        "value": "case-study"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "case-study"
+            ],
+            "post_status": "",
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 1,
+            "min": 1,
+            "max": 6,
+            "allow_null": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "citcom/display-posts"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Fields of the old display_posts layout (same names and keys).",
+    "show_in_rest": 0,
+    "modified": 1790620000
+}

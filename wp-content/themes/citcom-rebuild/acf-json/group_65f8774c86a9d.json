@@ -1,0 +1,305 @@
+{
+    "key": "group_65f8774c86a9d",
+    "title": "Section settings",
+    "fields": [
+        {
+            "key": "field_6604094e9b92e",
+            "label": "Section padding",
+            "name": "section_padding",
+            "aria-label": "",
+            "type": "radio",
+            "instructions": "(This only applies to certain blocks)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "pt-0": "Remove top padding",
+                "pb-0": "Remove bottom padding",
+                "py-0": "Remove top and bottom"
+            },
+            "default_value": "default",
+            "return_format": "value",
+            "allow_null": 0,
+            "other_choice": 0,
+            "layout": "horizontal",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_66f9ca9dd01a6",
+            "label": "Background colour",
+            "name": "background_colour",
+            "aria-label": "",
+            "type": "radio",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "choose": "Choose"
+            },
+            "default_value": "default",
+            "return_format": "value",
+            "allow_null": 0,
+            "other_choice": 0,
+            "allow_in_bindings": 0,
+            "layout": "horizontal",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_65f89df411402",
+            "label": "",
+            "name": "background_color",
+            "aria-label": "",
+            "type": "swatch",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66f9ca9dd01a6",
+                        "operator": "==",
+                        "value": "choose"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "#1C0221": "primary",
+                "#9AD14D": "secondary",
+                "#a2a4aa": "default_darker",
+                "#D8DBE2": "default",
+                "#eff1f3": "default_lighter",
+                "#2A4747": "slate",
+                "#17A398": "persian",
+                "#F9A03F": "carrot",
+                "#FFFFFF": "white",
+                "transparent": "Transparent"
+            },
+            "allow_null": 1,
+            "default_value": "#FFFFFF",
+            "layout": "horizontal",
+            "return_format": "label",
+            "allow_in_bindings": 1,
+            "other_choice": 0,
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_670ac988ea441",
+            "label": "Shape Pattern",
+            "name": "shape_pattern",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66f9ca9dd01a6",
+                        "operator": "==",
+                        "value": "choose"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Add shape pattern over background colour",
+            "default_value": 0,
+            "style": "rounded",
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_670aca45ea442",
+            "label": "Gradient with pattern",
+            "name": "gradient_with_pattern",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "Selecting a gradient background overwrites solid background colour",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66f9ca9dd01a6",
+                        "operator": "==",
+                        "value": "choose"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "none": "None",
+                "grad-aubergine": "Aubergine to Slate",
+                "grad-slate": "Slate to Persian",
+                "grad-persian": "Persian to Starfruit"
+            },
+            "default_value": "none",
+            "return_format": "value",
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "layout": "horizontal"
+        },
+        {
+            "key": "field_66f9cb01b4db8",
+            "label": "Text colour",
+            "name": "text_colour",
+            "aria-label": "",
+            "type": "radio",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "choose": "Choose"
+            },
+            "default_value": "default",
+            "return_format": "value",
+            "allow_null": 0,
+            "other_choice": 0,
+            "allow_in_bindings": 0,
+            "layout": "horizontal",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_65f89f5b11403",
+            "label": "",
+            "name": "text_color",
+            "aria-label": "",
+            "type": "swatch",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66f9cb01b4db8",
+                        "operator": "==",
+                        "value": "choose"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "#1C0221": "primary",
+                "#9AD14D": "secondary",
+                "#D8DBE2": "default",
+                "#2A4747": "slate",
+                "#17A398": "persian",
+                "#F9A03F": "carrot",
+                "#FFFFFF": "white",
+                "transparent": "Transparent"
+            },
+            "allow_null": 1,
+            "default_value": "#1C0221",
+            "layout": "horizontal",
+            "return_format": "label",
+            "allow_in_bindings": 1,
+            "other_choice": 0,
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_6616e84d4614e",
+            "label": "Anchor name",
+            "name": "anchor_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "#",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "all"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "citcom/cta"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "citcom/quote"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "citcom/posts-search"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "citcom/latest-posts"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "citcom/newsletter-signup"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "citcom/related-posts"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "citcom/top-blog-posts"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "side",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Section wrapper settings for every section block, rendered by citcom_section_attrs() exactly as the old layoutSettings() did. Not shown on citcom/cta (anchor only, see Section settings (simple)), citcom/quote (the old layout had no settings) or the sidebar blocks.",
+    "show_in_rest": 0,
+    "modified": 1790740000
+}

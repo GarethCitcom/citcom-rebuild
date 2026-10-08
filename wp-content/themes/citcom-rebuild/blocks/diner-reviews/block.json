@@ -1,0 +1,41 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/diner-reviews",
+	"title": "Diner: Five star reputation",
+	"description": "Reviews panel on the dark background: the Trustindex widget, or a rating summary with review cards.",
+	"category": "citcom",
+	"icon": "star-filled",
+	"keywords": [
+		"diner",
+		"reviews",
+		"trustindex",
+		"google",
+		"rating"
+	],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [
+			"page",
+			"service",
+			"case-study",
+			"landing-page",
+			"template"
+		],
+		"usePostMeta": false
+	},
+	"style": [
+		"citcom-diner",
+		"file:../../build/blocks/diner-reviews/style.css"
+	]
+}

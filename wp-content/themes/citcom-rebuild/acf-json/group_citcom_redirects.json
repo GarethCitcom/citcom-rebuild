@@ -1,0 +1,136 @@
+{
+    "key": "group_citcom_redirects",
+    "title": "Redirects",
+    "fields": [
+        {
+            "key": "field_citcom_redirects_message",
+            "label": "",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Send an old address to a new one. A row applies to the address with or without its trailing slash, whatever its capitals. Use Permanent when the old address is gone for good, which is nearly always.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_citcom_redirects",
+            "label": "Redirects",
+            "name": "redirects",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add redirect",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_citcom_redirects_from",
+                    "label": "Old address",
+                    "name": "from",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "35",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "/old-page",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_citcom_redirects"
+                },
+                {
+                    "key": "field_citcom_redirects_to",
+                    "label": "New address",
+                    "name": "to",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "45",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "/new-page/ or https://another-site.example/page",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_citcom_redirects"
+                },
+                {
+                    "key": "field_citcom_redirects_type",
+                    "label": "Type",
+                    "name": "type",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "20",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "301": "Permanent (301)",
+                        "302": "Temporary (302)"
+                    },
+                    "default_value": "301",
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "parent_repeater": "field_citcom_redirects"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "theme-settings"
+            }
+        ]
+    ],
+    "menu_order": 30,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Redirects from old addresses, applied by inc/redirects.php. Replaces SmartCrawl's redirects (docs/04-seopress.md).",
+    "show_in_rest": 0,
+    "modified": 1791216000
+}

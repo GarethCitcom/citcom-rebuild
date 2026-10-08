@@ -1,0 +1,176 @@
+// citcom/diner-wall: port of assets/_dev/scss/flexContent/diner-wall.scss.
+// Shared diner rules come from the "citcom-diner" style (src/scss/diner.scss).
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+@import "../../src/scss/blocks/diner-vars";
+
+.flex-diner_wall{
+    position: relative;
+    // The stamp overhangs past the section's own top-right corner, same overhang
+    // technique as .diner-intro-stamp / .diner-story-stamp use at other edges.
+    overflow: visible;
+
+    padding-top: min(9%, 170px);
+    padding-bottom: min(8%, 150px);
+
+    @include media-breakpoint-down(lg) {
+        padding-top: $page_padding_lg;
+        padding-bottom: $page_padding_lg;
+    }
+
+    // Loose scatter of stars around the wall, three pre-textured rotation crops
+    // supplied by the user (assets/img/diner/sparkle-1/2/3.png, cycled by
+    // diner_wall.php) rather than a drawn SVG — the source PNGs already carry the
+    // paper-texture fill, so no colour/currentColor trick is needed here.
+    //
+    // Positions started as pixel coordinates read directly off the reference
+    // screenshot, then moved twice more 2026-08-20 per direct feedback: first tucked
+    // toward the nearest frame corner (each was floating in open gap space), then
+    // pulled further in still — off a screenshot with arrows drawn from each star's
+    // then-position to its target — to sit inside the internal gaps *between*
+    // frames rather than out at the wall's outer edge. Sizing untouched this round.
+    .diner-wall-star{
+        position: absolute;
+        z-index: 1;
+        width: clamp(26px, 2.6vw, 44px);
+        height: auto;
+        pointer-events: none;
+    }
+    .diner-wall-star-1{ top: 28%;  left: 18%;  } // in the BT/collect+ column gap
+    .diner-wall-star-2{ top: 38%;  left: 41%;  width: clamp(18px, 1.9vw, 30px); } // in the collect+/DACRO gap, by the heading block's left edge
+    .diner-wall-star-3{ top: 33%;  left: 81%;  } // in the SPW/Ebbon gap
+    .diner-wall-star-4{ top: 58%;  left: 65%;  width: clamp(18px, 1.9vw, 30px); } // no arrow drawn on this one — left as-is
+    .diner-wall-star-5{ top: 76%;  left: 14%;  } // in the Wyre Forest(row2)/Europcar gap
+    .diner-wall-star-6{ top: 64%;  left: 82%;  } // in the Ebbon/Wyre Forest(row3) gap
+
+    @include media-breakpoint-down(md) {
+        .diner-wall-star{ display: none; }
+    }
+
+    .diner-wall-rows{
+        position: relative;
+        z-index: 2;
+        --diner-wall-width: min(1360px, 94vw);
+        width: var(--diner-wall-width);
+        margin-inline: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: clamp(18px, 3vw, 46px);
+    }
+
+    .diner-wall-row{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        column-gap: clamp(14px, 2.4vw, 36px);
+        row-gap: clamp(14px, 2.4vw, 36px);
+        width: 100%;
+    }
+
+    // Frame images are fully baked composites (frame + photo + logo), so sizing is
+    // just height — width follows the source image's own aspect ratio, which is why
+    // portrait and landscape crops sit at different widths in the same row, same as
+    // frames on a real wall.
+    .diner-wall-frame{
+        display: block;
+        height: clamp(78px, 7.2vw, 138px);
+        width: auto;
+        filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.3));
+    }
+
+    // The middle row carries the heading, so its frames run a touch smaller — matches
+    // the reference, where row 2 reads slightly quieter than rows 1 and 3.
+    .diner-wall-row-2 .diner-wall-frame{
+        height: clamp(64px, 6vw, 116px);
+    }
+
+    // Below sm (confirmed broken at 489px wide), row 2's "2 frames, heading, 2
+    // frames" flex line got squeezed — at that width there isn't room for even one
+    // frame beside the heading text, so it wrapped unpredictably depending on exact
+    // pixel widths that day. Forcing the heading block to its own full-width flex
+    // line fixes this deterministically: flex-wrap always breaks a 100%-basis item
+    // onto its own row, which — since the heading sits between the row's first two
+    // frames and last two in DOM order — pushes the first two above it and the last
+    // two below, giving the "frames above and below, heading spanning the middle"
+    // stack asked for, without needing separate row markup just for this breakpoint.
+    @include media-breakpoint-down(sm) {
+        .diner-wall-row-2 .diner-wall-heading-block{
+            flex: 0 0 100%;
+        }
+    }
+
+    .diner-wall-heading-block{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding-inline: 0.5em;
+        // One shadow over the whole group — heading, dashes and the script line all
+        // read as a single printed unit in the reference, rather than each element
+        // casting its own separate shadow. Same offset/blur/opacity as the menu
+        // card's box-shadow, reused here as a drop-shadow since this group is text +
+        // thin divider bars rather than a box.
+        filter: drop-shadow(5px 5px 4px rgba(0, 0, 0, 0.35));
+    }
+
+    // "THE WALL OF" — confirmed by the user to be the theme's ordinary heading face
+    // (Forma DJR Micro Extra Bold), not Chonky. No font-family override needed: it's
+    // an h2, so it already inherits forma(800) from the global h1–h5 rule in
+    // _typeography.scss — this rule only needs to add what's specific to this heading.
+    .diner-wall-heading{
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: normal;
+        line-height: 1.1;
+        font-size: clamp(1.5rem, 2.1vw, 40px);
+        color: var(--brand-primary);
+        white-space: nowrap;
+    }
+
+    .diner-wall-script-row{
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        margin: 0.2em 0 0;
+    }
+
+    .diner-wall-dash{
+        width: clamp(18px, 1.8vw, 34px);
+        height: 2px;
+        background-color: var(--brand-primary);
+    }
+
+    // Script accent — confirmed by the user to be the same face as .diner-menu-heading
+    // ("Feeling peckish?"), not a separate cursive font: Chonky's own regular cut reads
+    // as script-like at this weight. Same fallback chain and same "not in the Typekit
+    // kit yet" caveat as .diner-wall-heading above — falls back to Forma Extra Bold
+    // until Chonky is added to the kit, same as every other Chonky usage on this page.
+    // White fill with a purple outline, opposite of .diner-wall-heading's solid
+    // fill — same -webkit-text-stroke technique as .diner-intro-heading-accent
+    // ("since 1987"), just with fill and stroke colour swapped: that one is a
+    // transparent fill with a light stroke, this is a light fill with a
+    // brand-primary stroke. paint-order keeps the stroke from eating into the
+    // counters. No mask/worn-edge treatment here, unlike the intro accent — this
+    // reads as a clean outline in the reference, not a distressed one.
+    .diner-wall-script{
+        font-family: var(--diner-display, #{'Chonky'}), forma-djr-micro, Arial, Helvetica, sans-serif;
+        font-weight: 400 !important;
+        font-style: normal;
+        font-size: clamp(1.7rem, 2.6vw, 48px);
+        line-height: 1;
+        color: $light;
+        // Thickened 2026-08-20 per user feedback — was max(1.5px, 0.045em), read as
+        // too thin against the reference.
+        -webkit-text-stroke-width: max(2.5px, 0.075em);
+        -webkit-text-stroke-color: var(--brand-primary);
+        paint-order: stroke fill;
+    }
+
+    // .diner-wall-stamp intentionally removed 2026-08-20 — it overhung upward past
+    // this section's own top edge at almost the same right-hand inset as
+    // .diner-story-stamp (diner-story.scss, section 4) overhangs downward past ITS
+    // bottom edge, so the two landed on top of each other at the section 4/5 boundary.
+    // See working-memory.md for the full writeup before reintroducing a stamp here.
+}

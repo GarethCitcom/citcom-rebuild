@@ -1,0 +1,308 @@
+// citcom/diner-intro: port of assets/_dev/scss/flexContent/diner-intro.scss.
+// Shared diner rules come from the "citcom-diner" style (src/scss/diner.scss).
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+@import "../../src/scss/blocks/diner-vars";
+
+.flex-diner_intro{
+    position: relative;
+    // The stamp deliberately overhangs into the section below, as it does in the design.
+    overflow: visible;
+
+    // The design's band is 755px tall at 1920 wide: 179 above the ribbon, then
+    // 165 + 112 + copy, then the remainder below. Holding the total at 755 keeps the
+    // page rhythm — and the stamp, which is anchored to the section's bottom edge,
+    // landing where the design puts it. The copy is set slightly smaller than the
+    // design's 30px, so the bottom padding carries the difference: 179 + 165 + 112 + 97
+    // + 202 = 755.
+    //
+    // Stated as percentages these scale with the viewport (percentage padding resolves
+    // against width), capped at the design values so ultrawide screens don't stretch
+    // the rhythm.
+    padding-top: min(9.32%, 179px);
+    // Trimmed from the design's 202px — this is also the whole gap to diner_menu below,
+    // since that section's own padding-top is 0 (see its comment). Breaks the 755px
+    // total-band rhythm noted above by the same amount; the stamp's overhang position
+    // (anchored to this section's own bottom edge) shifts up with it.
+    padding-bottom: min(5.2%, 100px);
+
+    @include media-breakpoint-down(lg) {
+        padding-top: $page_padding_lg;
+        padding-bottom: $page_padding_lg;
+    }
+
+    // Ribbon. The Figma vector draws one strip per line of text, each sized to that
+    // line, which is why it reads as a stepped two-tier banner. box-decoration-break
+    // reproduces exactly that: the strip is an inline background on the text itself,
+    // so it re-fits automatically however the headline wraps at any viewport.
+    //
+    // The tilt lives on .diner-intro-ribbon and the AOS hook on the wrapper: AOS
+    // animates transform, so the two cannot share an element.
+    .diner-intro-ribbon-wrap{
+        // 839px of text plus the strip's own 27px inset either side.
+        --diner-ribbon: min(893px, 92vw);
+        width: var(--diner-ribbon);
+        margin-inline: auto;
+        // The strips are 90px tall against a 74.4px line box, so they overflow this
+        // wrapper by ~7.8px top and bottom. Padding that back in makes the wrapper
+        // measure the ribbon as drawn — 165px — so the spacing below it is measured
+        // from the painted edge rather than the text box.
+        padding-block: calc(var(--diner-ribbon) * 0.00875);
+    }
+
+    .diner-intro-ribbon{
+        transform: rotate(1.92deg);
+    }
+
+    // 62px on an 893px ribbon. Tying the size to the width keeps the ratio constant,
+    // so the headline breaks across the same two lines at every viewport.
+    .diner-intro-heading{
+        position: relative;
+        margin: 0;
+        text-align: center;
+        text-transform: uppercase;
+        // theme/_typeography.scss puts -0.03rem on body under html:not(.wf-active),
+        // and nothing ever adds that class, so it has to be reset explicitly.
+        letter-spacing: normal;
+        // Figma derives a 74.4px line height on a 62px font, i.e. 1.2. With the slab's
+        // padding kept small the line box is governed by this directly, so the strips
+        // land 74.4px apart and overlap by the design's ~16px.
+        line-height: 1.2;
+        font-size: calc(var(--diner-ribbon) * 0.0694);
+        @include forma(extrabold);
+    }
+
+    // Layer one holds the strips with its own text invisible; layer two lays the type
+    // over the top, so every strip sits behind every line of text.
+    .diner-intro-heading-strips{
+        color: transparent;
+    }
+
+    // Capitals never use the font's descender space, so inside the strip they sit low
+    // — measured at 5.5px on a 62px font. Nudging the whole type layer up centres the
+    // lettering in every strip, and being in em it holds at any size.
+    .diner-intro-heading-type{
+        position: absolute;
+        inset: 0;
+        top: -0.089em;
+    }
+
+    // Both layers use this box so their text flows through identical geometry and the
+    // type lands exactly over its strips. 0.12em of vertical padding takes each slab
+    // to the design's ~90px against 74.2px line spacing, so consecutive strips overlap
+    // by ~16px and read as one stepped banner rather than separate bars.
+    // The inline's own content box is already ~88px at this size, so only a hair of
+    // vertical padding is needed to reach the design's ~90px strip. Against 74.2px
+    // line spacing that leaves the ~16px overlap the design has.
+    .diner-intro-heading-slab{
+        display: inline;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+        padding: 0.016em 0.43em;
+    }
+
+    // Only the strips layer paints. Its own text stays invisible — the type layer
+    // above draws the lettering, and any ink here would show through the outlined
+    // tail's counters.
+    .diner-intro-heading-mark{
+        color: transparent;
+        // The texture is pre-lightened to the design's 44% strength, because
+        // background-blend-mode has no opacity of its own.
+        background-image: url('../../assets/img/diner/texture-ribbon.jpg'),
+                          linear-gradient(90deg, var(--brand-secondary) 0%, var(--brand-persian) 100%);
+        background-blend-mode: multiply, normal;
+        background-size: cover, 100% 100%;
+        background-position: center, center;
+        // Group 1 in the design: offset 5,5 blur 4, black at 45%.
+        box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.45);
+    }
+
+    // The lettering is inked with the same paper texture rather than flat white, which
+    // is what gives it the worn, printed look. Clipping the texture to the glyphs is
+    // the only way to get it onto the type without also tinting the strip around it.
+    .diner-intro-heading-ink{
+        display: inline;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+        background-image: url('../../assets/img/diner/texture-ink.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    // "since 1987" is drawn as an outline: the design sets its fill to zero opacity
+    // and lets the stroke carry it.
+    //
+    // Figma aligns that stroke OUTSIDE the glyph, so the counters stay full size.
+    // -webkit-text-stroke can only centre, which eats half the weight inwards, so the
+    // stroke is kept light — heavy enough to read, thin enough that the textured strip
+    // still shows through the letters.
+    .diner-intro-heading-accent{
+        background: none;
+        color: transparent;
+        // Floored at 1px: the em value alone drops to sub-pixel on small screens and
+        // the outline starts to disappear.
+        -webkit-text-stroke-width: max(1px, 0.032em);
+        -webkit-text-stroke-color: $light;
+        paint-order: stroke fill;
+
+        // The worn edge. An alpha mask cut from the same paper erodes the stroke where
+        // the creases fall, so the outline breaks up instead of reading as a clean
+        // vector line. Alpha rather than luminance masking so it needs no mask-mode,
+        // and if the file ever fails to load the stroke simply renders solid.
+        -webkit-mask-image: url('../../assets/img/diner/texture-worn.webp?inline');
+        mask-image: url('../../assets/img/diner/texture-worn.webp?inline');
+        -webkit-mask-size: cover;
+        mask-size: cover;
+        -webkit-mask-position: center;
+        mask-position: center;
+    }
+
+    // Body copy under the ribbon: 1028 wide, 30px Regular, centred, 112px below it.
+    // Sized off its own width so the three-line measure holds at every viewport.
+    .diner-intro-copy{
+        --diner-copy: min(1028px, 92vw);
+        width: var(--diner-copy);
+        margin: calc(var(--diner-copy) * 0.109) auto 0;
+        color: var(--brand-primary);
+        text-align: center;
+        letter-spacing: normal;
+        line-height: 1.2;
+        // The file specifies 30px on this 1028px measure; set a little smaller by
+        // preference, which still holds the three-line break at full width.
+        //
+        // Floored at 1.15rem — tying the size purely to the measure would take it to
+        // 7.7px on a 320px screen. Below the cap the copy simply wraps to more lines,
+        // which is what it should do.
+        font-size: max(1.15rem, calc(var(--diner-copy) * 0.0263));
+        @include forma(regular);
+
+        p{
+            margin: 0;
+            font-size: inherit;
+            line-height: inherit;
+            @include forma(regular);
+        }
+    }
+
+    // Stamp: a 212px starburst tilted 13.42deg, sitting low-left of the copy.
+    //
+    // It has two modes. The design's arrangement — absolutely positioned lower-left,
+    // overhanging into the next section — only has room at the full design width: the
+    // copy is capped at 1028px, so as the viewport narrows the copy keeps its width
+    // while the stamp's 14.2% anchor walks inwards, and below about 1900px the two
+    // overlap. So the design arrangement is applied from sl upwards only, and below
+    // that the stamp sits in flow beneath the copy, still left-aligned, which cannot
+    // collide by construction.
+    .diner-intro-stamp{
+        // 212px in the design; see diner-shared.scss's $diner_stamp_size for how
+        // this scales down on smaller viewports (shared by all 3 of this page's
+        // stamps so they can't drift apart again).
+        --diner-stamp: #{$diner_stamp_size};
+
+        position: relative;
+        z-index: 2;
+        width: var(--diner-stamp);
+        height: var(--diner-stamp);
+        // Left-aligned on the design's 7.4% inset rather than centred, so the flow mode
+        // still reads as the design's lower-left placement.
+        margin: $page_padding_lg 0 0 7.4%;
+        transform: rotate(13.42deg);
+
+        @include media-breakpoint-up(sl) {
+            position: absolute;
+            left: 14.2%;
+            bottom: calc(var(--diner-stamp) * 0.347);
+            margin: 0;
+            // translate centres the disc on that point; rotate gives it the stamp tilt.
+            // Nothing here may carry data-aos, which would overwrite this transform.
+            transform: translate(-50%, 50%) rotate(13.42deg);
+        }
+
+        // The sticker is a 12 point starburst, not a disc. Masking with the shape lets
+        // the gradient and texture stay as ordinary CSS backgrounds, and the SVG scales
+        // with the stamp.
+        -webkit-mask-image: url('../../assets/img/diner/stamp-star.svg');
+        mask-image: url('../../assets/img/diner/stamp-star.svg');
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-image: linear-gradient(225deg, var(--brand-secondary) 0%, var(--brand-persian) 100%);
+        color: $light;
+        text-align: center;
+
+        // The textured vector is the LAST child of the stamp group in the design, so it
+        // multiplies over the lettering as well as the disc — which is why the type
+        // reads as soft off-white rather than flat white.
+        &::before{
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background-image: url('../../assets/img/diner/texture-stamp.jpg');
+            background-size: cover;
+            background-position: center;
+            mix-blend-mode: multiply;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        // Inner keyline, following the same starburst at the design's 180 of 212 inset.
+        &::after{
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('../../assets/img/diner/stamp-keyline.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            pointer-events: none;
+        }
+
+    }
+
+    .diner-intro-stamp-inner{
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        line-height: 1;
+        // Optical centring. Flex centres the boxes, but the painted type measured 2.1px
+        // low and 0.8px left of the badge centre — capitals leave the descender space
+        // empty and the three line sizes don't balance. Stated against the stamp size so
+        // it holds as the badge scales.
+        top: calc(var(--diner-stamp) * -0.010);
+        left: calc(var(--diner-stamp) * 0.004);
+    }
+
+    // 20px, 40px and 18px on a 212px disc. The figure and caption are both two lines
+    // in the design (126x57 and 99x33), so they are width-limited to wrap the same
+    // way and keep clear of the keyline.
+    .diner-intro-stamp-over{
+        font-size: calc(var(--diner-stamp) * 0.0943);
+        line-height: 1;
+        @include forma(regular);
+    }
+    .diner-intro-stamp-figure{
+        max-width: 60%;
+        margin: calc(var(--diner-stamp) * 0.028) 0;
+        font-size: calc(var(--diner-stamp) * 0.1887);
+        line-height: 0.75;
+        @include forma(extrabold);
+    }
+    .diner-intro-stamp-caption{
+        max-width: 50%;
+        font-size: calc(var(--diner-stamp) * 0.0849);
+        line-height: 1;
+        @include forma(regular);
+    }
+}

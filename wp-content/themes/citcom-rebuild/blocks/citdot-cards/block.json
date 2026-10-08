@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/citdot-cards",
+	"title": "CitDot Cards",
+	"description": "A row of CitDot-shaped cards: staff profiles with LinkedIn links, or values with an icon and text.",
+	"category": "citcom",
+	"icon": "groups",
+	"keywords": [ "team", "staff", "values", "cards", "citdot" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [ "page", "service", "case-study", "landing-page", "template" ],
+		"usePostMeta": false
+	}
+}

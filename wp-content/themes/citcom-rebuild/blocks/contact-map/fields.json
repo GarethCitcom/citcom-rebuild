@@ -1,0 +1,196 @@
+{
+    "key": "group_citcom_contact_map",
+    "title": "Block: Contact Map",
+    "fields": [
+        {
+            "key": "field_670d897b35b9a",
+            "label": "(Column 6/12)",
+            "name": "",
+            "aria-label": "",
+            "type": "acfe_column",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "columns": "6/12",
+            "endpoint": 0,
+            "border": []
+        },
+        {
+            "key": "field_670d887335b95",
+            "label": "Snazzy map",
+            "name": "snazzy_map",
+            "aria-label": "",
+            "type": "acfe_code_editor",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "<iframe src=\"https://snazzymaps.com/embed/650882\" width=\"100%\" height=\"100%\" style=\"border:none;\"></iframe>",
+            "placeholder": "<iframe src=\"https://snazzymaps.com/embed/650882\" width=\"100%\" height=\"100%\" style=\"border:none;\"></iframe>",
+            "mode": "text/html",
+            "lines": 1,
+            "indent_unit": 4,
+            "maxlength": "",
+            "rows": 2,
+            "max_rows": "",
+            "return_format": [
+                "htmlentities"
+            ]
+        },
+        {
+            "key": "field_670da33f230de",
+            "label": "Mobile Snazzy map",
+            "name": "mobile_snazzy_map",
+            "aria-label": "",
+            "type": "acfe_code_editor",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "<iframe src=\"https://snazzymaps.com/embed/650914\" width=\"100%\" height=\"100%\" style=\"border:none;\"></iframe>",
+            "placeholder": "<iframe src=\"https://snazzymaps.com/embed/650914\" width=\"100%\" height=\"100%\" style=\"border:none;\"></iframe>",
+            "mode": "text/html",
+            "lines": 1,
+            "indent_unit": 4,
+            "maxlength": "",
+            "rows": 2,
+            "max_rows": "",
+            "return_format": [
+                "htmlentities"
+            ]
+        },
+        {
+            "key": "field_670d890535b98",
+            "label": "Show socials",
+            "name": "show_socials",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_670d892735b99",
+            "label": "Form",
+            "name": "form",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "The theme form shown in the contact card.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": [],
+            "default_value": "contact",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_670d898935b9b",
+            "label": "(Column 6/12)",
+            "name": "",
+            "aria-label": "",
+            "type": "acfe_column",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "columns": "6/12",
+            "endpoint": 0,
+            "border": []
+        },
+        {
+            "key": "field_670d88e735b96",
+            "label": "Contact title",
+            "name": "contact_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_670d88f535b97",
+            "label": "Contact message",
+            "name": "contact_message",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "citcom/contact-map"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Fields of the old contact_map layout (same names and keys).",
+    "show_in_rest": 0,
+    "modified": 1790750000
+}

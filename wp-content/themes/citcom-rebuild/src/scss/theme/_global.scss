@@ -1,0 +1,225 @@
+html,body{
+    background: var(--brand-default-lighter);
+    main{
+        background: white;
+    }
+}
+
+// The old templates nested <main><main>; the new ones output one <main>, so the
+// selector is one level shallower than the original "> main > main".
+body{
+    > main,
+    header{
+        @include transition(filter,0.3s);
+    }
+    &.modal-open{
+        > main,
+        header{
+            filter: blur(3px);
+        }
+    }
+}
+
+//override AOS
+@media screen {
+    html:not(.no-js) {
+        @include media-breakpoint-up(sl) {
+            [data-aos=slide-left] {
+                -webkit-transform: translate3d(100%, 0, 0);
+                transform: translate3d(50%, 0, 0);
+            }
+            [data-aos=slide-right] {
+                -webkit-transform: translate3d(-100%, 0, 0);
+                transform: translate3d(-50%, 0, 0);
+            }
+        }
+    }
+}
+
+//badge fix
+.badge.d-flex{
+    width: fit-content;
+}
+
+.signup-popup{
+    cursor: pointer;
+    .signup-text,
+    .input-group{
+        @include transition(all,0.3s);
+    }
+    &:hover{
+        .signup-text{
+            color: var(--brand-default-lighter)!important;
+        }
+        .input-group{
+            transform: scale(1.05)!important;
+        }
+    }
+}
+
+.offcanvas, .offcanvas-lg, .offcanvas-md, .offcanvas-sl, .offcanvas-sm, .offcanvas-xl, .offcanvas-xxl {
+    --bs-offcanvas-height: 95vh;
+}
+
+.wp-block-table{
+    @extend .table-responsive;
+    table{
+        @extend .table;
+        @extend .table-striped;
+        td,th {
+            border: none;
+            border-bottom: 1px solid var(--brand-primary);
+        }
+        tfoot{
+            td,th{
+                background-color: var(--brand-primary);
+                color: #fff;
+            }
+        }
+    }
+}
+
+.wp-block-quote.is-style-plain{
+    position: relative;
+    text-align: center;
+    padding: ($grid-gutter-width * 3) ($grid-gutter-width * 4);
+    &:before,
+    &:after{
+        content: "";
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTkxLjE0NSIgaGVpZ2h0PSIxMzcuMjI5IiB2aWV3Qm94PSIwIDAgMTkxLjE0NSAxMzcuMjI5Ij4KICA8ZGVmcz4KICAgIDxjbGlwUGF0aCBpZD0iY2xpcC1wYXRoIj4KICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZV8xNDkiIGRhdGEtbmFtZT0iUmVjdGFuZ2xlIDE0OSIgd2lkdGg9IjE5MS4xNDUiIGhlaWdodD0iMTM3LjIyOSIgZmlsbD0iI2ZmZiIvPgogICAgPC9jbGlwUGF0aD4KICA8L2RlZnM+CiAgPGcgaWQ9Ikdyb3VwXzE1OSIgZGF0YS1uYW1lPSJHcm91cCAxNTkiIGNsaXAtcGF0aD0idXJsKCNjbGlwLXBhdGgpIj4KICAgIDxwYXRoIGlkPSJQYXRoXzkyNyIgZGF0YS1uYW1lPSJQYXRoIDkyNyIgZD0iTTg1LjUsMEM4OS4yLDAsOTEuMzEsMy4xNjcsOTAuNzgyLDYuODYxbC0xNS44MzQsNTd2NjYuNWE2Ljk4Nyw2Ljk4NywwLDAsMS02Ljg2MSw2Ljg2MUg2Ljg2MUE2Ljk4Nyw2Ljk4NywwLDAsMSwwLDEzMC4zNjhWNzEuMjU0QTE5LjkyNSwxOS45MjUsMCwwLDEsNC4yMjIsNTkuMTE0TDQzLjgwOCw1LjI3OEExNC44NTUsMTQuODU1LDAsMCwxLDU0Ljg5MiwwWk0xODUuNzg3LDBjMy42OTUsMCw1LjgwNiwzLjE2Nyw1LjI3OCw2Ljg2MWwtMTUuODM0LDU3djY2LjVhNi45ODcsNi45ODcsMCwwLDEtNi44NjEsNi44NjFIMTA3LjE0NGE2Ljk4Nyw2Ljk4NywwLDAsMS02Ljg2MS02Ljg2MVY3MS4yNTRhMTkuOTI1LDE5LjkyNSwwLDAsMSw0LjIyMi0xMi4xMzlMMTQ0LjA5MSw1LjI3OEExNC44NTUsMTQuODU1LDAsMCwxLDE1NS4xNzQsMFoiIGZpbGw9IiNmZmYiLz4KICA8L2c+Cjwvc3ZnPgo=");
+        background-size: contain;
+        background-repeat: no-repeat;
+        position: absolute;
+        width: 7rem;
+        height: 4.25rem;
+        opacity: .4;
+    }
+    &:before{
+        top: -0.25rem;
+        left: 5%;
+    }
+    &:after{
+        bottom: -0.25rem;
+        right: 5%;
+        transform: rotate(180deg);
+    }
+    p{
+        @include forma(light);
+        @include rfs(1.4rem);
+        line-height: 1.2;
+    }
+    cite{
+        color: #fff;
+        margin-top: 0;
+        @include forma(regular);
+        @include rfs(0.9rem);
+        line-height: 1.2;
+        &:before{
+            display: none!important;
+        }
+    }
+}
+.flex-quote{
+    .wp-block-quote.is-style-plain{
+        padding: ($grid-gutter-width * 3) ($grid-gutter-width * 6);
+        @include media-breakpoint-down(md){
+            padding: ($grid-gutter-width * 4) ($grid-gutter-width * 2);
+        }
+        @include media-breakpoint-down(sm){
+            padding: ($grid-gutter-width * 4) ($grid-gutter-width);
+        }
+        &:before{
+            left: 0;
+        }
+        &:after{
+            right: 0;
+        }
+    }
+}
+
+.has-text-align-center {
+    text-align: center;
+}
+
+.clipped-svg{
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+.citdot{
+    clip-path: url(#citdot);
+}
+.citdot-outline{
+    background-image: url('../../assets/img/citdot-outline.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    color: var(--brand-secondary);
+}
+.citdot-outline-primary{
+    background-image: url('../../assets/img/citdot-outline-primary.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    color: var(--brand-primary);
+}
+
+.fa-ul>li{
+    padding-bottom: 0.5rem;
+    .fa-li{
+        color: var(--brand-secondary);
+    }
+    .fa-ul{
+        margin-left: var(--fa-li-margin, 2em);
+        li{
+            font-size: 95%;
+        }
+        .fa-li{
+            transform: rotate(45deg) scale(.8);
+            color: var(--brand-persian);
+            width: var(--fa-li-width, 1em);
+        }
+        .fa-ul{
+            .fa-li{
+                transform: rotate(0deg) scale(.6);
+                color: var(--brand-slate);
+            }
+        }
+    }
+}
+
+.z-4 {
+    z-index: 4 !important;
+}
+.z-5 {
+    z-index: 5 !important;
+}
+.z-6 {
+    z-index: 6 !important;
+}
+
+.alert{
+    &.alert-light{
+        &.alert-danger{
+            color: $red;
+        }
+    }
+}
+
+.mark, mark{
+    background: transparent;
+    padding: 0;
+}
+
+.modal-dialog-scrollable .modal-content{
+    overflow: auto;
+}

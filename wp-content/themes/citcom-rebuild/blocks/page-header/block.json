@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/page-header",
+	"title": "Page Header",
+	"description": "Page title banner with a pattern, service shape or full-bleed image background, and an optional breadcrumb.",
+	"category": "citcom",
+	"icon": "align-wide",
+	"keywords": [ "header", "hero", "title", "banner" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"multiple": false,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [ "page", "service", "case-study", "landing-page", "template" ],
+		"usePostMeta": false
+	},
+	"style": "file:../../build/blocks/page-header/style.css",
+	"example": {
+		"attributes": {
+			"mode": "preview",
+			"data": {
+				"title": "Page Header",
+				"type": "pattern",
+				"bg-color": "#eff1f3",
+				"pattern": "persian",
+				"breadcrumb": 0
+			}
+		}
+	}
+}

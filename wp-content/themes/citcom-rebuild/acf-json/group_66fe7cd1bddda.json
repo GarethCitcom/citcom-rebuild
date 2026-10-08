@@ -1,0 +1,109 @@
+{
+    "key": "group_66fe7cd1bddda",
+    "title": "Our Socials",
+    "fields": [
+        {
+            "key": "field_66fe7cd2db2f4",
+            "label": "Social icon links",
+            "name": "social_icon_links",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "acfe_repeater_stylised_button": 0,
+            "layout": "table",
+            "pagination": 0,
+            "required_message": "",
+            "min": 1,
+            "max": 0,
+            "collapsed": "field_66fe8b82d4e95",
+            "button_label": "Add Social Link",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_66fe8b82d4e95",
+                    "label": "Icon",
+                    "name": "icon",
+                    "aria-label": "",
+                    "type": "font-awesome",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "icon_sets": [
+                        "brands"
+                    ],
+                    "custom_icon_set": "",
+                    "default_label": "&lt;i class=\"fa-classic fa-brands fa-facebook-f fa-fw\"&gt;&lt;\/i&gt; Facebook F",
+                    "default_value": "{\"family\" : \"classic\", \"style\" : \"brands\", \"id\" : \"facebook-f\", \"label\" : \"Facebook F\", \"unicode\" : \"f39e\"}",
+                    "save_format": "class",
+                    "allow_null": 0,
+                    "show_preview": 1,
+                    "enqueue_fa": 0,
+                    "allow_in_bindings": 0,
+                    "fa_live_preview": "",
+                    "choices": [],
+                    "parent_repeater": "field_66fe7cd2db2f4"
+                },
+                {
+                    "key": "field_66fe8bd1d4e96",
+                    "label": "Link",
+                    "name": "link",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "Link text is displayed as tooltip (target is always forced to blank)",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "allow_in_bindings": 0,
+                    "parent_repeater": "field_66fe7cd2db2f4"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "theme-settings"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "left",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "acfe_autosync": [
+        "php",
+        "json"
+    ],
+    "acfe_form": 0,
+    "acfe_display_title": "",
+    "acfe_meta": "",
+    "acfe_note": "",
+    "modified": 1727958118,
+    "acfe_categories": {
+        "site-settings": "Site Settings"
+    }
+}

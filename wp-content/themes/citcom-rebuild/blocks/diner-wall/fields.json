@@ -1,0 +1,190 @@
+{
+    "key": "group_citcom_diner_wall",
+    "title": "Block: Diner: Wall of fame",
+    "fields": [
+        {
+            "key": "field_diner_wall_heading",
+            "label": "Heading",
+            "name": "heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Set in caps automatically, e.g. \"The Wall of\".",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "The Wall of"
+        },
+        {
+            "key": "field_diner_wall_heading_script",
+            "label": "Heading, script accent",
+            "name": "heading_script",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Rendered in the script face, own case kept as typed, e.g. \"Fame\".",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Fame"
+        },
+        {
+            "key": "field_diner_wall_logos",
+            "label": "Client logos",
+            "name": "logos",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Rendered as a staggered three-row wall (5 / 4 / 3 wide) in the order added — the heading sits in the middle of the second row. Each frame keeps the logo image's own aspect ratio, so export portrait and landscape crops as the design needs them.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "button_label": "Add logo",
+            "min": 0,
+            "max": 0,
+            "sub_fields": [
+                {
+                    "key": "field_diner_wall_logo_image",
+                    "label": "Framed logo",
+                    "name": "image",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "The frame, tint and background photo are baked into the image itself — export a finished framed crop, not a bare logo.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "preview_size": "medium"
+                },
+                {
+                    "key": "field_diner_wall_logo_name",
+                    "label": "Client name",
+                    "name": "name",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "For the image alt text only — not shown on screen.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    }
+                }
+            ]
+        },
+        {
+            "key": "field_diner_wall_stamp",
+            "label": "Credentials stamp",
+            "name": "stamp",
+            "aria-label": "",
+            "type": "group",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_diner_wall_stamp_on",
+                    "label": "Show the stamp",
+                    "name": "enabled",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 1,
+                    "ui": 1
+                },
+                {
+                    "key": "field_diner_wall_stamp_1",
+                    "label": "Small line above",
+                    "name": "line_1",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    }
+                },
+                {
+                    "key": "field_diner_wall_stamp_2",
+                    "label": "Headline figure",
+                    "name": "line_2",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    }
+                },
+                {
+                    "key": "field_diner_wall_stamp_3",
+                    "label": "Small line below",
+                    "name": "line_3",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    }
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "citcom/diner-wall"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Fields of the old diner_wall layout (functions/acf/diner-layouts.php), same names and keys.",
+    "show_in_rest": 0,
+    "modified": 1790730000
+}

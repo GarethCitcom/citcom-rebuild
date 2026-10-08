@@ -1,0 +1,263 @@
+{
+    "key": "group_citcom_stats",
+    "title": "Block: Stats",
+    "fields": [
+        {
+            "key": "field_670ad4cc9f2eb",
+            "label": "Title",
+            "name": "title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_670ad4d89f2ec",
+            "label": "Opening text",
+            "name": "opening_text",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "basic_enhanced",
+            "media_upload": 0,
+            "delay": 0
+        },
+        {
+            "key": "field_670ad36d9f2e2",
+            "label": "Number Stats",
+            "name": "number_stats",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "pagination": 0,
+            "min": 1,
+            "max": 0,
+            "collapsed": "field_670ad3cb9f2e4",
+            "button_label": "Add STAT",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_670ad3fa9f2e6",
+                    "label": "(Column 4/12)",
+                    "name": "",
+                    "aria-label": "",
+                    "type": "acfe_column",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "columns": "4/12",
+                    "endpoint": 0,
+                    "border": [],
+                    "parent_repeater": "field_670ad36d9f2e2"
+                },
+                {
+                    "key": "field_670ad3979f2e3",
+                    "label": "Append",
+                    "name": "append",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_670ad36d9f2e2"
+                },
+                {
+                    "key": "field_670ad3cb9f2e4",
+                    "label": "Stat",
+                    "name": "stat",
+                    "aria-label": "",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "min": 1,
+                    "max": "",
+                    "step": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_670ad36d9f2e2"
+                },
+                {
+                    "key": "field_670ad3d89f2e5",
+                    "label": "Prepend",
+                    "name": "prepend",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_670ad36d9f2e2"
+                },
+                {
+                    "key": "field_670ad4129f2e7",
+                    "label": "(Column 4/12)",
+                    "name": "",
+                    "aria-label": "",
+                    "type": "acfe_column",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "columns": "4/12",
+                    "endpoint": 0,
+                    "border": [],
+                    "parent_repeater": "field_670ad36d9f2e2"
+                },
+                {
+                    "key": "field_670ad41d9f2e8",
+                    "label": "Supporting text",
+                    "name": "supporting_text",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "rows": "",
+                    "placeholder": "",
+                    "new_lines": "",
+                    "parent_repeater": "field_670ad36d9f2e2"
+                },
+                {
+                    "key": "field_670ad4c09f2ea",
+                    "label": "(Column 4/12)",
+                    "name": "",
+                    "aria-label": "",
+                    "type": "acfe_column",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "columns": "4/12",
+                    "endpoint": 0,
+                    "border": [],
+                    "parent_repeater": "field_670ad36d9f2e2"
+                },
+                {
+                    "key": "field_670ad44b9f2e9",
+                    "label": "Stat Colour",
+                    "name": "stat_color",
+                    "aria-label": "",
+                    "type": "swatch",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "#1C0221": "primary",
+                        "#9AD14D": "secondary",
+                        "#D8DBE2": "default",
+                        "#2A4747": "slate",
+                        "#17A398": "persian",
+                        "#F9A03F": "carrot",
+                        "#FFFFFF": "white"
+                    },
+                    "allow_null": 0,
+                    "default_value": "#9AD14D",
+                    "layout": "horizontal",
+                    "return_format": "label",
+                    "other_choice": 0,
+                    "save_other_choice": 0,
+                    "parent_repeater": "field_670ad36d9f2e2"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "citcom/stats"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Fields of the old stats layout (same names and keys).",
+    "show_in_rest": 0,
+    "modified": 1790630000
+}
