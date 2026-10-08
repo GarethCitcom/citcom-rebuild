@@ -22,14 +22,25 @@ const entry = {
 
 const blocksDir = path.resolve( __dirname, 'blocks' );
 if ( fs.existsSync( blocksDir ) ) {
-	for ( const dirent of fs.readdirSync( blocksDir, { withFileTypes: true } ) ) {
+	for ( const dirent of fs.readdirSync( blocksDir, {
+		withFileTypes: true,
+	} ) ) {
 		if ( ! dirent.isDirectory() ) {
 			continue;
 		}
-		for ( const [ file, name ] of [ [ 'style.scss', 'style' ], [ 'editor.scss', 'editor' ], [ 'view.js', 'view' ] ] ) {
+		for ( const [ file, name ] of [
+			[ 'style.scss', 'style' ],
+			[ 'editor.scss', 'editor' ],
+			[ 'view.js', 'view' ],
+		] ) {
 			const source = path.join( blocksDir, dirent.name, file );
 			if ( fs.existsSync( source ) ) {
-				entry[ `blocks/${ dirent.name }/${ name }` ] = './' + path.relative( __dirname, source ).split( path.sep ).join( '/' );
+				entry[ `blocks/${ dirent.name }/${ name }` ] =
+					'./' +
+					path
+						.relative( __dirname, source )
+						.split( path.sep )
+						.join( '/' );
 			}
 		}
 	}
@@ -41,7 +52,10 @@ if ( fs.existsSync( blocksDir ) ) {
 // data URI: a CSS mask has to read the image's pixels, and an image proxy (ShortPixel)
 // rewriting the URL to another origin would break it.
 const rules = defaultConfig.module.rules.map( ( rule ) => {
-	if ( rule.type === 'asset/resource' && String( rule.test ).includes( 'webp' ) ) {
+	if (
+		rule.type === 'asset/resource' &&
+		String( rule.test ).includes( 'webp' )
+	) {
 		return {
 			test: rule.test,
 			oneOf: [
@@ -50,13 +64,20 @@ const rules = defaultConfig.module.rules.map( ( rule ) => {
 			],
 		};
 	}
-	if ( ! rule.test || ! Array.isArray( rule.use ) || ! /css|sc|sa/.test( String( rule.test ) ) ) {
+	if (
+		! rule.test ||
+		! Array.isArray( rule.use ) ||
+		! /css|sc|sa/.test( String( rule.test ) )
+	) {
 		return rule;
 	}
 	return {
 		...rule,
 		use: rule.use.map( ( use ) => {
-			if ( typeof use === 'object' && /[\/]css-loader[\/]/.test( String( use.loader ) ) ) {
+			if (
+				typeof use === 'object' &&
+				/[\/]css-loader[\/]/.test( String( use.loader ) )
+			) {
 				return {
 					...use,
 					options: {
@@ -65,7 +86,10 @@ const rules = defaultConfig.module.rules.map( ( rule ) => {
 					},
 				};
 			}
-			if ( typeof use !== 'object' || ! String( use.loader ).includes( 'sass-loader' ) ) {
+			if (
+				typeof use !== 'object' ||
+				! String( use.loader ).includes( 'sass-loader' )
+			) {
 				return use;
 			}
 			return {
@@ -75,7 +99,16 @@ const rules = defaultConfig.module.rules.map( ( rule ) => {
 					sassOptions: {
 						...( use.options && use.options.sassOptions ),
 						quietDeps: true,
-						silenceDeprecations: [ 'import', 'global-builtin', 'color-functions', 'slash-div', 'if-function', 'legacy-js-api', 'abs-percent', 'function-units' ],
+						silenceDeprecations: [
+							'import',
+							'global-builtin',
+							'color-functions',
+							'slash-div',
+							'if-function',
+							'legacy-js-api',
+							'abs-percent',
+							'function-units',
+						],
 					},
 				},
 			};
@@ -85,12 +118,28 @@ const rules = defaultConfig.module.rules.map( ( rule ) => {
 
 // Plain [name].css output (wp-scripts would prefix style.scss output with "style-") and no RTL variants.
 const plugins = defaultConfig.plugins
-	.filter( ( plugin ) => ! [ 'MiniCssExtractPlugin', 'RtlCssPlugin' ].includes( plugin.constructor.name ) )
-	.concat( [ new MiniCSSExtractPlugin( { filename: '[name].css' } ), new RemoveEmptyScriptsPlugin() ] );
+	.filter(
+		( plugin ) =>
+			! [ 'MiniCssExtractPlugin', 'RtlCssPlugin' ].includes(
+				plugin.constructor.name
+			)
+	)
+	.concat( [
+		new MiniCSSExtractPlugin( {
+			filename: '[name].css',
+			chunkFilename: 'chunks/[name].[contenthash:8].css',
+		} ),
+		new RemoveEmptyScriptsPlugin(),
+	] );
 
 module.exports = {
 	...defaultConfig,
 	entry,
+	// Code-split chunks (the carousel, the video player) carry a content hash: no ?ver= reaches them.
+	output: {
+		...defaultConfig.output,
+		chunkFilename: 'chunks/[name].[contenthash:8].js',
+	},
 	// wp-scripts renames any style.scss chunk to style-[entry]; keep [name].css instead.
 	optimization: {
 		...defaultConfig.optimization,

@@ -1,10 +1,13 @@
 # jQuery usage in the theme JavaScript
 
-jQuery 3.7.1 is still loaded from code.jquery.com in the footer, exactly as the old
-theme did, because `src/theme.js` (the port of `assets/_dev/js/main.js`) depends on
-it. This file lists every dependency so Phase 4 can remove them one module at a
-time. Each entry names the module in `src/js/`, what it uses jQuery for, and the
-plain-DOM replacement.
+jQuery is gone from the front end (Phase 4, 2026-10-08). The table below is
+the dependency list that guided the rewrite; the "Replacement" column is what
+`src/js/` does now. `src/js/fx.js` holds the few effects the original scripts
+leaned on (fadeIn, fadeOut, slideDown, slideUp, jQuery's width/height/position
+measurements and the two-way `.hover()`), with jQuery's durations and easing.
+`passive-event-listeners.js` and the jQuery dependency of
+`outdatedbrowser.min.js` went with it. A plugin that needs jQuery still gets
+WordPress's own copy by declaring the dependency.
 
 | Module | jQuery use | Replacement in Phase 4 |
 |---|---|---|

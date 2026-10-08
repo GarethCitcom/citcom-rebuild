@@ -1,55 +1,81 @@
 /**
- * vlite video players (port of assets/_dev/js/functions/vlite.js).
+ * vlite video players (port of assets/_dev/js/functions/vlite.js), loaded only
+ * on pages with a video.
  */
 import Vlitejs from 'vlitejs';
+import VlitejsYoutube from 'vlitejs/providers/youtube.js';
+import 'vlitejs/vlite.css';
+import { fadeIn } from './fx';
 
-const $ = window.jQuery;
+Vlitejs.registerProvider( 'youtube', VlitejsYoutube );
+
+function options( el ) {
+	try {
+		return el.dataset.options ? JSON.parse( el.dataset.options ) : {};
+	} catch {
+		return {};
+	}
+}
 
 export function videoLite() {
-	$( '.vlite' ).each( function () {
-		const vidID = $( this ).attr( 'id' );
+	document.querySelectorAll( '.vlite' ).forEach( ( el ) => {
+		const vidID = el.id;
 		const containerId = vidID.replace( 'player', 'video' );
-		const playerOptions = $( this ).data( 'options' );
-		const youTube = $( this ).data( 'youtube-id' );
-		const providerPlayer = youTube ? 'youtube' : 'html5';
+		const youTube = el.dataset.youtubeId;
 		new Vlitejs( '#' + vidID, {
-			options: playerOptions,
-			provider: providerPlayer,
+			options: options( el ),
+			provider: youTube ? 'youtube' : 'html5',
 			onReady( player ) {
-				$( '#' + containerId )
-					.delay( 600 )
-					.queue( 'fx', function () {
-						$( this ).addClass( 'v-vlite-lazy-loaded' );
+				const container = document.getElementById( containerId );
+				const target = document.getElementById( vidID );
+				const volume = document.getElementById( vidID + '-volume' );
+				setTimeout(
+					() =>
+						container &&
+						container.classList.add( 'v-vlite-lazy-loaded' ),
+					600
+				);
+				if ( target ) {
+					fadeIn( target, 300 );
+				}
+				setTimeout(
+					() =>
+						container &&
+						container.classList.remove( 'v-vlite-lazy' ),
+					900
+				);
+				if ( volume ) {
+					volume.classList.add( 'active' );
+					volume.addEventListener( 'click', () => {
+						if ( volume.classList.contains( 'unmute' ) ) {
+							player.unMute();
+							volume.classList.replace( 'unmute', 'mute' );
+						} else if ( volume.classList.contains( 'mute' ) ) {
+							player.mute();
+							volume.classList.replace( 'mute', 'unmute' );
+						}
 					} );
-				$( '#' + vidID ).fadeIn( 300 );
-				setTimeout( function () {
-					$( '#' + containerId ).removeClass( 'v-vlite-lazy' );
-				}, 900 );
-				$( '#' + vidID + '-volume' ).addClass( 'active' );
-				$( document ).on( 'click', '#' + vidID + '-volume', function () {
-					const volume = $( '#' + vidID + '-volume' );
-					if ( volume.hasClass( 'unmute' ) ) {
-						player.unMute();
-						volume.removeClass( 'unmute' ).addClass( 'mute' );
-					} else if ( volume.hasClass( 'mute' ) ) {
-						player.mute();
-						volume.removeClass( 'mute' ).addClass( 'unmute' );
-					}
-				} );
+				}
 			},
 		} );
 	} );
 
 	let ranVidID = 1;
-	$( '.wp-block-video' ).each( function () {
-		const theVideo = $( this ).find( 'video' );
+	document.querySelectorAll( '.wp-block-video' ).forEach( ( block ) => {
+		const theVideo = block.querySelector( 'video' );
+		if ( ! theVideo ) {
+			return;
+		}
 		const vidID = 'vlite-' + ranVidID;
-		theVideo.attr( 'id', vidID );
+		theVideo.id = vidID;
 		new Vlitejs( '#' + vidID, {
 			options: {},
 			provider: 'html5',
 			onReady() {
-				$( '#' + vidID ).fadeIn( 300 );
+				const target = document.getElementById( vidID );
+				if ( target ) {
+					fadeIn( target, 300 );
+				}
 			},
 		} );
 		ranVidID++;

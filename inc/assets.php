@@ -32,10 +32,8 @@ add_filter(
 	'wp_resource_hints',
 	function ( $urls, $relation_type ) {
 		if ( 'preconnect' === $relation_type ) {
-			$urls[] = array(
-				'href'        => 'https://code.jquery.com',
-				'crossorigin' => 'anonymous',
-			);
+			// The image CDN: images are not CORS requests, so no crossorigin here.
+			$urls[] = array( 'href' => 'https://spcdn.shortpixel.ai' );
 			$urls[] = array(
 				'href'        => 'https://kit.fontawesome.com',
 				'crossorigin' => 'anonymous',
@@ -95,14 +93,12 @@ add_action(
 	function () {
 		global $wp_query;
 
-		// jQuery from the CDN, in the footer, as before (removal tracked in docs/jquery-usage.md).
-		wp_deregister_script( 'jquery' );
-		wp_enqueue_script( 'jquery', 'https://code.jquery.com/jquery-3.7.1.min.js', array(), null, array( 'in_footer' => true ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-
+		// No jQuery on the front end since Phase 4 (docs/jquery-usage.md); plugins
+		// that need it enqueue WordPress's own copy themselves.
 		wp_enqueue_script(
 			'outdated',
 			CITCOM_THEME_URI . '/assets/vendor/outdatedbrowser.min.js',
-			array( 'jquery' ),
+			array(),
 			CITCOM_THEME_VERSION,
 			array(
 				'in_footer' => true,
@@ -113,7 +109,7 @@ add_action(
 		wp_enqueue_script(
 			'theme-script-main',
 			CITCOM_THEME_URI . '/build/theme.js',
-			array( 'jquery' ),
+			array(),
 			citcom_asset_version( 'theme' ),
 			array(
 				'in_footer' => true,

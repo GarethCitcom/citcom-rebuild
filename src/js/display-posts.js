@@ -6,110 +6,165 @@
 import AOS from 'aos';
 import { cards } from './cards';
 
-const $ = window.jQuery;
-
 function refreshLazy() {
 	if ( window.citcomLozad ) {
 		window.citcomLozad.observe();
 	}
 }
 
+/**
+ * The nested object as admin-ajax expects it: the way jQuery serialised it, with bracketed keys.
+ * @param {Object}          data   Values.
+ * @param {URLSearchParams} params Target.
+ * @param {string}          prefix Key prefix.
+ */
+function encode( data, params = new URLSearchParams(), prefix = '' ) {
+	Object.entries( data ).forEach( ( [ key, value ] ) => {
+		const name = prefix ? `${ prefix }[${ key }]` : key;
+		if ( value && 'object' === typeof value ) {
+			encode( value, params, name );
+		} else if ( undefined !== value && null !== value ) {
+			params.append( name, String( value ) );
+		}
+	} );
+	return params;
+}
+
+async function post( url, data ) {
+	const response = await fetch( url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+		},
+		body: encode( data ).toString(),
+	} );
+	return response.json();
+}
+
 function searchPosts( val ) {
-	const windowWidth = $( window ).width();
-	if ( val.length > 2 && windowWidth > 767 ) {
-		$( '#search-posts' ).trigger( 'submit' );
+	const form = document.getElementById( 'search-posts' );
+	if (
+		form &&
+		val.length > 2 &&
+		document.documentElement.clientWidth > 767
+	) {
+		if ( form.requestSubmit ) {
+			form.requestSubmit();
+		} else {
+			form.dispatchEvent( new Event( 'submit', { cancelable: true } ) );
+		}
 	}
+}
+
+function closeFilters() {
+	document
+		.querySelectorAll( '.close-blog-filters' )
+		.forEach( ( el ) => el.click() );
 }
 
 export function displayPosts() {
 	const ajax = window.citcomAjax || {};
 
 	// Load more posts.
-	$( document ).on( 'click', '.citcom_loadmore', function () {
-		if ( typeof window.displayPostsQuery === 'undefined' ) {
+	document.addEventListener( 'click', async ( event ) => {
+		const button = event.target.closest( '.citcom_loadmore' );
+		if ( ! button || 'undefined' === typeof window.displayPostsQuery ) {
 			return;
 		}
-		let search = '';
-		if ( $( '#search-posts-input' ).length ) {
-			search = $( '#search-posts-input' ).val();
-		}
-
-		const button = $( this );
+		const input = document.getElementById( 'search-posts-input' );
 		const data = {
 			action: 'loadmore',
 			displayPostsQuery: window.displayPostsQuery,
-			search,
+			search: input ? input.value : '',
 		};
-
-		$.ajax( {
-			url: ajax.ajaxurl,
-			data,
-			type: 'POST',
-			beforeSend() {
-				button.text( 'Loading...' );
-			},
-			success( response ) {
-				if ( response.data.return ) {
-					window.displayPostsQuery = response.data.displayPostsQuery;
-					button.text( 'More posts' ).before( response.data.return );
-					window.displayPostsQuery.cur_page++;
-
-					if ( window.displayPostsQuery.cur_page === window.displayPostsQuery.max_page ) {
-						button.remove();
-					}
-					refreshLazy();
-					cards();
-				} else {
+		button.textContent = 'Loading...';
+		try {
+			const response = await post( ajax.ajaxurl, data );
+			if ( response.data && response.data.return ) {
+				window.displayPostsQuery = response.data.displayPostsQuery;
+				button.textContent = 'More posts';
+				button.insertAdjacentHTML(
+					'beforebegin',
+					response.data.return
+				);
+				window.displayPostsQuery.cur_page++;
+				if (
+					window.displayPostsQuery.cur_page ===
+					window.displayPostsQuery.max_page
+				) {
 					button.remove();
 				}
-				AOS.refresh();
-			},
-		} );
+				refreshLazy();
+				cards();
+			} else {
+				button.remove();
+			}
+		} catch {
+			button.textContent = 'More posts';
+		}
+		AOS.refresh();
 	} );
 
 	// Search posts.
-	$( '#search-posts' ).submit( function ( e ) {
-		e.preventDefault();
-		if ( typeof window.displayPostsQuery === 'undefined' ) {
-			return;
-		}
-		window.displayPostsQuery.cur_page = 1;
-		window.displayPostsQuery.max_page = 1;
-		window.displayPostsQuery.posts.paged = 1;
-		const search = $( '#search-posts-input' ).val();
-		const data = {
-			action: 'postsearch',
-			displayPostsQuery: window.displayPostsQuery,
-			search,
-		};
-		$.ajax( {
-			url: ajax.ajaxurl,
-			data,
-			type: 'POST',
-			beforeSend() {
-				$( '#search-posts-btn' ).addClass( 'load' );
-			},
-			success( response ) {
-				if ( response.data.return ) {
+	const form = document.getElementById( 'search-posts' );
+	if ( form ) {
+		form.addEventListener( 'submit', async ( e ) => {
+			e.preventDefault();
+			if ( 'undefined' === typeof window.displayPostsQuery ) {
+				return;
+			}
+			window.displayPostsQuery.cur_page = 1;
+			window.displayPostsQuery.max_page = 1;
+			window.displayPostsQuery.posts.paged = 1;
+			const input = document.getElementById( 'search-posts-input' );
+			const btn = document.getElementById( 'search-posts-btn' );
+			const row = document.querySelector( '#display-posts .row' );
+			const data = {
+				action: 'postsearch',
+				displayPostsQuery: window.displayPostsQuery,
+				search: input ? input.value : '',
+			};
+			if ( btn ) {
+				btn.classList.add( 'load' );
+			}
+			try {
+				const response = await post( ajax.ajaxurl, data );
+				if ( response.data && response.data.return ) {
 					window.displayPostsQuery = response.data.displayPostsQuery;
 					window.displayPostsQuery.max_page = response.data.maxPages;
-					$( '#display-posts .row' ).html( response.data.return );
-					if ( window.displayPostsQuery.cur_page < window.displayPostsQuery.max_page ) {
-						$( '#display-posts .row' ).append( '<div class="citcom_loadmore btn btn-outline-secondary rounded-pill px-4 mx-auto mt-5">Load more</div>' );
+					if ( row ) {
+						row.innerHTML = response.data.return;
+						if (
+							window.displayPostsQuery.cur_page <
+							window.displayPostsQuery.max_page
+						) {
+							row.insertAdjacentHTML(
+								'beforeend',
+								'<div class="citcom_loadmore btn btn-outline-secondary rounded-pill px-4 mx-auto mt-5">Load more</div>'
+							);
+						}
 					}
 					refreshLazy();
 					cards();
-					$( '.close-blog-filters' ).trigger( 'click' );
+					closeFilters();
 				} else {
-					$( '#display-posts .row' ).html( '<p>No results found</p>' );
-					$( '.citcom_loadmore' ).remove();
-					$( '.close-blog-filters' ).trigger( 'click' );
+					if ( row ) {
+						row.innerHTML = '<p>No results found</p>';
+					}
+					document
+						.querySelectorAll( '.citcom_loadmore' )
+						.forEach( ( el ) => el.remove() );
+					closeFilters();
 				}
-				$( '#search-posts-btn' ).removeClass( 'load' );
-				AOS.refresh();
-			},
+			} catch {
+				// Leave the list as it was.
+			}
+			if ( btn ) {
+				btn.classList.remove( 'load' );
+			}
+			AOS.refresh();
 		} );
-	} );
+	}
 
 	const searchText = document.getElementById( 'search-posts-input' );
 	if ( searchText ) {
@@ -119,9 +174,7 @@ export function displayPosts() {
 				window.clearTimeout( timeout );
 			}
 			const val = searchText.value;
-			timeout = setTimeout( function () {
-				searchPosts( val );
-			}, 500 );
+			timeout = setTimeout( () => searchPosts( val ), 500 );
 		} );
 	}
 }

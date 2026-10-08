@@ -19,7 +19,6 @@
 	?>
 
 	<!-- Preconnect to external domains for faster loading -->
-	<link rel="preconnect" href="https://code.jquery.com" crossorigin>
 	<link rel="preconnect" href="https://kit.fontawesome.com" crossorigin>
 	<link rel="dns-prefetch" href="https://ajax.googleapis.com">
 
