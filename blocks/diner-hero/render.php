@@ -47,7 +47,14 @@ $sign_fallback_mobile = CITCOM_THEME_URI . '/assets/img/diner/diner-sign-mobile.
 
 		<div class="diner-hero-sign-wrap">
 			<?php if ( $sign && 0 === strpos( (string) ( $sign['mime_type'] ?? '' ), 'video/' ) ) : ?>
-				<video class="diner-hero-sign" src="<?php echo esc_url( $sign['url'] ?? '' ); ?>" autoplay muted loop playsinline></video>
+				<?php
+				// The video's own dimensions, so its box is right before the metadata arrives
+				// (otherwise it lays out at 300x150 and everything below jumps).
+				$sign_meta   = wp_get_attachment_metadata( (int) ( $sign['id'] ?? $sign['ID'] ?? 0 ) );
+				$sign_width  = (int) ( $sign_meta['width'] ?? 0 ) ?: 1920;
+				$sign_height = (int) ( $sign_meta['height'] ?? 0 ) ?: 1080;
+				?>
+				<video class="diner-hero-sign" src="<?php echo esc_url( $sign['url'] ?? '' ); ?>" width="<?php echo (int) $sign_width; ?>" height="<?php echo (int) $sign_height; ?>" autoplay muted loop playsinline></video>
 				<span class="diner-hero-sign-fade" aria-hidden="true"></span>
 			<?php elseif ( $sign ) : ?>
 				<?php echo the_image( $sign['id'] ?? $sign['ID'] ?? 0, 'diner-hero-sign' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -55,7 +62,7 @@ $sign_fallback_mobile = CITCOM_THEME_URI . '/assets/img/diner/diner-sign-mobile.
 			<?php else : ?>
 				<picture>
 					<source media="(max-width: 1039.98px)" srcset="<?php echo esc_url( $sign_fallback_mobile ); ?>">
-					<img src="<?php echo esc_url( $sign_fallback ); ?>" class="diner-hero-sign" alt="Welcome to the CitCom Creative Diner">
+					<img src="<?php echo esc_url( $sign_fallback ); ?>" class="diner-hero-sign" width="1600" height="900" alt="Welcome to the CitCom Creative Diner">
 				</picture>
 			<?php endif; ?>
 
