@@ -82,6 +82,16 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   global stylesheet (`src/theme.scss`, the old `assets/_dev/scss` ported), and
   per-block styles via `block.json` `style`/`editorStyle`/`viewScript` so a
   page only loads what it uses.
+- No jQuery on the front end (Phase 4). `src/theme.js` imports only the
+  Bootstrap components the markup uses (Modal, Offcanvas, Tooltip); the
+  carousel (Swiper) and the video player (vlitejs) are dynamic imports, built
+  as hashed chunks under `build/chunks/`, fetched only on pages that have one.
+  `src/js/fx.js` carries the jQuery effects the old scripts relied on.
+- Images: pass `sizes` through `the_image()` wherever the slot is narrower
+  than the viewport (`citcom_image_sizes()` works it out from Bootstrap column
+  classes); carousel slides past the second go through `citcom_defer_image()`
+  because Chrome fetches lazy images inside an overflow:hidden carousel
+  anyway (docs/05-phase4-brief.md).
 - Compiled output goes to `build/` (git-ignored on main). GitHub Actions
   (`.github/workflows/deploy.yml`) builds on every push to main and publishes
   source plus `build/` as one force-pushed commit on the `deploy` branch under
