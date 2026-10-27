@@ -28,6 +28,25 @@ function citcom_asset_version( string $handle ): string {
 	return CITCOM_THEME_VERSION;
 }
 
+/**
+ * The Google Tag Manager container ID, or '' to print no loader at all.
+ *
+ * The loader in header.php is type="text/plain" with data-cookiecategory="analytics":
+ * Pressidium Cookie Consent (General > Page Scripts) makes it live once the visitor
+ * allows analytics cookies, and straight away on later visits with that consent
+ * saved. There is deliberately no <noscript> fallback: it would load GTM unasked.
+ *
+ * @return string
+ */
+function citcom_gtm_id(): string {
+	/**
+	 * Filters the Google Tag Manager container ID.
+	 *
+	 * @param string $id Container ID, e.g. GTM-XXXXXXX; '' disables GTM.
+	 */
+	return (string) apply_filters( 'citcom_gtm_id', 'GTM-KQQPQS8' );
+}
+
 add_filter(
 	'wp_resource_hints',
 	function ( $urls, $relation_type ) {
@@ -48,7 +67,9 @@ add_filter(
 			);
 		}
 		if ( 'dns-prefetch' === $relation_type ) {
-			$urls[] = 'https://www.googletagmanager.com';
+			if ( citcom_gtm_id() ) {
+				$urls[] = 'https://www.googletagmanager.com';
+			}
 			$urls[] = 'https://ajax.googleapis.com';
 		}
 		return $urls;

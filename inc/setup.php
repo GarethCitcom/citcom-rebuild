@@ -231,54 +231,6 @@ add_action(
 );
 
 /*
- * WPConsent: preference cookie renamed to citcom_preferences
- * (functions/lib/wpconsent.php and delete-wpconsent-cookie.php).
- */
-add_action(
-	'init',
-	function () {
-		if ( isset( $_COOKIE['wpconsent_preferences'] ) ) {
-			setcookie(
-				'wpconsent_preferences',
-				'',
-				array(
-					'expires'  => time() - YEAR_IN_SECONDS,
-					'path'     => '/',
-					'domain'   => COOKIE_DOMAIN ? COOKIE_DOMAIN : '',
-					'secure'   => is_ssl(),
-					'httponly' => false,
-					'samesite' => 'Lax',
-				)
-			);
-			unset( $_COOKIE['wpconsent_preferences'] );
-		}
-	}
-);
-
-add_filter(
-	'wpconsent_frontend_js_data',
-	function ( $data ) {
-		$data['cookie_name'] = 'citcom_preferences';
-		return $data;
-	}
-);
-
-add_action(
-	'wp_enqueue_scripts',
-	function () {
-		if ( ! wp_script_is( 'wpconsent-frontend-js', 'registered' ) ) {
-			return;
-		}
-		wp_add_inline_script(
-			'wpconsent-frontend-js',
-			'(function(){if(typeof WPConsent==="undefined")return;var _get=WPConsent.getCookie,_set=WPConsent.setCookie;WPConsent.getCookie=function(n){return _get.call(this,n==="wpconsent_preferences"?"citcom_preferences":n);};WPConsent.setCookie=function(n,v,d){return _set.call(this,n==="wpconsent_preferences"?"citcom_preferences":n,v,d);};var oldVal=_get.call(WPConsent,"wpconsent_preferences");var newVal=_get.call(WPConsent,"citcom_preferences");if(oldVal&&!newVal){var dur=window.wpconsent&&wpconsent.consent_duration?parseInt(wpconsent.consent_duration,10):365;_set.call(WPConsent,"citcom_preferences",oldVal,dur);_set.call(WPConsent,"wpconsent_preferences","",-1);}})();',
-			'after'
-		);
-	},
-	20
-);
-
-/*
  * Admin: keep the Menus screen highlighted (functions/theme_content/wp-admin.php).
  */
 add_action(

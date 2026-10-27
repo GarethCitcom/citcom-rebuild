@@ -24,8 +24,9 @@
 
 	<?php wp_head(); ?>
 
-	<!-- Google Tag Manager -->
-	<script type="text/plain" data-cookie-consent="tracking">
+	<?php if ( citcom_gtm_id() ) : ?>
+	<!-- Google Tag Manager: inert until Pressidium Cookie Consent allows analytics cookies (inc/assets.php). -->
+	<script type="text/plain" data-cookiecategory="analytics">
 		(function(w, d, s, l, i) {
 			w[l] = w[l] || [];
 			w[l].push({
@@ -39,9 +40,10 @@
 			j.src =
 				'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
 			f.parentNode.insertBefore(j, f);
-		})(window, document, 'script', 'dataLayer', 'GTM-KQQPQS8');
+		})(window, document, 'script', 'dataLayer', '<?php echo esc_js( citcom_gtm_id() ); ?>');
 	</script>
 	<!-- End Google Tag Manager -->
+	<?php endif; ?>
 
 </head>
 
@@ -56,10 +58,6 @@
 	}
 
 	?>
-
-	<!-- Google Tag Manager (noscript) -->
-	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KQQPQS8" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-	<!-- End Google Tag Manager (noscript) -->
 
 	<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasmenu" aria-labelledby="Navigation">
 		<div class="offcanvas-header bg-dark text-light pe-5" data-bs-theme="dark">

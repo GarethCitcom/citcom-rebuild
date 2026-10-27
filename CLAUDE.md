@@ -37,7 +37,10 @@ performance. Read `docs/00-discovery.md` first, then the phase brief you are on.
   inc/seo.php, adds the archive titles through SEOPress's filters. The
   theme owns all structured data (inc/schema.php: one JSON-LD graph per
   page; SEOPress's own schema output is switched off there). Redirects are
-  in Site Settings > Redirects (inc/redirects.php).
+  in Site Settings > Redirects (inc/redirects.php). Cookie consent is the
+  Pressidium Cookie Consent plugin (decided 2026-10-27, WPConsent is dropped):
+  the GTM loader in header.php is inert until its analytics category is
+  allowed (inc/assets.php `citcom_gtm_id()`, docs/analytics-consent.md).
   PHP 8.5, WP 7.1+.
 - UK English in all copy and comments. No em dashes in prose.
 
