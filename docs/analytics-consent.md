@@ -56,14 +56,31 @@ Settings > Cookie Consent in wp-admin, on staging first, then live.
 - **Cookies tab, under Analytics:** list the GA cookies so Pressidium's
   "autoclear" erases them when consent is withdrawn or rejected after having
   been given. GA4 sets `_ga` and one `_ga_<container>` cookie per property, so
-  add `_ga` as an exact name and `^_ga_` with the regex option ticked. Domain
-  `.citcom.co.uk` on live (`.citcomstaging.mystagingwebsite.com` on staging),
-  path `/`.
+  add `_ga` as an exact name and `^_ga_` with the regex option ticked, path
+  `/`. The row's domain column is only shown to the visitor: when erasing,
+  the banner uses the plugin's own cookie domain (General > Cookie domain),
+  so that has to be the domain GA sets `_ga` on, which is the registrable
+  domain. On live the default, `citcom.co.uk`, is right. On staging the
+  default is the full host and the GA cookies survived a withdrawal (found
+  2026-10-27), so it is set to `mystagingwebsite.com` there.
 - **Floating settings button: ON**, so a visitor can change their choice
   later without clearing cookies; withdrawing consent is what the last test
   below checks.
 - The plugin's own cookie is `pressidium_cookie_consent`. Deleting it in
   DevTools is how to get a "fresh visit" when testing.
+- "Hide from bots" (on) also hides the banner from any browser that reports
+  `navigator.webdriver`, so an automated browser sees no banner unless the
+  test masks that flag. `tools/consent-check.cjs` runs this checklist that
+  way (headful Chrome, see its header).
+
+All of the above is applied by `wp --skip-themes eval-file tools/pressidium-settings.php`
+(run from the WordPress root over SSH), which writes the plugin's settings option
+in full. It was used on staging on 2026-10-27 and is how live gets the same
+settings; after running it, check the Cookie Consent screen once by eye. Then
+purge Pressable's edge cache (Pressable dashboard, or the connector's
+`purge_site_edge_cache`): the banner's settings are printed into every page,
+and `wp cache flush` alone left visitors on the old copy for a while on
+2026-10-27.
 
 Nothing to style: the theme no longer carries the old TermsFeed dialogue skin.
 Colours and wording are set in the plugin.
@@ -95,6 +112,12 @@ To be made in the GTM UI (container GTM-KQQPQS8), then published.
 
 Use GTM Preview (Tag Assistant) to watch the events arrive: it shows the
 dataLayer pushes and which tags fired for each.
+
+GA4 enhanced measurement sends its own `form_submit` on every click of a
+submit button, including ones the theme rejects with a validation error, so
+it is not a lead count. Either switch off "Form interactions" under the web
+data stream's enhanced measurement, or ignore that event and read
+`generate_lead` only.
 
 ## Test checklist
 
