@@ -27,6 +27,7 @@ import { cards } from './js/cards';
 import { sidebar } from './js/sidebar';
 import { displayPosts } from './js/display-posts';
 import { forms } from './js/forms';
+import { contactClicks } from './js/contact-clicks';
 
 // Bootstrap is exposed for the inline tooltip/modal calls the templates make.
 window.bootstrap = { Modal, Offcanvas, Tooltip };
@@ -134,6 +135,7 @@ ready( () =>
 		cards();
 		displayPosts();
 		forms();
+		contactClicks();
 
 		if ( document.querySelector( '.vlite, .wp-block-video' ) ) {
 			import( './js/vlite' ).then( ( m ) => m.videoLite() );

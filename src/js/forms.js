@@ -98,6 +98,13 @@ function showFieldErrors( form, errors ) {
 	}
 }
 
+// GTM reads whatever is already in the dataLayer when it loads, so pushing before
+// consent (and so before gtm.js) is fine: the event is picked up if consent follows.
+function track( event, form ) {
+	window.dataLayer = window.dataLayer || [];
+	window.dataLayer.push( { event, form: form.dataset.citcomForm } );
+}
+
 async function submit( form ) {
 	const button = form.querySelector( '.citcom-form-submit' );
 	const data = new FormData( form );
@@ -131,12 +138,7 @@ async function submit( form ) {
 		showMessage( form, result.message, false );
 		form.reset();
 		toggleConditional( form );
-		if ( window.dataLayer ) {
-			window.dataLayer.push( {
-				event: 'formsuccess',
-				form: form.dataset.citcomForm,
-			} );
-		}
+		track( 'formsuccess', form );
 		// In a popup: close it once the message has been read, as before.
 		const modal = form.closest( '.modal' );
 		if ( modal ) {
@@ -161,12 +163,7 @@ async function submit( form ) {
 	if ( result && result.errors ) {
 		showFieldErrors( form, result.errors );
 	}
-	if ( window.dataLayer ) {
-		window.dataLayer.push( {
-			event: 'formfailed',
-			form: form.dataset.citcomForm,
-		} );
-	}
+	track( 'formfailed', form );
 }
 
 export function forms() {
