@@ -1,0 +1,100 @@
+// Brand tokens and Bootstrap overrides, ported from assets/_dev/scss/_variables.scss.
+// Loaded before Bootstrap's own variables so the !default values here win.
+
+// Brand colours
+$light:             #FFFFFF;
+$dark:              #1C0221;
+
+$aubergine:         $dark;
+$starfruit:         #9AD14D;
+$slate:             #2A4747;
+$persian:           #17A398;
+$carrot:            #F9A03F;
+$grey:              #D8DBE2;
+
+// Tints and shades (40%)
+$dark_grey:         #a2a4aa;
+$light_grey:        #eff1f3;
+$dark_starfruit:    #739d3a;
+$light_starfruit:   #d7edb8;
+$dark_persian:      #117a72;
+$light_persian:     #a2dad6;
+$dark_aubergine:    #09060D;
+$light_aubergine:   #80768A;
+
+// System alert colours
+$green:   #44bd32;
+$blue:    #0097e6;
+$yellow:  #fbc531;
+$red:     #e84118;
+
+// Bootstrap overrides
+$primary:       $aubergine;
+$secondary:     $starfruit;
+$default:       $grey;
+
+$font-family-sans-serif:
+  forma-djr-micro, montserrat,
+  system-ui,
+  -apple-system,
+  "Segoe UI",
+  Roboto,
+  "Helvetica Neue",
+  "Noto Sans",
+  "Liberation Sans",
+  Arial,
+  sans-serif,
+  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+
+$theme-colors: (
+  aubergine:          $aubergine,
+  starfruit:          $starfruit,
+  slate:              $slate,
+  persian:            $persian,
+  carrot:             $carrot,
+  default:            $grey,
+  default_lighter:    $light_grey,
+  default_darker:     $dark_grey,
+  primary:            $aubergine,
+  primary_lighter:    $light_aubergine,
+  primary_darker:     $dark_aubergine,
+  secondary:          $starfruit,
+  secondary_lighter:  $light_starfruit,
+  secondary_darker:   $dark_starfruit,
+  success:            $green,
+  danger:             $red,
+  warning:            $yellow,
+  info:               $blue,
+  light:              $light,
+  dark:               $dark
+) !default;
+
+$container-max-widths: (
+  sm:   540px,
+  md:   720px,
+  lg:   960px,
+  xl:   1140px,
+  xxl:  1340px
+);
+
+$grid-breakpoints: (
+  xs:   0,
+  sm:   576px,
+  md:   768px,
+  lg:   1040px,
+  xl:   1260px,
+  xxl:  1440px,
+  sl:   1919px
+);
+
+$h1-font-size: 3.5rem;
+$h2-font-size: 2.5rem;
+$h3-font-size: 1.5rem;
+$h4-font-size: 1.3rem;
+$h5-font-size: 1.1rem;
+$h6-font-size: 1rem;
+
+$line-height-base: 1.6;
+$line-height-base-md: 1.7;
+
+$modal-fade-transform: scale(.8);

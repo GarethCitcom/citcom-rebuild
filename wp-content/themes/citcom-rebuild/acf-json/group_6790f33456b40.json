@@ -1,0 +1,45 @@
+{
+    "key": "group_6790f33456b40",
+    "title": "Section settings (simple)",
+    "fields": [
+        {
+            "key": "field_6790f3345a787",
+            "label": "Anchor name",
+            "name": "anchor_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "#",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "citcom/cta"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Anchor only. The old cta layout used this group instead of the full Section settings; its gradient is fixed in the template.",
+    "show_in_rest": 0,
+    "modified": 1790740000
+}

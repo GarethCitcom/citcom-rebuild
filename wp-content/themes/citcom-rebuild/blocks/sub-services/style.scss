@@ -1,0 +1,92 @@
+// citcom/sub-services: port of assets/_dev/scss/flexContent/sub-services.scss,
+// plus the Swiper styles the service row galleries need.
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+@import "../../src/scss/blocks/swiper";
+
+.flex-sub_services{
+
+    .nav-pills-secondary{
+        .nav-item{
+            .nav-link{
+                @include forma(400);
+                &.active{
+                    background-color: var(--brand-secondary);
+                    color: var(--brand-primary);
+                }
+            }
+        }
+    }
+
+    #sub-services-nav{
+        position: sticky;
+        z-index: 997;
+        width: 100%;
+        top: $hh_shrink - 1;
+        border-bottom: 1px solid var(--brand-default);
+        display: flex;
+        align-items: center;
+        @include media-breakpoint-up(sm) {
+            top: $hh_sm_shrink - 1;
+            height: 80px;
+        }
+        @include media-breakpoint-up(lg) {
+            top: $hh_lg_shrink - 1;
+            height: 90px;
+        }
+        @include media-breakpoint-up(xl) {
+            top: $hh_xl_shrink - 1;
+            height: 100px;
+        }
+        @include media-breakpoint-up(sl) {
+            top: $hh_sl_shrink - 1;
+            height: 120px;
+        }
+    }
+
+    .service-row{
+        @include media-breakpoint-up(sm) {
+            padding-top: calc(80px + #{$hh_sm_shrink} + 10px);
+            margin-top: calc(-1 * (80px + #{$hh_sm_shrink} + 10px));
+        }
+        @include media-breakpoint-up(lg) {
+            padding-top: calc(90px + #{$hh_lg_shrink} + 10px);
+            margin-top: calc(-1 * (90px + #{$hh_sm_shrink} + 10px));
+        }
+        @include media-breakpoint-up(xl) {
+            padding-top: calc(100px + #{$hh_xl_shrink} + 10px);
+            margin-top: calc(-1 * (100px + #{$hh_sm_shrink} + 10px));
+        }
+        @include media-breakpoint-up(sl) {
+            padding-top: calc(120px + #{$hh_sl_shrink} + 10px);
+            margin-top: calc(-1 * (120px + #{$hh_sm_shrink} + 10px));
+        }
+    }
+
+    .hide-border{
+        width: 100%;
+        height: 2px;
+        margin-top: -1px;
+        position: relative;
+        z-index: 998;
+        position: sticky;
+        top: calc(#{$hh_shrink} + 70px);
+        @include media-breakpoint-up(sm) {
+            top: calc(#{$hh_sm_shrink} + 70px);
+        }
+        @include media-breakpoint-up(lg) {
+            top: calc(#{$hh_lg_shrink} + 80px);
+        }
+        @include media-breakpoint-up(xl) {
+            top: calc(#{$hh_xl_shrink} + 90px);
+        }
+        @include media-breakpoint-up(sl) {
+            top: calc(#{$hh_sl_shrink} + 110px);
+        }
+    }
+
+    .swiper-gallery{
+        min-height: 300px;
+    }
+
+}

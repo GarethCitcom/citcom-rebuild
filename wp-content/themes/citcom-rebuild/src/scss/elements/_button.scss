@@ -1,0 +1,341 @@
+.citcom-btn{
+    @extend .rounded-pill;
+    .citcom-btn-bg{
+        @extend .rounded-pill;
+    }
+}
+.icon-btn{
+    @extend .rounded-2;
+    .icon-btn-bg{
+        @extend .rounded-2;
+    }
+}
+.citcom-btn,
+.icon-btn{
+    @extend .btn;
+    position: relative;
+    padding-left: 3rem;
+    padding-right: 1rem;
+    @include forma(bold);
+
+    &.citcom-btn-lg{
+        @extend .btn-lg;
+        padding-left: 3.5rem;
+        padding-right: 1.75rem;
+        padding-top: 0.7755rem;
+        padding-top: calc(0.6rem + 3px);
+        padding-bottom: 0.6rem;
+        font-size: 1rem;
+    }
+
+    .citcom-btn-bg,
+    .icon-btn-bg{
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        aspect-ratio: 1;
+        height: 100%;
+        @include transition(all,0.3s);
+    }
+
+    .citcom-btn-icon{
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        aspect-ratio: 1;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include transition(left,0.6s);
+    }
+
+    &.citcom-btn-primary{
+        .citcom-btn-icon{
+            color: var(--brand-white);
+        }
+        .citcom-btn-bg,
+        .icon-btn-bg{
+            background: var(--brand-primary);
+        }
+    }
+    &.citcom-btn-secondary{
+        .citcom-btn-bg,
+        .icon-btn-bg{
+            background: var(--brand-secondary);
+        }
+    }
+    &.citcom-btn-default{
+        .citcom-btn-bg,
+        .icon-btn-bg{
+            background: var(--brand-default);
+        }
+    }
+
+    &:hover,
+    &.active{
+        .citcom-btn-bg,
+        .icon-btn-bg{
+            width: 100%!important;
+        }
+        .citcom-btn-icon{
+            left: .5rem;
+        }
+
+        &.citcom-btn-lg{
+            .citcom-btn-icon{
+                left: .75rem;
+            }
+        }
+        &.citcom-btn-primary{
+            color: var(--brand-white);
+        }
+    }
+
+    &:active,
+    &.active{
+        border-color: transparent !important;
+        &.citcom-btn-primary{
+            color: var(--brand-white);
+            .citcom-btn-bg,
+            .icon-btn-bg{
+                background: var(--brand-primary-darker);
+            }
+        }
+        &.citcom-btn-secondary{
+            color: var(--brand-white);
+            .citcom-btn-bg,
+            .icon-btn-bg{
+                background: var(--brand-secondary-darker);
+            }
+        }
+        &.citcom-btn-default{
+            .citcom-btn-bg,
+            .icon-btn-bg{
+                background: var(--brand-default-darker);
+            }
+        }
+    }
+}
+
+.citcom-input-btn{
+    @extend .btn;
+    @extend .rounded-pill;
+    position: relative;
+    @include forma(bold);
+
+    input{
+        opacity: 0;
+        width: 0;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        padding-left: 3rem;
+        padding-top: calc(var(--bs-btn-padding-y) + 3px);
+        background: transparent!important;
+        z-index: 2;
+        line-height: 1rem;
+        @include transition(all,0.3s);
+    }
+
+    .citcom-btn-bg{
+        @extend .rounded-pill;
+        position: absolute;
+        z-index: 0;
+        top: 0;
+        left: 0;
+        aspect-ratio: 1;
+        height: 100%;
+        @include transition(all,0.3s);
+    }
+
+    .citcom-btn-icon{
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        aspect-ratio: 1;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include transition(left,0.6s);
+    }
+
+    &.citcom-input-btn-primary{
+        color: var(--brand-white);
+        .citcom-btn-icon,
+        input{
+            color: var(--brand-white);
+            svg{
+                fill: var(--brand-white);
+            }
+        }
+        .citcom-btn-bg{
+            background: var(--brand-primary);
+        }
+    }
+    &.citcom-input-btn-secondary{
+        .citcom-btn-bg{
+            background: var(--brand-secondary);
+        }
+    }
+    &.citcom-input-btn-default{
+        .citcom-btn-bg{
+            background: var(--brand-default);
+        }
+    }
+
+    &:hover,
+    &.focus{
+        .citcom-btn-bg,
+        input{
+            opacity: 1;
+            width: 12rem!important;
+        }
+        .citcom-btn-icon{
+            left: .5rem;
+        }
+
+        &.citcom-btn-lg{
+            .citcom-btn-icon{
+                left: .75rem;
+            }
+        }
+    }
+
+    &:active,
+    &.active{
+        border-color: transparent !important;
+        &.citcom-input-btn-primary{
+            color: var(--brand-white);
+            .citcom-btn-bg{
+                background: var(--brand-primary);
+            }
+        }
+        &.citcom-input-btn-secondary{
+            .citcom-btn-bg{
+                background: var(--brand-secondary);
+            }
+        }
+        &.citcom-input-btn-default{
+            .citcom-btn-bg{
+                background: var(--brand-default);
+            }
+        }
+    }
+}
+
+.btn{
+    border-width: 0.125rem;
+    padding-top: calc(var(--bs-btn-padding-y) + 2px);
+    @include forma(bold);
+
+    &.btn-icon{
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        padding: .25rem;
+        width:fit-content;
+    }
+
+    &.btn-primary{
+        &:hover{
+            background: var(--brand-primary-lighter);
+            border-color: var(--brand-primary-lighter);
+        }
+        &:active{
+            background: var(--brand-primary-darker);
+            border-color: var(--brand-primary-darker);
+        }
+    }
+
+    &.btn-outline-primary{
+        &:active{
+            background: var(--brand-primary-lighter);
+        }
+    }
+
+    &.btn-secondary{
+        &:hover{
+            background: var(--brand-secondary-lighter);
+            border-color: var(--brand-secondary-lighter);
+        }
+        &:active{
+            background: var(--brand-secondary-darker);
+            border-color: var(--brand-secondary-darker);
+        }
+    }
+
+    &.btn-outline-secondary{
+        &:active{
+            background: var(--brand-secondary-lighter);
+        }
+    }
+
+    &.btn-text{
+        position: relative;
+        border-radius: $border-radius-pill;
+        text-decoration: none;
+        font-size: 1rem;
+        @include forma(regular);
+        &:before{
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            width: 0px;
+            height: 100%;
+            background: var(--brand-secondary);
+            border-radius: $border-radius-pill;
+            @include transition(all,0.3s);
+        }
+        .btn-icon{
+            position: relative;
+            z-index: 1;
+            left: calc(var(--bs-btn-padding-x) * -0.25);
+            margin-right: .5rem;
+            @include transition(left,0.6s);
+        }
+        &:hover{
+            &:before{
+                width: 100%;
+            }
+            .btn-icon{
+                left: 0;
+            }
+        }
+    }
+
+    &.btn-tag{
+        @include forma(regular);
+        font-size: 0.8rem;
+        line-height: 0.8rem;
+        padding: 0.175rem .375rem 0.095rem;
+        background-color: var(--brand-default);
+        border-color: var(--brand-default);
+        border-radius: $border-radius-sm;
+        @extend .focus-ring;
+        &:hover{
+            background-color: var(--brand-secondary);
+            border-color: var(--brand-secondary);
+        }
+        &:active{
+            @extend .focus-ring-secondary;
+            background-color: var(--brand-secondary-darker);
+            border-color: var(--brand-secondary-darker);
+            color: var(--brand-white);
+        }
+    }
+}
+
+.card-dark{
+    .btn-tag{
+        @extend .focus-ring-secondary;
+    }
+}

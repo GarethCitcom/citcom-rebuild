@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/top-blog-posts",
+	"title": "Top Blog Posts",
+	"description": "Sidebar list of up to three hand-picked blog posts.",
+	"category": "citcom",
+	"icon": "editor-ol",
+	"keywords": [ "top", "posts", "blog", "sidebar" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": false,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"usePostMeta": false
+	}
+}

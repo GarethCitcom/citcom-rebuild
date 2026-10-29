@@ -1,0 +1,53 @@
+{
+    "key": "group_citcom_sub_services",
+    "title": "Block: Sub Services",
+    "fields": [
+        {
+            "key": "field_670d082986a53",
+            "label": "Select Sub Services",
+            "name": "select_sub_services",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "Select the sub pages to show & the order they appear (to be used on core service pages only, don't link to our core services)",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "service"
+            ],
+            "post_status": "",
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 1,
+            "min": 2,
+            "max": "",
+            "allow_null": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "citcom/sub-services"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Fields of the old sub_services layout (same names and keys).",
+    "show_in_rest": 0,
+    "modified": 1790630000
+}

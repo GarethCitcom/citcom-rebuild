@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/latest-posts",
+	"title": "Latest Posts",
+	"description": "Sidebar list of the five newest blog posts, leaving out the post being read.",
+	"category": "citcom",
+	"icon": "editor-ul",
+	"keywords": [ "latest", "posts", "blog", "sidebar" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": false,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"usePostMeta": false
+	}
+}

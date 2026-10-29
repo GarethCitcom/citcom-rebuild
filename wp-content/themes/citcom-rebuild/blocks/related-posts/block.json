@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/related-posts",
+	"title": "Related Posts",
+	"description": "Sidebar list of posts related to the one being read; shows nothing when there are none.",
+	"category": "citcom",
+	"icon": "randomize",
+	"keywords": [ "related", "posts", "blog", "sidebar" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": false,
+		"align": false,
+		"html": false,
+		"mode": false,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"usePostMeta": false
+	}
+}

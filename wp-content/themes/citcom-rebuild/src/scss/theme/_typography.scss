@@ -1,0 +1,99 @@
+// forma() lives in theme/_mixin.scss so blocks can use it without CSS output.
+
+:root {
+	font-size: 14px;
+	@include media-breakpoint-up(xl) {
+		font-size: 16px;
+	}
+	@include media-breakpoint-up(sl) {
+		font-size: 20px;
+	}
+}
+body{
+	font-size: 14px;
+	@include media-breakpoint-up(xl) {
+		font-size: 16px;
+	}
+	@include media-breakpoint-up(sl) {
+		font-size: 20px;
+	}
+	-webkit-font-smoothing: antialiased;
+	color: var(--brand-primary);
+	font-family: Arial, Helvetica, sans-serif;
+	@include forma(400);
+}
+
+.fw-300{
+	@include forma(300);
+}
+.fw-400{
+	@include forma(400);
+}
+.fw-700{
+	@include forma(700);
+}
+.fw-800{
+	@include forma(800);
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{
+	margin-bottom: 1rem;
+}
+html:not(.wf-active){
+	body{
+		letter-spacing: -0.03rem;
+		line-height: 1.63;
+	}
+	.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{
+		letter-spacing: -0.03rem;
+		line-height: 1.3;
+	}
+}
+
+h1,h2,h3,h4,h5{
+	@include forma(800);
+	span:not(.fw-same),b,strong{
+		@include forma(700);
+	}
+}
+h6{
+	@include forma(700);
+}
+
+.select-all-text {
+    user-select: all;
+    -moz-user-select: all;
+    -webkit-user-select: all;
+}
+
+.text-block,
+.flex-editor{
+	a:not(.wp-element-button){
+		position: relative;
+		z-index: 1;
+		padding: 0 0.2rem;
+		text-underline-offset: 0.2rem;
+		text-decoration-color: var(--brand-secondary);
+		&:before{
+			content:"";
+			position: absolute;
+			z-index: -1;
+			background: var(--brand-secondary);
+			top: -0.25rem;
+			left: 0;
+			right: 0;
+			bottom: -0.25rem;
+			width: 0;
+			border-radius: 0.2rem;
+			@include transition(width,0.2s);
+		}
+		&:hover{
+			&:before{
+				width: 100%;
+			}
+		}
+	}
+}
+.lh-md{
+	line-height: $line-height-base-md;
+}

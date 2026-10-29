@@ -1,0 +1,284 @@
+// citcom/diner-story: port of assets/_dev/scss/flexContent/diner-story.scss.
+// Shared diner rules come from the "citcom-diner" style (src/scss/diner.scss).
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+@import "../../src/scss/blocks/diner-vars";
+
+// Diner story — dark copy panel + photo split, chequer-bordered top and bottom.
+//
+// Positions/sizes below are eyeballed off a reference screenshot (the .fig binary
+// itself isn't parseable in this environment — see working-memory.md), not measured
+// fig values. Treat everything with a percentage or px value here as a first pass
+// to be corrected against the live page.
+.flex-diner_story{
+    position: relative;
+    // The stamp overhangs the section's bottom-right corner, same device as the
+    // intro section's stamp.
+    overflow: visible;
+
+    .diner-story-grid{
+        position: relative;
+        // Clips the chequer overlay to exactly the grid's box, so it lines up with
+        // the panel/photo edges it's meant to print over.
+        overflow: hidden;
+        display: grid;
+        // Copy panel reads slightly wider than the photo in the reference.
+        grid-template-columns: 54% 46%;
+        align-items: stretch;
+        min-height: min(46vw, 640px);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+            min-height: 0;
+        }
+    }
+
+    // Chequer band, top and bottom, printed OVER both the copy panel and the photo
+    // rather than sitting in flow above/below them — absolutely positioned within
+    // the grid, on top of both grid items by z-index, gaps left transparent (no
+    // background-color) so whatever sits beneath shows through: the dark panel on
+    // the left, the photo on the right.
+    //
+    // Uses chequer-strip-tile.svg, a 200x100 seamless repeat unit cropped from the
+    // same pattern definition as working-folder/Rectangle 15.svg (the user's real
+    // design asset for this band, not a small tileable cell to freely redraw) — see
+    // $diner_chequer_strip_height in diner-shared.scss for why it's cropped to 200
+    // wide rather than the full 1920px composed image the asset originally shipped
+    // as: 1920 isn't a whole multiple of the checkerboard's own column pitch, so
+    // `repeat-x`-ing the full 1920 image left a visible seam every 1920px, only
+    // visible once a section got wider than that (reported 2026-09-01). 200 is the
+    // pattern's own patternTransform tile size, so it tiles with zero seam at any
+    // width.
+    //
+    // Earlier still (2026-08-25), before that: first pass stretched the asset to
+    // background-size: 100% 100%, filling the box exactly regardless of its actual
+    // width — safe against ever revealing a partial row, but wrong in a different
+    // way the user caught by comparing against the reference: stretching a
+    // 1920px-wide asset down to whatever the section's real width happens to be
+    // squishes the cell pitch, making the squares smaller/denser than the design
+    // everywhere except exactly 1920px wide. Fixed by using the asset at its own
+    // native, undistorted pitch instead — background-size/mask-size:
+    // $diner_chequer_strip_height * 2 renders cells at the same physical size the
+    // design has, not squeezed to fit.
+    //
+    // check-starfruit.svg (a genuinely small, always-meant-to-tile cell — see
+    // .diner-check in diner-shared.scss and the hero's vertical strips) is untouched
+    // and still correct for its own use; only this section's asset/usage changed.
+    .diner-story-edge{
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: 2;
+        height: $diner_chequer_strip_height;
+        background-color: transparent;
+        background-image: url('../../assets/img/diner/chequer-strip-tile.svg');
+        background-repeat: repeat-x;
+        background-position: left top;
+        background-size: ($diner_chequer_strip_height * 2) $diner_chequer_strip_height;
+
+        // Paper texture (the same crumpled-sheet grain .diner-grain uses elsewhere),
+        // masked with the same strip asset so the grain only shows inside the
+        // squares themselves and not the transparent gaps — same alpha-mask device
+        // .diner-stamp already uses for its own texture pass, just as a sibling
+        // pseudo rather than masking the parent, so the square/gap background above
+        // doesn't need touching.
+        &::before{
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('../../assets/img/diner/texture-multiply.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            mix-blend-mode: multiply;
+            opacity: 0.42;
+            -webkit-mask-image: url('../../assets/img/diner/chequer-strip-tile.svg');
+            mask-image: url('../../assets/img/diner/chequer-strip-tile.svg');
+            -webkit-mask-mode: alpha;
+            mask-mode: alpha;
+            -webkit-mask-repeat: repeat-x;
+            mask-repeat: repeat-x;
+            -webkit-mask-position: left top;
+            mask-position: left top;
+            -webkit-mask-size: ($diner_chequer_strip_height * 2) $diner_chequer_strip_height;
+            mask-size: ($diner_chequer_strip_height * 2) $diner_chequer_strip_height;
+            pointer-events: none;
+        }
+
+        &.diner-story-edge-top{
+            top: 0;
+        }
+        &.diner-story-edge-bottom{
+            bottom: 0;
+        }
+    }
+
+    .diner-story-copy{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        // Top/bottom padding must clear the chequer overlay's own height (it's
+        // painted above this panel by z-index, not reserved space in flow — see
+        // .diner-story-edge), or the first/last lines of text render underneath it.
+        // Kept in the same unit as the edge so the two stay in sync if either changes.
+        padding: calc(#{$diner_chequer_strip_height} + #{$page_padding_lg}) 12% calc(#{$diner_chequer_strip_height} + #{$page_padding_lg}) 8%;
+        overflow: hidden;
+        color: $light;
+
+        // Faint scattered speckle over the dark panel, reusing the page's own
+        // halftone sheet rather than inventing a new asset. Approximation of the
+        // design's texture pending a screenshot check.
+        &::before{
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background-image: url('../../assets/img/diner/halftone.webp');
+            background-repeat: repeat;
+            background-position: center top;
+            background-size: 1520px auto;
+            mix-blend-mode: overlay;
+            opacity: 0.18;
+            pointer-events: none;
+        }
+
+        @include media-breakpoint-down(lg) {
+            // .diner-story-edge is a fixed, undistorted height at every breakpoint
+            // now (native asset scale — see its own comment), so top/bottom
+            // clearance stays the same formula at every width too; just the
+            // left/right insets drop to the plain page padding.
+            padding-left: $page_padding_lg;
+            padding-right: $page_padding_lg;
+            // Stacked layout below lg: unlike the desktop 2-column layout, where a
+            // chequer band genuinely flanks BOTH the top and bottom of this panel,
+            // here only the TOP chequer is adjacent — the bottom one sits over the
+            // photo's own bottom edge instead, nowhere near this panel. The base
+            // padding-bottom above (chequer-height + gap) was matching padding-top's
+            // TOTAL, but with no chequer to clear on this side that put far more gap
+            // before the photo (168px) than after the chequer (48px) despite looking
+            // "symmetric" as raw padding numbers — not actually centred between the
+            // two landmarks that matter. Dropping padding-bottom to just the gap
+            // (no chequer-height component) makes the gap after the chequer and the
+            // gap before the photo equal, which is what centres the text/button
+            // between them.
+            padding-bottom: $page_padding_lg;
+            // The grid's own min-height resets to 0 below lg (see .diner-story-grid),
+            // so without this the panel would only ever be as tall as padding +
+            // content, leaving justify-content: center nothing real to centre within.
+            // Matches .diner-story-media's own min-height so the copy panel spans
+            // roughly the same vertical extent the photo below it does.
+            min-height: 320px;
+        }
+    }
+
+    // Small eyebrow-style label above the body copy. Added 2026-09-02 per direct
+    // request to make the section's screen-reader-only heading visible — the design
+    // itself has no heading here, so this is a deliberately understated label
+    // (small, uppercase, accent colour) rather than a full display heading, to keep
+    // the visual weight close to how the panel looked with nothing there.
+    .diner-story-heading{
+        position: relative;
+        z-index: 1;
+        margin: 0 0 0.6em;
+        color: var(--brand-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.95rem;
+        line-height: 1.2;
+        @include forma(extrabold);
+    }
+
+    .diner-story-content{
+        position: relative;
+        z-index: 1;
+
+        p{
+            margin-bottom: 1.2em;
+            &:last-child{
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .diner-story-cta{
+        position: relative;
+        z-index: 1;
+        margin-top: 1.6em;
+    }
+
+    .diner-story-media{
+        position: relative;
+        min-height: 320px;
+
+        // Same paper texture as the chequer band and .diner-grain elsewhere, laid
+        // over the photo so it reads as part of the same printed sheet. z-index: 1
+        // keeps it under .diner-story-edge (z-index: 2), so the chequer band still
+        // paints over the now-textured photo too, not just under it.
+        &::before{
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background-image: url('../../assets/img/diner/texture-multiply.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            mix-blend-mode: multiply;
+            opacity: 0.42;
+            pointer-events: none;
+        }
+    }
+
+    .diner-story-photo{
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    // Starburst stamp, overhanging the bottom-right corner into the section below —
+    // the mirror of the intro section's bottom-left stamp.
+    //
+    // Below md this used to hold the same min(170px, 40vw) size and 50% overhang as
+    // the desktop version, which at typical phone widths (e.g. 150px on a 375px
+    // viewport, pushed down 75px by the translateY) was large enough to sit directly
+    // on top of whatever the next section's own top row is — confirmed 2026-08-20
+    // against diner_wall, where it covered that section's first row of logo frames.
+    // Smaller size AND a shallower overhang below md keeps its footprint inside
+    // whatever top padding the next section has, rather than assuming every section
+    // that follows has room to spare.
+    .diner-story-stamp{
+        // Matched to .diner-intro-stamp/.diner-guestcheck-stamp's own size —
+        // 212px in the design (confirmed against all three sections' own Figma
+        // layer panels), not the smaller ad-hoc value this one used before, per
+        // direct feedback that all three stars should render at the same size.
+        // See diner-shared.scss's $diner_stamp_size for the shared shrink formula.
+        --diner-stamp: #{$diner_stamp_size};
+
+        // Overhang (how far past this section's own bottom edge the stamp is pushed)
+        // is capped separately from size, 2026-08-26: this section's own padding-top
+        // (`.flex-diner_wall`, the next section) stays flat at $page_padding_lg for
+        // its entire below-lg range rather than scaling with the stamp, so a 212px
+        // stamp's overhang has to stay small across that whole range or it lands on
+        // top of diner_wall's first row of frames — confirmed via a headless-Chrome
+        // screenshot at 489px wide, where the previous 30% overhang (63.6px) exceeded
+        // that ~42px padding budget. 15% (~32px) clears it with room to spare. Only
+        // widens to the fuller 50% overhang at lg+, where padding-top switches to its
+        // own min(9%, 170px) formula and has room to match — worth rechecking right at
+        // the lg boundary (1040px) if this stamp's size or diner_wall's padding ever
+        // change again, since the two aren't coupled by anything but this comment.
+        transform: translateY(15%) rotate(-9deg);
+
+        @include media-breakpoint-up(lg) {
+            transform: translateY(50%) rotate(-9deg);
+        }
+
+        position: absolute;
+        z-index: 3;
+        right: 6%;
+        bottom: 0;
+        width: var(--diner-stamp);
+        height: var(--diner-stamp);
+    }
+}

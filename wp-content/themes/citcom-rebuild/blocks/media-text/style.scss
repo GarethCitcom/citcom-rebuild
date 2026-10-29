@@ -1,0 +1,132 @@
+// citcom/media-text: port of assets/_dev/scss/flexContent/media-text.scss.
+// The original used @extend .rounded-2; the block stylesheet has no Bootstrap
+// utilities to extend, so the same declaration is written out.
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+
+.flex-media_text{
+    overflow: hidden;
+    min-height: 28rem;
+    &.section-extra-padding{
+        min-height: 38rem;
+    }
+    .media{
+        top: 0;
+        bottom: 0;
+        width: 46%;
+        z-index: 2;
+        &.extra-padding{
+            top: $page_padding_xl;
+            bottom: $page_padding_xl;
+            width: calc(46% + 1rem);
+            border-radius: var(--bs-border-radius) !important;
+        }
+        .media-container{
+            height: 100%;
+        }
+    }
+    .media.citdot{
+        top: -2px;
+        bottom: -2px;
+        width: 78%;
+        &.extra-padding{
+            top: $page_padding_xl;
+            bottom: $page_padding_xl;
+        }
+        @include media-breakpoint-down(lg) {
+            width: 84%;
+        }
+        .media-container{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            height: 100%;
+        }
+    }
+    &.media_left{
+        .media{
+            left: 0;
+            &.extra-padding{
+                left: -1rem;
+            }
+        }
+        .media.citdot{
+            left: -30%;
+            .media-container{
+                left: 38%;
+                right: 0;
+                @include media-breakpoint-down(lg) {
+                    left: 35%;
+                }
+            }
+        }
+    }
+    &.media_right{
+        .media{
+            right: 0;
+            &.extra-padding{
+                right: -1rem;
+            }
+        }
+        .media.citdot{
+            right: -30%;
+            .media-container{
+                right: 38%;
+                left: 0;
+                @include media-breakpoint-down(lg) {
+                    right: 35%;
+                }
+            }
+        }
+    }
+    .img-bg{
+        width: 100%;
+        &.double{
+            width: calc(50% - 1rem);
+            border-radius: var(--bs-border-radius) !important;
+        }
+    }
+    @include media-breakpoint-down(md) {
+
+        &.media_left,
+        &.media_right{
+            flex-direction: column-reverse;
+            gap: 1rem;
+            .media{
+                position: relative !important;
+                top: unset!important;
+                bottom: unset!important;
+                left: unset !important;
+                right: unset!important;
+                margin: 0 0rem;
+                padding: 0rem;
+                width: 96%;
+                .media-container{
+                    bottom: unset!important;
+                    top: unset!important;
+                    left: unset!important;
+                    right: unset!important;
+                    position: relative!important;
+                    img{
+                        bottom: unset!important;
+                        top: unset!important;
+                        left: unset!important;
+                        right: unset!important;
+                        position: relative!important;
+                    }
+                }
+            }
+        }
+
+        &.py-0{
+            padding-top: 3rem!important;
+            padding-bottom: 3rem!important;
+        }
+
+        .img-bg{
+            &.double{
+                width: calc(50% - 0.5rem);
+            }
+        }
+    }
+}

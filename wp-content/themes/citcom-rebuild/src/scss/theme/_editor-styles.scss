@@ -1,0 +1,72 @@
+// Colour classes the editor palette emits (theme.json slugs) and core block skins.
+.has-primary-color { color: var(--brand-primary); }
+.has-primary-background-color { background-color: var(--brand-primary); }
+.has-primary-border-color { border-color: var(--brand-primary); }
+
+.has-secondary-color { color: var(--brand-secondary); }
+.has-secondary-background-color { background-color: var(--brand-secondary); }
+.has-secondary-border-color { border-color: var(--brand-secondary); }
+
+.has-default-color { color: var(--brand-default); }
+.has-default-background-color { background-color: var(--brand-default); }
+.has-default-border-color { border-color: var(--brand-default); }
+
+.has-slate-color { color: var(--brand-slate); }
+.has-slate-background-color { background-color: var(--brand-slate); }
+.has-slate-border-color { border-color: var(--brand-slate); }
+
+.has-persian-color { color: var(--brand-persian); }
+.has-persian-background-color { background-color: var(--brand-persian); }
+.has-persian-border-color { border-color: var(--brand-persian); }
+
+.has-carrot-color { color: var(--brand-carrot); }
+.has-carrot-background-color { background-color: var(--brand-carrot); }
+.has-carrot-border-color { border-color: var(--brand-carrot); }
+
+.has-dark-grey-color { color: var(--brand-default-darker); }
+.has-dark-grey-background-color { background-color: var(--brand-default-darker); }
+.has-dark-grey-border-color { border-color: var(--brand-default-darker); }
+
+.has-light-grey-color { color: var(--brand-default-lighter); }
+.has-light-grey-background-color { background-color: var(--brand-default-lighter); }
+.has-light-grey-border-color { border-color: var(--brand-default-lighter); }
+
+.wp-block-buttons{
+    gap: 1rem;
+    display: flex;
+}
+.wp-block-button{
+    .wp-block-button__link{
+        @extend .btn;
+        @extend .btn-primary;
+        @extend .px-4;
+        @extend .rounded-pill;
+    }
+    &.is-style-outline{
+        .wp-block-button__link{
+            background-color: transparent;
+            @extend .btn-outline-primary;
+        }
+    }
+}
+
+.wp-block-embed{
+    .wp-block-embed__wrapper{
+        border-radius: var(--bs-border-radius-xl) !important;
+        overflow: hidden;
+        iframe,video{
+            width: 100%;
+            height: 100%;
+        }
+    }
+    &.wp-embed-aspect-4-3{
+        .wp-block-embed__wrapper{
+            aspect-ratio: 4/3;
+        }
+    }
+    &.wp-embed-aspect-16-9{
+        .wp-block-embed__wrapper{
+            aspect-ratio: 16/9;
+        }
+    }
+}

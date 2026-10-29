@@ -1,0 +1,39 @@
+/*
+ * Loaded into the block editor canvas via enqueue_block_assets (a linked
+ * stylesheet, so fragment URLs stay local and WordPress does not rewrite them).
+ */
+
+/* AOS never runs in the editor: show everything it would animate in. */
+.editor-styles-wrapper [data-aos],
+.editor-styles-wrapper [data-aos][data-aos] {
+	opacity: 1 !important;
+	transform: none !important;
+	filter: none !important;
+	pointer-events: auto !important;
+	transition: none !important;
+}
+
+/* Clip paths: the SVGs are printed with each block preview. */
+.editor-styles-wrapper .citdot {
+	clip-path: url(#citdot);
+}
+.editor-styles-wrapper .corner-link {
+	clip-path: url(#corner-invert);
+}
+
+/* InnerBlocks areas inside citcom blocks: reachable above absolutely positioned media. */
+.editor-styles-wrapper .flex-editor .block-editor-inner-blocks,
+.editor-styles-wrapper .flex-media_text .block-editor-inner-blocks {
+	position: relative;
+	z-index: 3;
+	min-height: 3rem;
+}
+.editor-styles-wrapper .flex-media_text .container-xl {
+	position: relative;
+	z-index: 3;
+}
+.editor-styles-wrapper .flex-editor .block-editor-inner-blocks:empty,
+.editor-styles-wrapper .flex-media_text .block-editor-inner-blocks:empty {
+	outline: 1px dashed rgba(28, 2, 33, 0.35);
+	outline-offset: 4px;
+}

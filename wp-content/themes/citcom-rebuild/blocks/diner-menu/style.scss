@@ -1,0 +1,282 @@
+// citcom/diner-menu: port of assets/_dev/scss/flexContent/diner-menu.scss.
+// Shared diner rules come from the "citcom-diner" style (src/scss/diner.scss).
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+@import "../../src/scss/blocks/diner-vars";
+
+.flex-diner_menu{
+    position: relative;
+    // The decorative bleed artwork sits outside the content column.
+    overflow: hidden;
+    // Declared here rather than only on .diner-menu-grid so .diner-menu-bleed-start
+    // (a sibling, not a descendant of the grid) can align itself against the same
+    // measure — see that rule for why.
+    --diner-menu-grid: min(1197px, 92vw);
+
+    // Below sm, still single-column (see .diner-menu-grid breakpoints), so this value
+    // *is* individual card width — 92vw was reading too big edge-to-edge on phones.
+    @include media-breakpoint-down(sm) {
+        --diner-menu-grid: 78vw;
+    }
+
+    // The design's band was 1470px tall at 1920 wide (99 heading + 90 + 446 + 50 + 446
+    // + 105 + 70 CTA + 164), with the heading sitting hard against the top — the space
+    // above it comes from the previous section's bottom padding. The heading-to-grid
+    // gap has since been trimmed below the design's 90px (see .diner-menu-grid), so
+    // this total no longer holds exactly.
+    padding-top: 0;
+    padding-bottom: min(8.54%, 164px);
+
+    // Matched to .diner-menu-cta's own margin-top (also 100px at this breakpoint) so
+    // the CTA button sits exactly centred between the card grid above it and the
+    // section's own bottom edge below it, rather than the mismatched ~100px/48px
+    // ($page_padding_lg) it was reading as before.
+    @include media-breakpoint-down(lg) {
+        padding-bottom: 100px;
+    }
+
+    // "Feeling peckish?" — Chonky Regular 70px in the design. Chonky is NOT in the
+    // theme's Typekit kit, so it currently falls back to Forma; adding it to kit
+    // dom1odt is all that's needed for this to pick it up.
+    .diner-menu-heading{
+        margin: 0;
+        // Jump target for the hero's "Open the menu" CTA (#feeling-peckish, see
+        // diner_menu.php) — offsets the anchor scroll by the fixed header's real
+        // height so the heading doesn't land underneath it. --header-height is
+        // kept in sync with the header's actual rendered height (incl. its own
+        // shrink-on-scroll state) by navAndHeader.js, not a fixed guess.
+        scroll-margin-top: var(--header-height);
+        font-family: var(--diner-display, #{'Chonky'}), forma-djr-micro, Arial, Helvetica, sans-serif;
+        font-weight: 400 !important;
+        font-style: normal;
+        // Floor raised from 2rem: at narrow viewports 3.65vw drops well under that, so
+        // small screens were hitting a noticeably small, flat size. 3rem holds a
+        // consistently "big" heading from the smallest screens up to ~1315px (where
+        // 3.65vw overtakes it), then scales through to the 70px design max as before.
+        font-size: clamp(3rem, 3.65vw, 70px);
+        // Holds the design's 99px heading box on a 70px face, which keeps the section's
+        // vertical rhythm whichever family ends up rendering.
+        line-height: 1.414;
+        letter-spacing: normal;
+        text-align: center;
+        color: var(--brand-primary);
+    }
+
+    // Grid: three 365px cards with 51px gutters — 1197px all told at the design width.
+    .diner-menu-grid{
+        width: var(--diner-menu-grid);
+        // Trimmed from the design's 90px — the heading's own 99px line-box already
+        // carries some of that spacing (its line-height splits extra space above and
+        // below the glyphs), so the visible gap to the grid was reading larger than
+        // this value alone suggests. Breaks the section's documented 1470px rhythm
+        // by the same amount, same as the diner_intro padding-bottom trim above it.
+        margin: min(2.1%, 40px) auto 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        column-gap: calc(var(--diner-menu-grid) * 0.0426);
+        row-gap: calc(var(--diner-menu-grid) * 0.0418);
+
+        // Below md, 2.1vw shrinks to just a few px while the heading holds its 3rem
+        // floor (see .diner-menu-heading) and the first card's shot still overflows
+        // above the arch by design — the percentage gap stopped being enough clearance
+        // and the two started overlapping. Flat px instead of a percentage here since
+        // it's covering a roughly-fixed-height heading against a viewport that no
+        // longer scales that heading down.
+        @include media-breakpoint-down(md) {
+            margin-top: 60px;
+        }
+
+        // Was media-breakpoint-up(md) (768px) — below that, single-column at 92vw width
+        // with the card's fixed 365:446 aspect ratio makes each card ~850px tall at a
+        // 761px viewport, nearly a full screen per card. Moved to sm (576px) so the
+        // 576-767px range gets 2 narrower (and proportionally shorter, aspect-ratio
+        // held) columns instead.
+        @include media-breakpoint-up(sm) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    // Card body: 365x446, arched top, solid brand colour with the paper texture at
+    // 25% multiply and a 5,5 drop shadow. Sized as a container so the label and artwork
+    // can be expressed against the card's own width whatever the column count.
+    .diner-menu-card{
+        container-type: inline-size;
+        position: relative;
+        aspect-ratio: 365 / 446;
+        box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.35);
+        // Reset for when this renders as <a> (only when a card link is set — see
+        // diner_menu.php) rather than <div>; nothing here relies on link colour/
+        // underline, all visible text already sets its own colour.
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        // Arch top, flat bottom. Horizontal radius of 50% makes the two top corners
+        // meet dead centre (a true semicircle side to side); vertical radius is that
+        // same curve expressed against the taller box, i.e. half the width over the
+        // full height (182.5 / 446). Approximated off the reference screenshot rather
+        // than measured from the fig — recheck once the file's arch component is at hand.
+        border-radius: 50% 50% 0 0 / 41% 41% 0 0;
+        // No top margin here on purpose: the shots lift into the 90px gap the design
+        // already leaves under the heading, so reserving space per row would just make
+        // the section taller than it should be.
+
+        // The design alternates starfruit and carrot across the grid.
+        &:nth-child(odd){
+            background-color: var(--brand-secondary);
+        }
+        &:nth-child(even){
+            background-color: var(--brand-carrot);
+        }
+
+        &::before{
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            // Matches the card's own arch — this is a separate box sat on top via
+            // inset: 0, not a child clipped by the card's overflow, so it needs the
+            // same radius explicitly. (overflow: hidden isn't an option on the card
+            // itself: the product shot is deliberately meant to overflow its top edge.)
+            border-radius: inherit;
+            background-image: url('../../assets/img/diner/texture-multiply.jpg');
+            background-size: cover;
+            background-position: center;
+            mix-blend-mode: multiply;
+            opacity: 0.25;
+            pointer-events: none;
+        }
+    }
+
+    // Product shot. Bottom-anchored just above the label, centred, free to overflow the
+    // card's top and sides as it does in the design. Height is per-card because the
+    // design sizes each shot by hand — 61% to 87% of the card.
+    .diner-menu-shot{
+        position: absolute;
+        z-index: 2;
+        left: 50%;
+        bottom: 21%;
+        height: var(--diner-shot, 75%);
+        width: auto;
+        max-width: 118%;
+        // translateX/rotate must stay in this same transform (translateX centres the
+        // shot, rotate is the per-card tilt) — scale is appended on hover rather than
+        // swapped in, so centring and tilt hold throughout the animation.
+        transform: translateX(-50%) rotate(var(--diner-shot-tilt, 0deg)) scale(1);
+        transition: transform 0.3s ease;
+        filter: drop-shadow(5px 5px 4px rgba(0, 0, 0, 0.45));
+
+        // The 118% bleed (9% past each side of the card) has room to breathe at
+        // desktop, where .diner-menu-grid's own column-gap is wide. Below `lg` the
+        // grid drops to 2 columns (then 1 below `sm`) and the gap shrinks a lot —
+        // confirmed 2026-08-26 (direct report, the Video card specifically) that a
+        // wide/landscape shot (e.g. a laptop screenshot, naturally much wider than
+        // tall) at a generous --diner-shot height was pushing its 9%-per-side
+        // overflow past the column-gap entirely and into the section's own side
+        // padding, right edge landing past the true viewport itself on a
+        // right-column card at ~700-900px wide. First tried capping to 105%
+        // instead of removing the bleed outright, but re-measuring found that
+        // still wasn't enough on every card/width combination (105% still landed
+        // a few px past the viewport at ~700px) — rather than keep chasing a
+        // percentage that happens to clear every current card's own aspect ratio,
+        // dropped the bleed to 0 below `lg`: the shot never exceeds its own card's
+        // width here, so it can't overflow regardless of the image or the exact
+        // gutter width at a given viewport.
+        @include media-breakpoint-down(lg) {
+            max-width: 100%;
+        }
+    }
+
+    .diner-menu-card:hover .diner-menu-shot{
+        transform: translateX(-50%) rotate(var(--diner-shot-tilt, 0deg)) scale(1.08);
+    }
+
+    // Label: 42px Extra Bold, black, uppercase, sitting 82% down the card.
+    .diner-menu-label{
+        position: absolute;
+        z-index: 3;
+        left: 0;
+        right: 0;
+        top: 82.3%;
+        margin: 0;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: normal;
+        line-height: 1;
+        color: #000;
+        font-size: 1.4rem;
+        font-size: 11.5cqw;
+        @include forma(extrabold);
+    }
+
+    .diner-menu-cta{
+        margin-top: min(5.47%, 105px);
+        text-align: center;
+
+        // 5.47vw shrinks well below the 105px cap on smaller/narrower devices (e.g.
+        // ~49px at 900px wide) — flat override so the gap to the CTA stays generous
+        // rather than shrinking away with the viewport, same approach as the
+        // heading-to-grid gap above.
+        @include media-breakpoint-down(lg) {
+            margin-top: 100px;
+        }
+    }
+
+    // Coffee ring stains bleeding off each side at 50% multiply, sat over the grid per
+    // the reference (was behind it — z-index 0 lost to the cards' own painting order).
+    // z-index 4 clears the card's highest internal layer (.diner-menu-label at 3) so
+    // the stains print over the whole card face, not just the background.
+    // bleed-left.png / bleed-right.png are photographed rings, not abstract artwork —
+    // each is already asymmetric (a thick pooled crescent on one side, a faint broken
+    // ring elsewhere), so no rotation is applied: left is positioned so its crescent
+    // (naturally on the image's right/lower side) reads inside the section, right so
+    // its crescent (naturally upper-left) does the same. The previous ±55/59deg
+    // rotation had no measurement behind it and swung both crescents the wrong way.
+    .diner-menu-bleed{
+        position: absolute;
+        z-index: 4;
+        // Scaled down from the original 670px/35vw (too big), then halved again from
+        // an intermediate 520px/27vw — both stains are matched to this same size again
+        // now, so it's back on the shared rule rather than duplicated per-selector.
+        width: min(260px, 13.5vw);
+        height: auto;
+        mix-blend-mode: multiply;
+        opacity: 0.5;
+        pointer-events: none;
+
+        &.diner-menu-bleed-start{
+            // Centred on the first card rather than the section edge, so it reads as
+            // sitting on that card rather than just bleeding in from off-canvas. Card 1
+            // spans the grid's own left third; grid math from .diner-menu-grid — three
+            // columns at column-gap 0.0426 * grid width each — puts a column at
+            // 0.30493 of the grid, so its centre is at 0.1525 of the grid from the
+            // grid's own left edge, and the grid itself is centred in the section.
+            // (Only ever visible at lg+, where the grid is 3 columns — hidden below
+            // that with the rest of this bleed art.)
+            // Shifted 60px further left than card 1's true centre (was the bare calc
+            // below) and top pulled up from 25.5% — both by eye per feedback, to bleed
+            // further outward/up past the card's top-left corner rather than sitting
+            // centred on it.
+            left: calc((100% - var(--diner-menu-grid)) / 2 + var(--diner-menu-grid) * 0.1525 - 60px);
+            top: 12%;
+            // -50% would centre the image's bounding box on that point, not the stain
+            // itself: measured against bleed-left-v3.png, the opacity-weighted centre of
+            // the visible ink sits at 75.4% across the crop (it's a tight crop, but the
+            // ink inside it is still unevenly distributed — a solid crescent on one side,
+            // a faint broken ring on the other), so centring the box left the actual mark
+            // sitting well off from where "left" points.
+            transform: translateX(-75.4%);
+        }
+        &.diner-menu-bleed-end{
+            right: 0;
+            top: 60%;
+            transform: translateX(25%);
+        }
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+}

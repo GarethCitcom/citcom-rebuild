@@ -1,0 +1,560 @@
+// citcom/diner-reviews: port of assets/_dev/scss/flexContent/diner-reviews.scss.
+// Shared diner rules come from the "citcom-diner" style (src/scss/diner.scss).
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+@import "../../src/scss/blocks/diner-vars";
+
+// Diner five star reputation — Google-reviews widget on the dark aubergine
+// background: "Excellent" summary badge + star row + review count + Google
+// wordmark on the left, a row of review cards on the right, inside a thin
+// keyline panel.
+//
+// Built from a real-resolution screenshot of the Figma frame (not the low-res
+// whole-page thumbnail this session started from — see working-memory.md).
+// Positions/sizes below are still eyeballed off that screenshot, not measured
+// fig values, same caveat as sections 4/5.
+.flex-diner_reviews{
+    position: relative;
+    overflow: hidden;
+
+    padding-block: min(9%, 170px);
+
+    @include media-breakpoint-down(lg) {
+        padding-block: $page_padding_lg;
+    }
+
+    // Halftone speckle over the dark purple background. Three attempts before this
+    // one all invented a treatment of the theme's EXISTING halftone.webp (invert+
+    // screen, then a solid-colour mask at 0.8 opacity, then the same mask at 0.25) —
+    // all wrong, because the actual reference was never that asset: the user supplied
+    // a real texture, `working-folder/texture.png` (4096x3072, white halftone dots on
+    // black — should have been checked for before improvising anything), mid-session.
+    // Resized to a 1520px-wide tile (matching the other halftone-style textures'
+    // tile width in this file) and saved as `assets/img/diner/texture.webp` (371KB —
+    // not yet re-compressed down the way halftone.webp was, worth revisiting).
+    //
+    // White-on-black composites cleanly with mix-blend-mode: screen straight out of
+    // the box — screen leaves black areas of the blend layer untouched and adds
+    // light at the white dot positions — no invert/mask trick needed this time
+    // because the source is already the right polarity for a dark background.
+    // The dark aubergine background colour (bg-primary / var(--brand-primary)) is
+    // untouched underneath; this is purely an additive layer on top of it.
+    &::before{
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        // Single cover-sized copy rather than a tiled repeat — switched 2026-08-20 per
+        // feedback asking for a more natural look. Same device .diner-grain's
+        // texture-multiply.jpg uses: this asset is one continuous cloud/dot field, not
+        // a small seamless-repeat tile like halftone.webp, so tiling it at a fixed
+        // pitch was showing a mechanical, obviously-repeating pattern rather than
+        // reading as one organic texture across the section.
+        background-image: url('../../assets/img/diner/texture.webp');
+        background-image: image-set(url('../../assets/img/diner/texture.avif') type('image/avif'), url('../../assets/img/diner/texture.webp') type('image/webp'));
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        mix-blend-mode: screen;
+        // Dropped from an initial 0.35, which read as too strong against the
+        // reference screenshots' much fainter dot texture, per direct feedback.
+        opacity: 0.14;
+        pointer-events: none;
+    }
+
+    // Loose scatter of background dust — the same sparkle-1/2/3.png star shapes
+    // diner_wall uses (working-folder/Vector.png etc), explicitly requested for this
+    // section. Those PNGs are baked-in green (right for the Wall of Fame's light
+    // background, wrong here per direct feedback), so rather than an <img> this uses
+    // each PNG purely as a mask (same technique .diner-stamp uses on stamp-star.svg)
+    // over a solid `var(--brand-primary-lighter)` fill — same "lighter" tint token
+    // already used elsewhere on this section for muted content on dark
+    // (.diner-reviews-card-time) — keeping the requested shape/rotation while
+    // recolouring it to match the grain texture's light tone.
+    //
+    // Needs `mask-mode: alpha` explicitly — the CSS Masking spec's default for a
+    // plain image mask source is LUMINANCE, not alpha, so without this a coloured
+    // (non-white) source like these green PNGs masks by how bright each pixel is
+    // rather than by its shape, which read as "the star doesn't appear at all"
+    // rather than "wrong colour". .diner-stamp's own mask never hit this because
+    // stamp-star.svg was authored as a plain white silhouette (full luminance
+    // everywhere it should show) — these Vector.png files weren't authored as masks
+    // at all, so luminance masking on their actual green/shaded pixels gives an
+    // inconsistent, near-invisible result. `-webkit-mask-image` alone historically
+    // defaults to alpha in WebKit, but the unprefixed property needs telling.
+    // Filled with the same halftone grain as the section background (texture.webp,
+    // background-blend-mode: screen against the lighter aubergine base) rather than
+    // a flat colour, 2026-08-20 per direct feedback — background-blend-mode blends
+    // the image and background-color layers of THIS element with each other (unlike
+    // mix-blend-mode, which blends against whatever sits behind the element), so the
+    // dot texture reads inside the star shape itself once it's clipped by the mask.
+    .diner-reviews-dust{
+        position: absolute;
+        z-index: 0;
+        display: block;
+        aspect-ratio: 1;
+        background-color: var(--brand-primary-lighter);
+        background-image: url('../../assets/img/diner/texture.webp');
+        background-image: image-set(url('../../assets/img/diner/texture.avif') type('image/avif'), url('../../assets/img/diner/texture.webp') type('image/webp'));
+        // Fixed at the same 1520px scale the section's own ::before grain uses,
+        // not `cover` — `cover` was squeezing the whole texture image down to fit
+        // a ~50-95px box, shrinking the dot pitch far below its natural size and
+        // reading as "too tight" per feedback. Keeping the same absolute size means
+        // each tiny star just shows a small window into the texture at the correct
+        // dot pitch, matching the background grain's scale exactly.
+        background-size: 1520px auto;
+        background-position: center;
+        background-blend-mode: screen;
+        -webkit-mask-image: var(--diner-reviews-dust-img);
+        mask-image: var(--diner-reviews-dust-img);
+        mask-mode: alpha;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        pointer-events: none;
+    }
+    // Sized up 2026-08-20 per direct feedback against a reference screenshot showing
+    // Figma's own inspector measurement on one of these stars: 95x105px at the
+    // design's 1920px canvas width (~4.9vw) — the first pass (14-34px) was
+    // eyeballed too small. Scaled the whole set up by the same ~2.8x factor so the
+    // existing size variation between stars is preserved, largest landing on that
+    // measured 95px.
+    .diner-reviews-dust-1{ top: 10%; left: 6%;  width: clamp(56px, 6.2vw, 95px); }
+    .diner-reviews-dust-2{ top: 20%; left: 92%; width: clamp(45px, 5vw, 78px); }
+    .diner-reviews-dust-3{ top: 46%; left: 2%;  width: clamp(39px, 4.2vw, 67px); }
+    .diner-reviews-dust-4{ top: 8%;  left: 42%; width: clamp(39px, 4.2vw, 67px); }
+    .diner-reviews-dust-5{ top: 88%; left: 8%;  width: clamp(50px, 5.6vw, 84px); }
+    .diner-reviews-dust-6{ top: 82%; left: 90%; width: clamp(56px, 6.2vw, 95px); }
+
+    @include media-breakpoint-down(md) {
+        .diner-reviews-dust{ display: none; }
+    }
+
+    .diner-reviews-inner{
+        position: relative;
+        z-index: 1;
+        width: min(1360px, 92vw);
+        margin-inline: auto;
+    }
+
+    // .diner-reviews-panel lays out .diner-reviews-heading-row and
+    // .diner-reviews-body as its two children. The border lives on a THIRD
+    // sibling, ::before, so the panel element itself carries no border/background
+    // of its own — its children (including the heading-row, which deliberately
+    // overflows above the box) are never at risk of being clipped by anything
+    // applied to ::before.
+    //
+    // Getting a gap in the top border around the heading, with continuous corners
+    // AND a gap that actually tracks the heading's own rendered width, went
+    // through several wrong attempts, each fixing a different real problem:
+    // `border-top: none` broke the corners' width-blending; `border-top-color:
+    // transparent` broke their colour-blending instead; a `mask-image` notch at a
+    // fixed percentage didn't track the heading's width, since its font-size
+    // clamp hits a fixed floor at narrow viewports while the panel keeps scaling
+    // continuously; a wider mask-image notch (leaving margin near the corners)
+    // *should* have solved both in theory but didn't render correctly in
+    // practice. Abandoned `mask-image` for this entirely after it also behaved
+    // unpredictably for the scattered star recolouring earlier in this section —
+    // two separate features hitting real-world mask problems with no way to test
+    // in an actual browser in this environment was enough signal to stop trusting
+    // it here. Full history of all these attempts is in working-memory.md.
+    //
+    // **What's here now, no masking anywhere**:
+    // - `::before` is a completely plain, uniform `border` + `border-radius` —
+    //   the simplest possible case for a browser to render, so all four corners
+    //   are guaranteed identical. Its border-top IS fully continuous behind the
+    //   heading at this point in the cascade.
+    // - `.diner-reviews-heading-row`'s two `.diner-reviews-heading-line` spans
+    //   draw a second line on top of ::before's, in real flexbox space either
+    //   side of the heading — genuinely redundant where they overlap ::before's
+    //   own line (same colour, same position), but this is what makes the middle
+    //   gap track the heading's actual rendered width rather than a guess.
+    // - What's left — ::before's own continuous line still passing behind the
+    //   heading text in that gap — is solved on `.diner-reviews-heading` itself,
+    //   not by touching the border again: a `::before` on the HEADING (not the
+    //   panel), sized to the text's own width via `left/right: -0.3em` rather than
+    //   a fixed guess, only `4px` tall (just enough to cover the 1px line), paints
+    //   BEFORE the heading's own text content (unlike `::after`, which would paint
+    //   over the letters) so it sits behind them. A solid `background-color`
+    //   patch this small is a different case from the one that failed earlier in
+    //   this section's history — that patch spanned the ENTIRE heading height and
+    //   read as an obvious flat rectangle against the textured background; at 4px
+    //   tall this one is well within what antialiasing and the grain's own
+    //   subtlety (opacity 0.14) can hide.
+    .diner-reviews-panel{
+        position: relative;
+        padding: clamp(20px, 2.4vw, 40px);
+        padding-top: clamp(56px, 5.5vw, 96px);
+
+        &::before{
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            border: 3px solid var(--brand-secondary);
+            border-radius: 12px;
+        }
+    }
+
+    // Straddles the panel's top edge (half above the box, half inside) via the same
+    // translateY(-50%) device .diner-story-stamp/.diner-wall-stamp use to overhang a
+    // section edge — .diner-reviews-panel's own padding-top above already clears the
+    // half that lands inside the box.
+    //
+    // No longer draws its own flanking lines (.diner-reviews-heading-row /
+    // .diner-reviews-heading-line, both removed) — those were left over from an
+    // earlier architecture where ::before's border-top was masked/removed and
+    // something else had to draw the visible line. Now that ::before carries a
+    // complete, uniform border on all four sides with nothing masked out (see the
+    // long history above), that native border already draws a perfect line right
+    // across where the heading sits — this element's own duplicate line, drawn
+    // fractionally out of pixel-alignment with the native one, was exactly what
+    // caused the "two lines stacked instead of one" artifact per direct feedback.
+    // The gap behind the text is handled entirely by this element's own ::before
+    // patch below now; nothing else needs to draw a line at all.
+    //
+    // "Five Star Reputation" — same Chonky display face as .diner-menu-heading /
+    // .diner-wall-script, falling back to Forma Extra Bold until Chonky is added to
+    // the Typekit kit (external, nothing to fix in code — see working-memory.md).
+    .diner-reviews-heading{
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        white-space: nowrap;
+        font-family: var(--diner-display, #{'Chonky'}), forma-djr-micro, Arial, Helvetica, sans-serif;
+        font-weight: 400 !important;
+        font-style: normal;
+        font-size: clamp(2rem, 2.8vw, 54px);
+        line-height: 1.2;
+        text-align: center;
+        color: var(--brand-secondary);
+
+        // Hides the segment of ::before's continuous border-top that would
+        // otherwise pass behind this text — see the long note above. Widened
+        // 2026-08-25 (was -0.3em / 6px) per a repeated report of a fine line still
+        // showing behind the text — margin bumped generously on both axes so
+        // there's no realistic way a sliver of the 3px border can still peek out
+        // at the text's edges or top/bottom.
+        &::before{
+            content: "";
+            position: absolute;
+            z-index: -1;
+            left: -0.6em;
+            right: -0.6em;
+            top: 50%;
+            height: 12px;
+            transform: translateY(-50%);
+            background-color: var(--brand-primary);
+        }
+    }
+
+    // 4 columns, per direct feedback: the summary badge is column 1, the cards
+    // viewport is columns 2-4 combined into a single track (see
+    // .diner-reviews-cards below for why that's one scrollable region rather than
+    // 3 literal grid columns — a repeater can hold more than 3 reviews, and a
+    // real 4-column grid can't show "3 visible + scroll for more" on its own).
+    .diner-reviews-body{
+        display: grid;
+        grid-template-columns: minmax(150px, 220px) 1fr;
+        align-items: center;
+        gap: clamp(24px, 3vw, 56px);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+            justify-items: center;
+        }
+    }
+
+    // Also used standalone (no grid parent) when Trustindex is active — sizing
+    // here is deliberately not grid-column-dependent for that reason.
+    .diner-reviews-trustindex{
+        width: 100%;
+        min-width: 0;
+    }
+
+    .diner-reviews-summary{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35em;
+        text-align: center;
+        text-decoration: none;
+        color: $light;
+    }
+
+    .diner-reviews-summary-label{
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-size: 1.1rem;
+        @include forma(extrabold);
+        color: $light;
+    }
+
+    // Not a wrapper around the star row — diner_rating_stars() puts this class
+    // directly on the SAME <span class="diner-stars ..."> element the star icons
+    // live in (see diner_rating_stars() in diner-components.php), so this and
+    // .diner-stars below both style one element. That's why the previous fix here
+    // (text-align: center) did nothing: .diner-stars is display: inline-flex, and
+    // text-align has no effect on a flex container's own children — flex items
+    // ignore it entirely, they only respond to justify-content. The 5 star icons
+    // are sized to their own content (narrower than this element's fixed width at
+    // most sizes), and flex's own default (justify-content: flex-start) was
+    // packing them against the left edge of that width rather than centering them.
+    .diner-reviews-summary-stars{
+        width: clamp(120px, 12vw, 190px);
+        justify-content: center;
+    }
+
+    .diner-reviews-summary-count{
+        margin: 0;
+        font-size: 0.9rem;
+        color: $light;
+        opacity: 0.8;
+    }
+
+    .diner-reviews-summary-google{
+        margin: 0.2em 0 0;
+        font-size: 1.4rem;
+        line-height: 1;
+        @include forma(extrabold);
+
+        // Standard Google brand wordmark colours, one span per letter.
+        .g-blue{ color: #4285F4; }
+        .g-red{ color: #EA4335; }
+        .g-yellow{ color: #FBBC05; }
+        .g-green{ color: #34A853; }
+    }
+
+    // Shared star-row styling — used both for the large summary rating and the
+    // smaller per-card ratings (diner_rating_stars() outputs the same markup for
+    // both, sizing is left to the wrapping context).
+    .diner-stars{
+        display: inline-flex;
+        gap: 0.15em;
+        color: rgba($light, 0.25);
+    }
+    .diner-star{
+        display: block;
+        width: 1em;
+        aspect-ratio: 24 / 23;
+    }
+    .diner-star-filled{
+        color: var(--brand-carrot);
+    }
+    .diner-stars svg{
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .diner-reviews-summary-stars .diner-stars{
+        font-size: clamp(20px, 2vw, 30px);
+    }
+
+    // Wraps the scrollable track + the "next" arrow so the arrow can position
+    // itself against the viewport's own edge regardless of how many cards the
+    // track actually holds.
+    .diner-reviews-cards-viewport{
+        position: relative;
+        min-width: 0;
+        width: 100%;
+    }
+
+    // A horizontally-scrolling track, not a wrapping flex/grid row — a real CSS
+    // grid can't do "3 visible, scroll to reveal any more" on its own, and the
+    // repeater has no fixed count (min/max both 0 in the ACF field), so this has
+    // to hold however many review cards exist and only ever show a 3-wide window
+    // onto them. Each card's own width (see .diner-reviews-card) is what fixes
+    // the "3 at a time" — the track itself just scrolls.
+    .diner-reviews-cards{
+        --diner-reviews-gap: #{clamp(16px, 1.6vw, 28px)};
+        display: flex;
+        gap: var(--diner-reviews-gap);
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        min-width: 0;
+
+        // The arrow (see .diner-reviews-arrow) is the intended control — a
+        // visible native scrollbar under it would read as an unstyled leftover,
+        // not a second, redundant way to do the same thing.
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        &::-webkit-scrollbar{
+            display: none;
+        }
+
+        // Deliberately the SAME horizontal-scroll behaviour at every viewport —
+        // a previous pass switched to a vertical stack (no scrolling, no arrow)
+        // below md, which turned out to hide a real bug rather than avoid one:
+        // .diner-reviews-card has a min-width floor, so below ~1022px exactly 3
+        // cards stop fitting calc((100% - gap)/3) and start overflowing — with
+        // the arrow gated on review COUNT rather than on whether cards actually
+        // overflow, and the native scrollbar hidden, that overflow became
+        // completely unreachable. Per direct feedback, arrow-based navigation
+        // needs to keep working at every screen size, so this no longer branches
+        // by breakpoint at all.
+    }
+
+    // Sized so roughly 3 fit the track's own width on desktop, fewer as it
+    // narrows (down to the min-width floor) — the arrow scrolls by one
+    // card-width (see the click handler in diner_reviews.php) to reveal
+    // whatever doesn't currently fit, at any viewport.
+    .diner-reviews-card{
+        position: relative;
+        flex: 0 0 auto;
+        width: calc((100% - 2 * var(--diner-reviews-gap)) / 3);
+        min-width: 220px;
+        scroll-snap-align: start;
+        background-color: $light;
+        border-radius: 10px;
+        padding: 1.2em 1.3em;
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+        color: var(--brand-primary);
+    }
+
+    // Circular "next" button, overlapping the viewport's own right edge — matches
+    // the reference screenshot's small chevron. Scroll behaviour is driven from
+    // diner_reviews.php's own inline script (native scroll-snap does the visual
+    // work; the click handler just calls scrollTo() by one card-width, looping
+    // back to the start once it reaches the end). No longer hidden below md —
+    // see the note on .diner-reviews-cards above for why that was a real bug,
+    // not a deliberate simplification.
+    .diner-reviews-arrow{
+        position: absolute;
+        z-index: 2;
+        top: 50%;
+        right: -18px;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background-color: $light;
+        color: var(--brand-primary);
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
+        cursor: pointer;
+        @include transition(background-color, 0.2s);
+
+        @include media-breakpoint-down(md) {
+            right: -8px;
+            width: 30px;
+            height: 30px;
+        }
+
+        svg{
+            display: block;
+            width: 8px;
+            height: 14px;
+        }
+
+        &:hover,
+        &:focus-visible{
+            background-color: var(--brand-default-lighter);
+        }
+    }
+
+    .diner-reviews-card-badge{
+        position: absolute;
+        top: 1.1em;
+        right: 1.1em;
+        width: 22px;
+        height: 22px;
+    }
+
+    .diner-reviews-card-head{
+        display: flex;
+        align-items: center;
+        gap: 0.7em;
+        margin-bottom: 0.6em;
+        padding-right: 1.8em;
+    }
+
+    .diner-reviews-card-avatar{
+        flex: 0 0 auto;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .diner-reviews-card-avatar-initials{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--brand-default-lighter);
+        color: var(--brand-primary);
+        font-size: 0.85rem;
+        @include forma(extrabold);
+    }
+
+    .diner-reviews-card-who{
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .diner-reviews-card-name{
+        font-size: 0.95rem;
+        line-height: 1.3;
+        @include forma(extrabold);
+    }
+
+    .diner-reviews-card-time{
+        font-size: 0.78rem;
+        color: var(--brand-primary-lighter);
+    }
+
+    .diner-reviews-card-rating{
+        display: flex;
+        align-items: center;
+        gap: 0.4em;
+        margin-bottom: 0.5em;
+
+        .diner-stars{
+            font-size: 15px;
+        }
+    }
+
+    .diner-reviews-verified{
+        width: 14px;
+        height: 14px;
+        flex: 0 0 auto;
+    }
+
+    .diner-reviews-card-text{
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: var(--brand-primary);
+        // Clamp to 3 lines, matching the truncated "..." reviews read in the
+        // reference rather than letting card height vary with review length.
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .diner-reviews-card-more{
+        display: inline-block;
+        margin-top: 0.4em;
+        font-size: 0.82rem;
+        color: var(--brand-persian);
+        text-decoration: none;
+
+        &:hover,
+        &:focus-visible{
+            text-decoration: underline;
+        }
+    }
+}

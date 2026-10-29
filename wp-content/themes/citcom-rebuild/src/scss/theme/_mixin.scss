@@ -1,0 +1,162 @@
+// Theme mixins. Imported AFTER the Bootstrap components: transition() and
+// button-variant() below intentionally override Bootstrap's versions for the
+// theme's own partials, exactly as the old build order did.
+@use "sass:math";
+
+// Brand typeface helper (Adobe Fonts forma-djr-micro).
+@mixin forma($weight) {
+	//300 Light, 400 Regular, 700 Bold, 800 Extra Bold
+	font-family: forma-djr-micro, Arial, Helvetica, sans-serif;
+	font-style: normal;
+	@if $weight == light {
+		font-weight: 300 !important;
+	} @else if $weight == regular {
+		font-weight: 400 !important;
+	} @else if $weight == bold {
+		font-weight: 700 !important;
+	} @else if $weight == extrabold {
+		font-weight: 800 !important;
+	} @else {
+		font-weight: $weight !important;
+	}
+}
+
+@mixin gradient-background($deg, $start, $end) {
+	background-color: $start;
+	background-color: linear-gradient($deg, $start 0%, $end 100%);
+}
+
+@mixin aspect-ratio($width, $height) {
+	@include media-breakpoint-up(md) {
+		position: relative;
+
+		&:before {
+			display: block;
+			content: "";
+			width: 100%;
+			padding-top: math.div($height, $width) * 100%;
+		}
+
+		> .content,
+		> iframe,
+		> img {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+
+		> iframe {
+			width: 100%;
+			height: 100%;
+		}
+	}
+}
+
+@mixin aspect-ratio-img($width, $height) {
+	position: relative;
+
+	&:before {
+		display: block;
+		content: "";
+		width: 100%;
+		padding-top: math.div($height, $width) * 100%;
+	}
+
+	> img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+}
+
+@mixin aspect-ratio-norm($width, $height) {
+	position: relative;
+
+	&:before {
+		display: block;
+		content: "";
+		width: 100%;
+		padding-top: math.div($height, $width) * 100%;
+	}
+
+	> .aspect-container,
+	> .content {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+}
+
+@mixin transition($el,$time){
+	transition: $el $time cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@function get-breakpoints($key: "md") {
+    @return map-get($container-max-widths, $key);
+}
+
+@mixin button-variant(
+  $background,
+  $border,
+  $color: color-contrast($background),
+  $hover-background: if($color == $color-contrast-light, shade-color($background, $btn-hover-bg-shade-amount), tint-color($background, $btn-hover-bg-tint-amount)),
+  $hover-border: if($color == $color-contrast-light, shade-color($border, $btn-hover-border-shade-amount), tint-color($border, $btn-hover-border-tint-amount)),
+  $hover-color: color-contrast($hover-background),
+  $active-background: if($color == $color-contrast-light, shade-color($background,$btn-active-bg-shade-amount), tint-color($background, $btn-active-bg-tint-amount)),
+  $active-border: if($color == $color-contrast-light, shade-color($border, $btn-active-border-shade-amount), tint-color($border, $btn-active-border-tint-amount)),
+  $active-color: color-contrast($active-background),
+  $disabled-background: $background,
+  $disabled-border: $border,
+  $disabled-color: color-contrast($disabled-background)
+) {
+  color: $color;
+  @include gradient-bg($background);
+  border-color: $border;
+  @include box-shadow($btn-box-shadow);
+  &:hover {
+    color: $hover-color;
+    @include gradient-bg($hover-background);
+    border-color: $hover-border;
+  }
+  .btn-check:focus + &,
+  &:focus {
+    color: $hover-color;
+    @include gradient-bg($hover-background);
+    border-color: $hover-border;
+    @if $enable-shadows {
+      @include box-shadow($btn-box-shadow, 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), .5));
+    } @else {
+      box-shadow: 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), .5);
+    }
+  }
+  .btn-check:checked + &,
+  .btn-check:active + &,
+  &:active,
+  &.active,
+  .show > &.dropdown-toggle {
+    color: $active-color;
+    background-color: $active-background;
+    background-image: if($enable-gradients, none, null);
+    border-color: $active-border;
+    &:focus {
+      @if $enable-shadows {
+        @include box-shadow($btn-active-box-shadow, 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), .5));
+      } @else {
+        box-shadow: 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), .5);
+      }
+    }
+  }
+  &:disabled,
+  &.disabled {
+    color: $disabled-color;
+    background-color: $disabled-background;
+    background-image: if($enable-gradients, none, null);
+    border-color: $disabled-border;
+  }
+}

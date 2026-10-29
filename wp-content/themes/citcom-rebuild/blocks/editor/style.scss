@@ -1,0 +1,11 @@
+// citcom/editor: port of assets/_dev/scss/flexContent/editor.scss.
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+
+.flex-editor{
+    &.section-padding.pb-0{
+        .editor{
+            padding-bottom: 1rem;
+        }
+    }
+}

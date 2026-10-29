@@ -1,0 +1,85 @@
+{
+    "key": "group_citcom_shortcode",
+    "title": "Block: Shortcode",
+    "fields": [
+        {
+            "key": "field_671a53d144e6e",
+            "label": "Before (optional)",
+            "name": "before",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_671a540044e70",
+            "label": "[Shortcode]",
+            "name": "shortcode",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "A shortcode is displayed within square brackets [this_is_shortcode]",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_671a53ef44e6f",
+            "label": "After (optional)",
+            "name": "after",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "citcom/shortcode"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Fields of the old shortcode layout (same names and keys).",
+    "show_in_rest": 0,
+    "modified": 1790620000
+}

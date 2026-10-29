@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/newsletter-signup",
+	"title": "Newsletter Signup",
+	"description": "Sidebar panel that opens the newsletter signup popup.",
+	"category": "citcom",
+	"icon": "edit-large",
+	"keywords": [ "newsletter", "signup", "sidebar", "email" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": false,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"usePostMeta": false
+	}
+}

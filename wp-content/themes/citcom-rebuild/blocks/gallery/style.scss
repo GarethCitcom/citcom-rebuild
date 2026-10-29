@@ -1,0 +1,17 @@
+// citcom/gallery: port of assets/_dev/scss/flexContent/gallery.scss.
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+
+.flex-gallery{
+    .masonary{
+        @include media-breakpoint-up(md) {
+            height: 50vw;
+            .img-bg{
+                position: absolute;
+            }
+        }
+        @include media-breakpoint-up(xl) {
+            max-height: 85vh;
+        }
+    }
+}

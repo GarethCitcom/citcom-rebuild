@@ -1,0 +1,35 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/display-posts",
+	"title": "Display Posts",
+	"description": "Grid of blog post or case study cards: the current archive listing with load more and search, the latest posts, or a chosen set.",
+	"category": "citcom",
+	"icon": "grid-view",
+	"keywords": [ "posts", "case studies", "blog", "listing", "archive", "cards" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [ "page", "service", "case-study", "landing-page", "template" ],
+		"usePostMeta": false
+	},
+	"example": {
+		"attributes": {
+			"mode": "preview",
+			"data": {
+				"type_of_display": "latest",
+				"number_of_posts_to_show": 3,
+				"post_type": "post"
+			}
+		}
+	}
+}

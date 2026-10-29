@@ -1,0 +1,30 @@
+.custom-hide {
+	display: none;
+}
+.hidden{
+	display: none!important;
+}
+
+.overflow-hidden {
+	overflow: hidden;
+}
+
+.prevent-select {
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.p-last-no-margin{
+	p:last-child{
+		margin-bottom: 0;
+	}
+}
+
+@include media-breakpoint-down(lg) {
+	.center-stacked-md{
+		.wp-block-buttons{
+			justify-content: center;
+		}
+	}
+}

@@ -1,0 +1,6 @@
+// Diner variables shared by the diner blocks (were declared inline in
+// assets/_dev/scss/flexContent/diner-shared.scss, where the reasoning for each
+// value is kept: see src/scss/diner.scss). No CSS output.
+$diner_check_cell: 60px;
+$diner_chequer_strip_height: 100px;
+$diner_stamp_size: clamp(70px, 22vw, 212px);

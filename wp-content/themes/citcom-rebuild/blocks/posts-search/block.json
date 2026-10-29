@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/posts-search",
+	"title": "Posts Search",
+	"description": "Search box for the blog listing sidebar; filters the Display Posts listing on the page without reloading.",
+	"category": "citcom",
+	"icon": "search",
+	"keywords": [ "search", "blog", "sidebar", "filter" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": false,
+		"align": false,
+		"html": false,
+		"mode": false,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"usePostMeta": false
+	}
+}

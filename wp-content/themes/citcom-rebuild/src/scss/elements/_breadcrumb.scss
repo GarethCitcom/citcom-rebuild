@@ -1,0 +1,14 @@
+.breadcrumb{
+    .breadcrumb-item{
+        font-size: 0.9rem;
+        color: var(--brand-persian);
+        a{
+            text-decoration: none;
+            color: var(--brand-primary);
+            @include forma(regular);
+            &:hover{
+                color: var(--brand-secondary);
+            }
+        }
+    }
+}

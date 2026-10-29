@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/icons",
+	"title": "Icons",
+	"description": "Three, four or five columns of a Font Awesome icon in a CitDot with supporting text.",
+	"category": "citcom",
+	"icon": "screenoptions",
+	"keywords": [ "icons", "columns", "features", "citdot" ],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [ "page", "service", "case-study", "landing-page", "template" ],
+		"usePostMeta": false
+	}
+}

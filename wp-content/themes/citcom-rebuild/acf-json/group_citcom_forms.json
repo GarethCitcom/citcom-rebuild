@@ -1,0 +1,190 @@
+{
+    "key": "group_citcom_forms",
+    "title": "Forms",
+    "fields": [
+        {
+            "key": "field_citcom_forms_message",
+            "label": "",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "The site's forms are part of the theme. Every submission is emailed to the addresses below and kept under Form submissions for 30 days, then deleted.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_citcom_forms_recipient",
+            "label": "Enquiries go to",
+            "name": "forms_recipient",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "One or more email addresses, separated by commas. Used by the contact, guest check and brief forms. Falls back to the site admin email when empty.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "info@citcom.co.uk",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_citcom_forms_marketing_recipient",
+            "label": "Mailing list sign-ups also go to",
+            "name": "forms_marketing_recipient",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "One or more email addresses, separated by commas. Receives the newsletter form, and a copy of any enquiry where the mailing list box was ticked.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_citcom_forms_recipients",
+            "label": "Different recipients for a form",
+            "name": "forms_recipients",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Optional. Add a row to send one form somewhere other than the enquiries address above, for example the packages form or an audit form. Mailing list sign-ups are still copied to the address above.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add form",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_citcom_forms_recipients_form",
+                    "label": "Form",
+                    "name": "form",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "35",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": [],
+                    "default_value": "",
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "parent_repeater": "field_citcom_forms_recipients"
+                },
+                {
+                    "key": "field_citcom_forms_recipients_addresses",
+                    "label": "Send to",
+                    "name": "addresses",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "65",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "One or more addresses, separated by commas",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_citcom_forms_recipients"
+                }
+            ]
+        },
+        {
+            "key": "field_citcom_mailchimp_api_key",
+            "label": "Mailchimp API key",
+            "name": "mailchimp_api_key",
+            "aria-label": "",
+            "type": "password",
+            "instructions": "Ends with the data centre, for example -us21. Leave empty if the key is set as CITCOM_MAILCHIMP_API_KEY in wp-config.php, which takes priority. Without a key the forms still work and sign-ups are skipped.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_citcom_mailchimp_audience_id",
+            "label": "Mailchimp audience ID",
+            "name": "mailchimp_audience_id",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "The audience new sign-ups are added to. Defaults to the audience the old forms used.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "a4ffec5bd1",
+            "maxlength": "",
+            "placeholder": "a4ffec5bd1",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "theme-settings"
+            }
+        ]
+    ],
+    "menu_order": 20,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Recipients and Mailchimp settings for the theme forms (inc/forms.php, inc/mailchimp.php).",
+    "show_in_rest": 0,
+    "modified": 1790760000
+}

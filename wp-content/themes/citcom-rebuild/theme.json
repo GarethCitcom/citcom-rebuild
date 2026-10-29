@@ -1,0 +1,120 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"settings": {
+		"appearanceTools": false,
+		"useRootPaddingAwareAlignments": false,
+		"color": {
+			"defaultPalette": false,
+			"defaultGradients": false,
+			"defaultDuotone": false,
+			"custom": false,
+			"customGradient": false,
+			"customDuotone": false,
+			"link": false,
+			"palette": [
+				{ "name": "Primary", "slug": "primary", "color": "#1C0221" },
+				{ "name": "Secondary", "slug": "secondary", "color": "#9AD14D" },
+				{ "name": "Default", "slug": "default", "color": "#D8DBE2" },
+				{ "name": "Slate", "slug": "slate", "color": "#2A4747" },
+				{ "name": "Persian", "slug": "persian", "color": "#17A398" },
+				{ "name": "Carrot", "slug": "carrot", "color": "#F9A03F" },
+				{ "name": "Dark Grey", "slug": "dark-grey", "color": "#a2a4aa" },
+				{ "name": "Light Grey", "slug": "light-grey", "color": "#eff1f3" }
+			],
+			"gradients": [
+				{ "name": "Aubergine Gradient", "slug": "aubergine-grad", "gradient": "linear-gradient(90deg, #1C0221 0%, #2A4747 100%)" },
+				{ "name": "Slate Gradient", "slug": "slate-grad", "gradient": "linear-gradient(90deg, #2A4747 0%, #17A398 100%)" },
+				{ "name": "Persian Gradient", "slug": "persian-grad", "gradient": "linear-gradient(90deg, #17A398 0%, #9AD14D 100%)" }
+			]
+		},
+		"typography": {
+			"customFontSize": false,
+			"lineHeight": false,
+			"letterSpacing": false,
+			"dropCap": false,
+			"fontStyle": false,
+			"fontWeight": false,
+			"textDecoration": false,
+			"textTransform": false,
+			"textColumns": false,
+			"writingMode": false,
+			"fluid": false,
+			"defaultFontSizes": false,
+			"fontFamilies": [
+				{
+					"name": "Forma DJR Micro",
+					"slug": "forma",
+					"fontFamily": "forma-djr-micro, montserrat, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif"
+				}
+			],
+			"fontSizes": [
+				{ "name": "Small", "slug": "small", "size": "0.875rem" },
+				{ "name": "Body", "slug": "body", "size": "1rem" },
+				{ "name": "Heading 6", "slug": "h6", "size": "1rem" },
+				{ "name": "Heading 5", "slug": "h5", "size": "1.1rem" },
+				{ "name": "Heading 4", "slug": "h4", "size": "1.3rem" },
+				{ "name": "Heading 3", "slug": "h3", "size": "1.5rem" },
+				{ "name": "Heading 2", "slug": "h2", "size": "2.5rem" },
+				{ "name": "Heading 1", "slug": "h1", "size": "3.5rem" }
+			]
+		},
+		"spacing": {
+			"units": [ "rem" ],
+			"padding": false,
+			"margin": false,
+			"blockGap": null,
+			"customSpacingSize": false,
+			"defaultSpacingSizes": false,
+			"spacingSizes": [
+				{ "name": "Half gutter", "slug": "gutter-half", "size": "0.75rem" },
+				{ "name": "Gutter", "slug": "gutter", "size": "1.5rem" },
+				{ "name": "Section (tablet)", "slug": "section-lg", "size": "3rem" },
+				{ "name": "Section (desktop)", "slug": "section-xl", "size": "4.5rem" }
+			]
+		},
+		"border": {
+			"color": false,
+			"radius": false,
+			"style": false,
+			"width": false
+		},
+		"dimensions": {
+			"aspectRatio": false,
+			"minHeight": false
+		},
+		"position": {
+			"sticky": false
+		},
+		"shadow": {
+			"defaultPresets": false
+		},
+		"layout": {
+			"allowEditing": false
+		},
+		"blocks": {
+			"core/paragraph": {
+				"color": {
+					"background": false
+				}
+			},
+			"core/button": {
+				"color": {
+					"background": false,
+					"text": false
+				},
+				"border": {
+					"radius": false
+				},
+				"typography": {
+					"fontSizes": []
+				}
+			}
+		}
+	},
+	"styles": {
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--forma)"
+		}
+	}
+}

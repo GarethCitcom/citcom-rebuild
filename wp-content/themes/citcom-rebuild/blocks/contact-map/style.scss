@@ -1,0 +1,30 @@
+// citcom/contact-map: port of assets/_dev/scss/flexContent/contact-map.scss.
+@import "../../src/scss/tokens";
+@import "../../src/scss/theme/mixin";
+
+.flex-contact_map{
+    .map{
+        background: var(--brand-default);
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        width: 90%;
+        z-index: 0;
+        overflow: hidden;
+        border-radius: 1rem;
+        @include media-breakpoint-down(md) {
+            position: relative;
+            height: calc(50vh + 2rem);
+            margin-bottom: -2rem;
+        }
+        iframe{
+            border-radius: 1rem;
+        }
+    }
+    .contact-block{
+        position: relative;
+        z-index: 1;
+    }
+}

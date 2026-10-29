@@ -1,0 +1,40 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "citcom/diner-intro",
+	"title": "Diner: Intro ribbon",
+	"description": "The tilted ribbon headline with an outlined tail, body copy and an optional credentials stamp.",
+	"category": "citcom",
+	"icon": "editor-textcolor",
+	"keywords": [
+		"diner",
+		"intro",
+		"ribbon",
+		"stamp"
+	],
+	"textdomain": "citcom",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"mode": true,
+		"customClassName": true
+	},
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php",
+		"blockVersion": 3,
+		"postTypes": [
+			"page",
+			"service",
+			"case-study",
+			"landing-page",
+			"template"
+		],
+		"usePostMeta": false
+	},
+	"style": [
+		"citcom-diner",
+		"file:../../build/blocks/diner-intro/style.css"
+	]
+}

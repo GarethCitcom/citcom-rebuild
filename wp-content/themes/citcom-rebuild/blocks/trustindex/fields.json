@@ -1,0 +1,45 @@
+{
+    "key": "group_citcom_trustindex",
+    "title": "Block: Trustindex",
+    "fields": [
+        {
+            "key": "field_citcom_trustindex_code",
+            "label": "Trustindex widget",
+            "name": "trustindex_code",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Paste a Trustindex shortcode or the embed snippet from trustindex.io. Leave as it is for the Google reviews widget set up in the Trustindex plugin.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "[trustindex no-registration=google]",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "[trustindex no-registration=google]",
+            "new_lines": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "citcom/trustindex"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "New field. The old google_reviews layout had a message only; the field name matches the diner reviews layout's trustindex_code.",
+    "show_in_rest": 0,
+    "modified": 1790720000
+}

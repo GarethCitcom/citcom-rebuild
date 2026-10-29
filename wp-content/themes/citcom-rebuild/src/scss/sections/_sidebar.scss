@@ -1,0 +1,97 @@
+#search-posts-btn{
+    .fa-spinner{
+        display: none;
+    }
+    &.load{
+        .fa-spinner{
+            display: block;
+        }
+        .fa-magnifying-glass{
+            display: none;
+        }
+    }
+}
+.fix.wp-container-core-group-is-layout-1> ul {
+    margin-left: -1.5rem !important;
+}
+.wp-block-categories-list{
+    position: relative;
+    margin: 0 0 0 -1.5rem!important;
+    margin-left: -1.5rem!important;
+    padding: 0;
+    list-style: none;
+    .cat-item{
+        position: relative;
+        z-index: 2;
+        a{
+            display: block;
+            text-decoration: none;
+            padding: calc(0.5rem + 2px) 1.5rem 0.5rem;
+            border-top-right-radius: 20rem;
+            border-bottom-right-radius: 20rem;
+            @include forma(regular);
+            @include transition(all,0.6s);
+            color: var(--brand-primary);
+            border: 1px solid transparent;
+            &.active{
+                color: $white;
+            }
+            &:focus{
+                outline: none;
+                border: 1px dashed var(--brand-slate);
+            }
+        }
+    }
+    .category-pill{
+        position: absolute;
+        top: -50px;
+        left: 0;
+        z-index: 1;
+        background: var(--brand-slate);
+        height: 0;
+        width: 100%;
+        opacity: 1;
+        border-top-right-radius: 20rem;
+        border-bottom-right-radius: 20rem;
+        &.animate{
+            @include transition(all,0.3s);
+        }
+    }
+}
+
+.wp-block-tag-cloud{
+    margin: 0;
+    display: flex;
+    column-gap: 0.5rem;
+    row-gap: 0.25rem;
+    .tag-cloud-link{
+        @extend .btn;
+        @extend .btn-tag;
+        font-size: 0.8rem !important;
+    }
+}
+
+.top-blog-posts,
+.related-posts,
+.latest-posts{
+    .list-group-numbered>.list-group-item:before {
+        margin-left: -1.5rem;
+        width: 1.5rem;
+        display: inline-block;
+        @include forma(800);
+        font-size: 1.1rem;
+    }
+    .list-group-item{
+        @include transition(all,0.3s);
+        &:hover{
+            color: var(--brand-persian);
+        }
+        &:active{
+            color: var(--brand-slate);
+        }
+        &:focus{
+            outline: none;
+            border: 1px dashed var(--brand-slate);
+        }
+    }
+}
