@@ -41,7 +41,7 @@ foreach ( $blocks as &$block ) {
 	$toggle = $block['toggle']['value'] ?? '';
 	if ( '' === $toggle && isset( $block['title'] ) && 0 === strpos( $block['title'], 'Cookie usage' ) ) {
 		$block['title']       = 'How we use cookies';
-		$block['description'] = 'Essential cookies keep the site working. Analytics cookies are only set if you allow them, and you can change your choice at any time from the cookie button at the bottom of the page.';
+		$block['description'] = 'Essential cookies keep the site working. Analytics cookies are only set if you allow them, and you can change your choice at any time from the Cookie Preferences link in the footer.';
 	}
 	if ( 'necessary' === $toggle ) {
 		$block['title']       = 'Essential cookies';
@@ -89,7 +89,7 @@ $s['pressidium_options']['cookie_table']['targeting']   = array();
 $s['pressidium_options']['cookie_table']['preferences'] = array();
 $s['pressidium_options']['blocked_scripts']             = array(); // The theme ships GTM inert itself.
 $s['pressidium_options']['hide_empty_categories']       = true;
-$s['pressidium_options']['floating_button']['enabled']  = true;    // So consent can be withdrawn.
+$s['pressidium_options']['floating_button']['enabled']  = false;   // The footer's Cookie Preferences link opens the modal instead (src/js/cookie-preferences.js).
 $s['pressidium_options']['gcm']['enabled']              = false;   // Consent Mode off for now.
 
 $ok = $store->set( $s );

@@ -63,9 +63,10 @@ Settings > Cookie Consent in wp-admin, on staging first, then live.
   domain. On live the default, `citcom.co.uk`, is right. On staging the
   default is the full host and the GA cookies survived a withdrawal (found
   2026-10-27), so it is set to `mystagingwebsite.com` there.
-- **Floating settings button: ON**, so a visitor can change their choice
-  later without clearing cookies; withdrawing consent is what the last test
-  below checks.
+- **Floating settings button: OFF.** The footer's "Cookie Preferences" link
+  (a menu item whose Menu ID field is `open_preferences_center`) opens the
+  preferences modal instead, through `src/js/cookie-preferences.js`, so a
+  visitor can change their choice later without clearing cookies.
 - The plugin's own cookie is `pressidium_cookie_consent`. Deleting it in
   DevTools is how to get a "fresh visit" when testing.
 - "Hide from bots" (on) also hides the banner from any browser that reports
@@ -136,7 +137,7 @@ Pages to repeat on: a blog post, a service page, and /contact-us/.
   shows one page_view for that page, not two.
 - **Returning visitor with saved consent.** Open another page: no banner,
   gtm.js requested as the page loads, one page_view in Realtime.
-- **Reject, or withdraw through the floating button.** On the next page no
+- **Reject, or withdraw through the footer's Cookie Preferences link.** On the next page no
   gtm.js request, and the `_ga` and `_ga_*` cookies are gone from
   Application > Cookies. (If they linger, the Cookies tab entries above are
   wrong: check the name, the regex tick and the domain.)
